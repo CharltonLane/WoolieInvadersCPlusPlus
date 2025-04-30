@@ -12,9 +12,20 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3_image/SDL_image.h>
+#include <string>
 
 static SDL_Window* window{ nullptr };
 static SDL_Renderer* renderer{ nullptr };
+
+
+SDL_Texture* loadImage(std::string& fileName) {
+    SDL_Texture* tex = IMG_LoadTexture(renderer, fileName.c_str());
+    return tex;
+}
+
+
+
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
@@ -38,6 +49,9 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     return SDL_APP_CONTINUE;
 }
 
+static bool hasLoadedImage = false;
+static SDL_Texture* imageTexture{};
+
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
@@ -57,6 +71,20 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDebugText(renderer, x, y, message);
+
+    if (!hasLoadedImage) {
+         std::string fileName{ "images/test.png" };
+         imageTexture = loadImage(fileName);
+    }
+
+    SDL_FRect texture_rect;
+    texture_rect.x = 0; //the x coordinate
+    texture_rect.y = 0; //the y coordinate
+    texture_rect.w = 50; //the width of the texture
+    texture_rect.h = 50; //the height of the texture
+
+    SDL_RenderTexture(renderer, imageTexture, NULL, &texture_rect);
+
     SDL_RenderPresent(renderer);
 
     return SDL_APP_CONTINUE;

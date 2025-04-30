@@ -70,17 +70,31 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(IncludePath);C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\include;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(IncludePath);C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\include;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(IncludePath);C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\include;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(IncludePath);C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\include;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>External\SDL-release-3.2.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\include;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);SDL3.lib;SDL3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\lib\x64;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,13 +105,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>External\SDL-release-3.2.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\include;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);SDL3.lib;SDL3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\lib\x64;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,11 +122,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>External\SDL-release-3.2.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\include;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);SDL3.lib;SDL3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\lib\x64;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,22 +139,19 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>External\SDL-release-3.2.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\include;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);SDL3.lib;SDL3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-devel-3.2.10-VC\SDL3-3.2.10\lib\x64;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3_image-devel-3.2.4-VC\SDL3_image-3.2.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="hello.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="External\SDL-release-3.2.10\VisualC\SDL\SDL.vcxproj">
-      <Project>{81ce8daf-ebb2-4761-8e45-b71abcca8c68}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

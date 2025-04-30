@@ -52,3 +52,4 @@ bld/
 
 # External and third party libraries
 /External
+/SDL

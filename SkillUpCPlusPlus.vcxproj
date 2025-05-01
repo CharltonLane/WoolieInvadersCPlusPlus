@@ -151,7 +151,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="hello.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="sprite.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

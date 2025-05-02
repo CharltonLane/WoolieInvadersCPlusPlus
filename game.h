@@ -18,7 +18,7 @@ public:
 	}
 
 	void HandleInput(const SDL_Event* event);
-	void Update(const double dt);
+	void Update(const float dt);
 	void Render(SDL_Renderer* renderer) const;
 };
 

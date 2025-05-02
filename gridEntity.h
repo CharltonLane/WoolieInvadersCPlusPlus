@@ -42,12 +42,12 @@ public:
 	}
 
 	void HandleInput(const SDL_Event* event);
-	void Update(const double dt);
+	void Update(const float dt);
 
 	void Render(SDL_Renderer* renderer) const;
 
 	bool MoveInDirection(Vector2Int direction);
-	void UpdateWorldPosition(const double dt);
+	void UpdateWorldPosition(const float dt);
 
 	void SetPlayer(bool isPlayer) {
 		m_isPlayer = isPlayer;

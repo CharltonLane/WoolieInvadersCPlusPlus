@@ -5,7 +5,7 @@ void Game::HandleInput(const SDL_Event* event)
 	m_player.HandleInput(event);
 }
 
-void Game::Update(const double dt) {
+void Game::Update(const float dt) {
 	m_player.Update(dt);
 }
 

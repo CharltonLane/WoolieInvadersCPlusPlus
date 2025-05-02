@@ -48,7 +48,7 @@ void GridEntity::HandleInput(const SDL_Event* event) {
 	}
 }
 
-void GridEntity::Update(const double dt) {
+void GridEntity::Update(const float dt) {
 	
 	MoveInDirection(m_desiredMovement);
 	UpdateWorldPosition(dt);
@@ -56,7 +56,7 @@ void GridEntity::Update(const double dt) {
 	m_sprite.SetPosition(m_worldPosition);
 }
 
-void GridEntity::UpdateWorldPosition(const double dt) {
+void GridEntity::UpdateWorldPosition(const float dt) {
 	if (m_targetGridPosition != m_currentGridPosition) {
 
 		Vector2 delta = (Vector2{ m_desiredMovement }) * (m_movementSpeed * static_cast<float>(dt));

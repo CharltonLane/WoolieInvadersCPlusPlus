@@ -22,8 +22,20 @@ public:
 	{
 		m_rect.x = 0; //the x coordinate
 		m_rect.y = 0; //the y coordinate
-		m_rect.w = 50; //the width of the texture
-		m_rect.h = 50; //the height of the texture
+
+		float width{0};
+		float height{ 0 };
+		if (SDL_GetTextureSize(m_texture, &width, &height)) {
+			m_rect.w = width; //the width of the texture
+			m_rect.h = height; //the height of the texture
+		}
+		else {
+			m_rect.w = 16; //the width of the texture
+			m_rect.h = 16; //the height of the texture
+		}
+
+
+
 	}
 
 	Sprite() 

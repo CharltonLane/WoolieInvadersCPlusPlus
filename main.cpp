@@ -23,7 +23,7 @@ struct AppState {
 	SDL_Window* window{ nullptr };
 	SDL_Renderer* renderer{ nullptr };
 
-	Sprite mySprite{};
+	Sprite shopBackground{};
 
 	Game game{};
 };
@@ -45,7 +45,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 	}
 
 	// Create a cheeky sprite.
-	state.mySprite = Sprite{ state.renderer, "images/test.png" };
+	state.shopBackground = Sprite{ state.renderer, "images/world/shop.png" };
 	state.game = Game{ state.renderer };
 
 	return SDL_APP_CONTINUE;
@@ -72,7 +72,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
 static Uint64 NOW = SDL_GetPerformanceCounter();
 static Uint64 LAST = 0;
-static double deltaTime = 0;
+static float deltaTime = 0;
 
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
@@ -83,8 +83,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	LAST = NOW;
 	NOW = SDL_GetPerformanceCounter();
 
-	deltaTime = 0.001 * (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
-	//std::cout << "FPS: " << 1/deltaTime << "\n";
+	deltaTime = (float)((NOW - LAST) / (float)SDL_GetPerformanceFrequency());
+	std::cout << "FPS: " << 1/deltaTime << "\n";
 
 	const char* message = "Hello World!";
 	int w = 0, h = 0;
@@ -103,12 +103,14 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	SDL_SetRenderDrawColor(state.renderer, 255, 255, 255, 255);
 	//SDL_RenderDebugText(state.renderer, x, y, message);
 
-	SDL_RenderDebugText(state.renderer, x, y, std::to_string(deltaTime).c_str());
 
 	// Draw our super cool sprite.
-	//state.mySprite.Render(state.renderer);
+	state.shopBackground.Render(state.renderer);
 	state.game.Update(deltaTime);
 	state.game.Render(state.renderer);
+
+	SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1/deltaTime)).c_str());
+
 
 	SDL_RenderPresent(state.renderer);
 

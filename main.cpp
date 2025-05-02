@@ -14,14 +14,17 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 #include <string>
-#include "Sprite.h"
-
+#include "sprite.h"
+#include "gridEntity.h"
+#include "game.h"
 
 struct AppState {
 	SDL_Window* window{ nullptr };
 	SDL_Renderer* renderer{ nullptr };
 
-	Sprite mySprite;
+	Sprite mySprite{};
+
+	Game game{};
 };
 
 
@@ -42,7 +45,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 
 	// Create a cheeky sprite.
 	state.mySprite = Sprite{ state.renderer, "images/test.png" };
-
+	state.game = Game{ state.renderer };
 
 	return SDL_APP_CONTINUE;
 }
@@ -81,7 +84,9 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	SDL_RenderDebugText(state.renderer, x, y, message);
 
 	// Draw our super cool sprite.
-	state.mySprite.Render(state.renderer);
+	//state.mySprite.Render(state.renderer);
+	state.game.Update();
+	state.game.Render(state.renderer);
 
 	SDL_RenderPresent(state.renderer);
 

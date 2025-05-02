@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <string>
+#include "vector2.h"
 
 class Sprite
 {
@@ -15,7 +16,7 @@ private:
 
 public:
 
-	Sprite(SDL_Renderer* renderer, std::string fileName) 
+	Sprite(SDL_Renderer* renderer, const std::string& fileName) 
 		: m_texture{ loadImage(renderer, fileName) }
 		, m_rect {}
 	{
@@ -30,8 +31,10 @@ public:
 		, m_rect{} 
 	{}
 
-	SDL_Texture* loadImage(SDL_Renderer* renderer, std::string& fileName);
+	SDL_Texture* loadImage(SDL_Renderer* renderer, const std::string& fileName);
 
 	void Render(SDL_Renderer* renderer) const;
+
+	void SetPosition(Vector2 position);
 };
 

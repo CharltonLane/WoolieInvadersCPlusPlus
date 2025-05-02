@@ -1,7 +1,12 @@
 #include "game.h"
 
-void Game::Update() {
-	m_player.Update();
+void Game::HandleInput(const SDL_Event* event)
+{
+	m_player.HandleInput(event);
+}
+
+void Game::Update(const double dt) {
+	m_player.Update(dt);
 }
 
 void Game::Render(SDL_Renderer* renderer) const {

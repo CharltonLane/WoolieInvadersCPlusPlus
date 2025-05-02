@@ -17,7 +17,17 @@ public:
 	{}
 
 	int x() const { return m_x; }
+	void SetX(int x) { m_x = x; }
 	int y() const { return m_y; }
+	void SetY(int y) { m_y = y; }
+
+	Vector2Int operator+=(const Vector2Int other) {
+		return { m_x + other.m_x, m_y + other.m_y };
+	}
+
+	bool operator!=(const Vector2Int other) {
+		return m_x != other.m_x || m_y != other.m_y;
+	}
 };
 
 class Vector2 {
@@ -43,6 +53,16 @@ public:
 
 	float x() const { return m_x; }
 	float y() const { return m_y; }
+
+	Vector2 operator*(float scalar) {
+		return Vector2{ m_x * scalar, m_y * scalar };
+	}
+
+	Vector2 operator+=(const Vector2 other) {
+		m_x += other.m_x;
+		m_y += other.m_y;
+		return *this;
+	}
 };
 
 

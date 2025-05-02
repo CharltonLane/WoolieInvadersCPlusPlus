@@ -14,10 +14,11 @@ public:
 		: m_player{ renderer, Vector2Int{10, 10}, "images/player/playerDown.png" }
 		, m_enemy{ renderer, Vector2Int{8, 10}, "images/enemy/enemyRight.png" }
 	{
-
+		m_player.SetPlayer(true);
 	}
 
-	void Update();
+	void HandleInput(const SDL_Event* event);
+	void Update(const double dt);
 	void Render(SDL_Renderer* renderer) const;
 };
 

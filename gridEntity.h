@@ -19,10 +19,16 @@ private:
 	FacingDirection _facingDirection{ FacingDirection::North };
 	Sprite m_sprite{};
 
+	Vector2 m_worldPosition; // Actual position in world space. World/Screen/Pixel space are all the same currently.
+
 	Vector2Int m_currentGridPosition{};
 	Vector2Int m_targetGridPosition{};
 
-	float m_movementSpeed{ 1 }; // Tiles per second.
+	bool m_isPlayer{ false }; // TODO: Replace with inheritance.
+
+	Vector2Int m_desiredMovement{};
+
+	float m_movementSpeed{ 10 }; // Tiles per second.
 
 public:
 	GridEntity() = default;
@@ -31,24 +37,20 @@ public:
 		: m_currentGridPosition{ gridPosition }
 		, m_targetGridPosition{ gridPosition }
 		, m_sprite{ Sprite{ renderer, spriteFilePath } }
-	{}
-
-	void Update() {
-		m_sprite.SetPosition(m_currentGridPosition);
+	{
+		m_worldPosition = gridPosition;
 	}
+
+	void HandleInput(const SDL_Event* event);
+	void Update(const double dt);
 
 	void Render(SDL_Renderer* renderer) const;
 
-	bool MoveInDirection(Vector2Int direction) {
-		// If we are stopped on a tile, we can try to move in the given direction.
-		// Return true if we successfully start moving, false if blocked or already moving.
+	bool MoveInDirection(Vector2Int direction);
+	void UpdateWorldPosition(const double dt);
 
-		// If we're already moving, abort.
-
-
-		// TODO: If there is a solid wall in that direction, abort.
-
-
+	void SetPlayer(bool isPlayer) {
+		m_isPlayer = isPlayer;
 	}
 };
 

@@ -27,3 +27,10 @@ void Sprite::SetScreenPosition(Vector2 position)
 	m_rect.x = position.x();
 	m_rect.y = position.y();
 }
+
+Vector2 Sprite::GetImageSize() const {
+	float width{ 0 };
+	float height{ 0 };
+	SDL_GetTextureSize(m_texture, &width, &height);
+	return Vector2{ width, height };
+}

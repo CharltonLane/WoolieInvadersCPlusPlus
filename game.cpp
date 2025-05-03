@@ -1,4 +1,7 @@
+#include <SDL3/SDL.h>
 #include "game.h"
+#include "timer.h"
+#include "spaceConversion.h"
 
 void Game::HandleInput(const SDL_Event* event)
 {
@@ -6,11 +9,20 @@ void Game::HandleInput(const SDL_Event* event)
 }
 
 void Game::Update(const float dt) {
+	m_roundTimer.Tick(dt);
+
 	m_player.Update(dt);
 }
 
 void Game::Render(SDL_Renderer* renderer) const {
-	m_player.Render(renderer);
+	// Draw the shop.
+	m_shopBackground.Render(renderer);
 
+	// Render entities.
+	m_player.Render(renderer);
 	m_enemy.Render(renderer);
+
+	// Render HUD
+	m_hudBackground.Render(renderer);
+	SDL_RenderDebugText(renderer, 118, ((SpaceConversion::g_gamePixelHeight) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())).c_str());
 }

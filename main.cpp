@@ -23,8 +23,6 @@ struct AppState {
 	SDL_Window* window{ nullptr };
 	SDL_Renderer* renderer{ nullptr };
 
-	Sprite shopBackground{};
-
 	Game game{};
 };
 
@@ -39,13 +37,11 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 
 	/* Create the window */
 	// Use SDL_WINDOW_FULLSCREEN for fullscreen.
-	if (!SDL_CreateWindowAndRenderer("Hello World", 800, 600, 0, &state.window, &state.renderer)) {
+	if (!SDL_CreateWindowAndRenderer("Woolie Invaders (C++ Edition!)", 800, 600, 0, &state.window, &state.renderer)) {
 		SDL_Log("Couldn't create window and renderer: %s", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}
 
-	// Create a cheeky sprite.
-	state.shopBackground = Sprite{ state.renderer, "images/world/shop.png" };
 	state.game = Game{ state.renderer };
 
 	return SDL_APP_CONTINUE;
@@ -104,8 +100,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	//SDL_RenderDebugText(state.renderer, x, y, message);
 
 
-	// Draw our super cool sprite.
-	state.shopBackground.Render(state.renderer);
+
 	state.game.Update(deltaTime);
 	state.game.Render(state.renderer);
 

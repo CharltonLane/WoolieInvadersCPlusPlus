@@ -54,3 +54,5 @@ bld/
 /External
 /SDL
 /images/world/tiles
+*.vcxproj.filters
+*.vcxproj.user

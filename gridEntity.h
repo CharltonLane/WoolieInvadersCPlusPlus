@@ -24,11 +24,11 @@ private:
 	Vector2Int m_currentGridPosition{};
 	Vector2Int m_targetGridPosition{};
 
-	bool m_isPlayer{ false }; // TODO: Replace with inheritance.
-
-	Vector2Int m_desiredMovement{};
 
 	float m_movementSpeed{ 10 }; // Tiles per second.
+
+protected:
+	Vector2Int m_desiredMovement{};
 
 public:
 	GridEntity() = default;
@@ -41,17 +41,13 @@ public:
 		m_worldPosition = gridPosition;
 	}
 
-	void HandleInput(const SDL_Event* event);
 	void Update(const float dt);
 
 	void Render(SDL_Renderer* renderer) const;
 
+	virtual void CalculateDesiredDirection();
 	bool MoveInDirection(Vector2Int direction);
 	void UpdateWorldPosition(const float dt);
-
-	void SetPlayer(bool isPlayer) {
-		m_isPlayer = isPlayer;
-	}
 };
 
 

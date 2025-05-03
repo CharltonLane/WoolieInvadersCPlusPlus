@@ -4,12 +4,14 @@
 #include <vector>
 #include "timer.h"
 #include "spaceConversion.h"
+#include "player.h"
+#include "enemy.h"
 
 class Game {
 private:
 	// Entities.
-	GridEntity m_player{};
-	std::vector<GridEntity> m_enemies;
+	Player m_player{};
+	std::vector<Enemy> m_enemies;
 
 	// Sprites.
 	Sprite m_shopBackground{};
@@ -34,10 +36,7 @@ public:
 		, m_hudBackground{ renderer, "images/hud/hudBG.png" }
 		, m_enemies(6)
 	{
-		m_player.SetPlayer(true);
 		m_hudBackground.SetScreenPosition(Vector2{ 0, SpaceConversion::g_gamePixelHeight - m_hudBackground.GetImageSize().y() });
-
-
 	}
 
 	void HandleInput(const SDL_Event* event);

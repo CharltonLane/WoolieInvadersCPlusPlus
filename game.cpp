@@ -36,7 +36,7 @@ void Game::Render(SDL_Renderer* renderer) const {
 		m_enemies[i].Render(renderer);
 	}
 
-	// Render HUD
+	// Render HUD.
 	m_hudBackground.Render(renderer);
 	SDL_RenderDebugText(renderer, 118, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())).c_str());
 }
@@ -50,7 +50,7 @@ void Game::SpawnNextWave()
 	{
 		int x = Random::get(0, 10);
 		int y = Random::get(0, 10);
-		m_enemies[i] = GridEntity{ m_renderer, Vector2Int{x, y}, "images/enemy/enemyDown.png" };
+		m_enemies[i] = Enemy{ m_renderer, Vector2Int{x, y}, "images/enemy/enemyDown.png" };
 	}
 
 	m_enemiesAlive = true;

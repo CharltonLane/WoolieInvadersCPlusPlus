@@ -84,7 +84,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	NOW = SDL_GetPerformanceCounter();
 
 	deltaTime = (float)((NOW - LAST) / (float)SDL_GetPerformanceFrequency());
-	std::cout << "FPS: " << 1/deltaTime << "\n";
+	//std::cout << "FPS: " << 1/deltaTime << "\n";
 
 	const char* message = "Hello World!";
 	int w = 0, h = 0;

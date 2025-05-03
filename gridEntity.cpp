@@ -53,7 +53,7 @@ void GridEntity::Update(const float dt) {
 	MoveInDirection(m_desiredMovement);
 	UpdateWorldPosition(dt);
 
-	m_sprite.SetPosition(m_worldPosition);
+	m_sprite.SetWorldPosition(m_worldPosition);
 }
 
 void GridEntity::UpdateWorldPosition(const float dt) {

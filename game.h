@@ -11,7 +11,7 @@ public:
 	Game() = default;
 
 	Game(SDL_Renderer* renderer)
-		: m_player{ renderer, Vector2Int{10, 10}, "images/player/playerDown.png" }
+		: m_player{ renderer, Vector2Int{4, 4}, "images/player/playerDown.png" }
 		, m_enemy{ renderer, Vector2Int{8, 10}, "images/enemy/enemyRight.png" }
 	{
 		m_player.SetPlayer(true);

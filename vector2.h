@@ -54,8 +54,12 @@ public:
 	float x() const { return m_x; }
 	float y() const { return m_y; }
 
-	Vector2 operator*(float scalar) {
+	Vector2 operator*(const float scalar) const {
 		return Vector2{ m_x * scalar, m_y * scalar };
+	}
+
+	Vector2 operator/(const float scalar) const {
+		return Vector2{ m_x / scalar, m_y / scalar };
 	}
 
 	Vector2 operator+=(const Vector2 other) {

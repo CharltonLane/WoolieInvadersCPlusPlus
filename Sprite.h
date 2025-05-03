@@ -47,6 +47,7 @@ public:
 
 	void Render(SDL_Renderer* renderer) const;
 
-	void SetPosition(Vector2 position);
+	void SetWorldPosition(Vector2 worldPosition);
+	void SetScreenPosition(Vector2 position);
 };
 

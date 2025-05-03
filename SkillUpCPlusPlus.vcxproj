@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="game.h" />
     <ClInclude Include="gridEntity.h" />
+    <ClInclude Include="spaceConversion.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="vector2.h" />
   </ItemGroup>

@@ -29,7 +29,7 @@ struct AppState {
 
 /* This function runs once at startup. */
 // https://wiki.libsdl.org/SDL3/README/main-functions
-SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
+SDL_AppResult SDL_AppInit(void** appstate, [[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
 	*appstate = new AppState;
 	AppState& state = *static_cast<AppState*>(*appstate);
@@ -113,7 +113,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 }
 
 /* This function runs once at shutdown. */
-void SDL_AppQuit(void* appstate, SDL_AppResult result)
+void SDL_AppQuit([[maybe_unused]] void* appstate, [[maybe_unused]] SDL_AppResult result)
 {
 }
 

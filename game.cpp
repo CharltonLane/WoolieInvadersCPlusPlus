@@ -50,7 +50,7 @@ void Game::SpawnNextWave()
 	{
 		int x = Random::get(0, 10);
 		int y = Random::get(0, 10);
-		m_enemies[i] = Enemy{ m_renderer, Vector2Int{x, y}, "images/enemy/enemyDown.png" };
+		m_enemies[i] = Enemy{ m_renderer, Vector2Int{x, y} };
 	}
 
 	m_enemiesAlive = true;

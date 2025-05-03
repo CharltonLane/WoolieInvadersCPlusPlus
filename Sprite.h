@@ -17,7 +17,7 @@ private:
 public:
 
 	Sprite(SDL_Renderer* renderer, const std::string& fileName)
-		: m_texture{ loadImage(renderer, fileName) }
+		: m_texture{ LoadImage(renderer, fileName) }
 		, m_rect{}
 	{
 		m_rect.x = 0; //the x coordinate
@@ -33,12 +33,13 @@ public:
 		, m_rect{}
 	{}
 
-	SDL_Texture* loadImage(SDL_Renderer* renderer, const std::string& fileName);
+	static SDL_Texture* LoadImage(SDL_Renderer* renderer, const std::string& fileName);
 
 	void Render(SDL_Renderer* renderer) const;
 
 	void SetWorldPosition(Vector2 worldPosition);
 	void SetScreenPosition(Vector2 position);
+	void SetTexture(SDL_Texture* texture);
 
 	Vector2 GetImageSize() const;
 };

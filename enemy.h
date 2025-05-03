@@ -6,8 +6,10 @@ class Enemy : public GridEntity
 public:
 	Enemy() = default;
 
-	Enemy(SDL_Renderer* renderer, Vector2Int gridPosition, const std::string& spriteFilePath)
-		: GridEntity{ renderer, gridPosition, spriteFilePath }
-	{}
+	Enemy(SDL_Renderer* renderer, Vector2Int gridPosition)
+		: GridEntity{ renderer, gridPosition }
+	{
+		m_sprite = Sprite{ renderer, "images/enemy/enemyDown.png" };
+	}
 };
 

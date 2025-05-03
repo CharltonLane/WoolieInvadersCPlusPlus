@@ -8,16 +8,7 @@ class GridEntity
 {
 	// This is an entity such as the player or an enemy that is locked to the grid for movement.
 
-	enum class FacingDirection {
-		North,
-		East,
-		South,
-		West
-	};
-
 private:
-	FacingDirection _facingDirection{ FacingDirection::North };
-	Sprite m_sprite{};
 
 	Vector2 m_worldPosition; // Actual position in world space. Can be between grid cells.
 
@@ -29,22 +20,34 @@ private:
 	float m_movementSpeed{ 4 }; // Tiles per second.
 
 protected:
+
+	enum class FacingDirection {
+		North,
+		East,
+		South,
+		West
+	};
+
+	FacingDirection m_facingDirection{ FacingDirection::North };
+	Sprite m_sprite{};
 	Vector2Int m_desiredMovement{};
 
 public:
 	GridEntity() = default;
 
-	GridEntity(SDL_Renderer* renderer, Vector2Int gridPosition, const std::string& spriteFilePath)
+	GridEntity([[maybe_unused]] SDL_Renderer* renderer, Vector2Int gridPosition)
 		: m_currentGridCell{ gridPosition }
 		, m_targetGridCell{ gridPosition }
-		, m_sprite{ Sprite{ renderer, spriteFilePath } }
+		, m_sprite{ Sprite{  } }
 	{
 		m_worldPosition = gridPosition;
 	}
 
-	void Update(const float dt);
+	virtual void Update(const float dt);
 
-	void Render(SDL_Renderer* renderer) const;
+	void CalculateFacingDirection();
+
+	virtual void Render(SDL_Renderer* renderer) const;
 
 	virtual void CalculateDesiredDirection();
 	bool MoveInDirection(const float dt);

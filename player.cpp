@@ -47,7 +47,37 @@ void Player::HandleInput(const SDL_Event* event) {
 
 }
 
- void Player::CalculateDesiredDirection() {
+void Player::Update(float dt) {
+	GridEntity::Update(dt);
+
+	switch (m_facingDirection)
+	{
+	case GridEntity::FacingDirection::North:
+		m_sprite.SetTexture(m_northTexture);
+		break;
+	case GridEntity::FacingDirection::East:
+		m_sprite.SetTexture(m_eastTexture);
+		break;
+	case GridEntity::FacingDirection::South:
+		m_sprite.SetTexture(m_southTexture);
+		break;
+	case GridEntity::FacingDirection::West:
+		m_sprite.SetTexture(m_westTexture);
+		break;
+	default:
+		break;
+	}
+}
+
+
+void Player::Render(SDL_Renderer* renderer) const
+{
+	m_sprite.Render(renderer);
+}
+
+
+
+void Player::CalculateDesiredDirection() {
 
 	int x = 0;
 	int y = 0;

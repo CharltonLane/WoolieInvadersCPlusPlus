@@ -31,7 +31,7 @@ public:
 
 	Game(SDL_Renderer* renderer)
 		: m_renderer{ renderer }
-		, m_player{ renderer, Vector2Int{4, 4}, "images/player/playerDown.png" }
+		, m_player{ renderer, Vector2Int{4, 4}}
 		, m_shopBackground{ renderer, "images/world/shop.png" }
 		, m_hudBackground{ renderer, "images/hud/hudBG.png" }
 		, m_enemies(6)

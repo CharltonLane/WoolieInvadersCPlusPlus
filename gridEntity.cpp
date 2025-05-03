@@ -6,18 +6,38 @@
 void GridEntity::Update(const float dt) {
 	
 	CalculateDesiredDirection();
+
+	CalculateFacingDirection();
+
 	MoveInDirection(dt);
 	UpdateWorldPosition(dt);
 
 	m_sprite.SetWorldPosition(m_worldPosition);
 }
 
+void GridEntity::CalculateFacingDirection()
+{
+	if (m_currentMovementDirection.x() < 0) {
+		m_facingDirection = FacingDirection::West;
+	}
+	else if (m_currentMovementDirection.x() > 0) {
+		m_facingDirection = FacingDirection::East;
+	}
+	else if (m_currentMovementDirection.y() < 0) {
+		m_facingDirection = FacingDirection::North;
+	}
+	else if (m_currentMovementDirection.y() > 0) {
+		m_facingDirection = FacingDirection::South;
+	}// Else we leave it as it is.
+	//std::cout << "Facing: " << static_cast<int>(m_facingDirection) << "\n";
+}
+
 void GridEntity::UpdateWorldPosition(const float dt) {
 	if (m_targetGridCell != m_currentGridCell) {
 
 		Vector2 delta = (Vector2{ m_desiredMovement }) * (m_movementSpeed * static_cast<float>(dt));
-		std::cout << "Starting with : (" << m_worldPosition.x() << ", " << m_worldPosition.y() << ")\n";
-		std::cout << "Movement this frame: " << delta.x() << ", " << delta.y() << "\n";
+		//std::cout << "Starting with : (" << m_worldPosition.x() << ", " << m_worldPosition.y() << ")\n";
+		//std::cout << "Movement this frame: " << delta.x() << ", " << delta.y() << "\n";
 		m_worldPosition += delta;
 	}
 	//m_currentGridPosition = m_targetGridPosition;
@@ -30,7 +50,7 @@ void GridEntity::Render(SDL_Renderer* renderer) const {
 
 void GridEntity::CalculateDesiredDirection(){}
 
-inline bool GridEntity::MoveInDirection(const float dt) {
+bool GridEntity::MoveInDirection(const float dt) {
 	// If we are stopped on a tile, we can try to move in the given direction.
 	// Return true if we successfully start moving, false if blocked or already moving.
 

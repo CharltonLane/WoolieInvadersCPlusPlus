@@ -19,13 +19,14 @@ private:
 	FacingDirection _facingDirection{ FacingDirection::North };
 	Sprite m_sprite{};
 
-	Vector2 m_worldPosition; // Actual position in world space. World/Screen/Pixel space are all the same currently.
+	Vector2 m_worldPosition; // Actual position in world space. Can be between grid cells.
 
-	Vector2Int m_currentGridPosition{};
-	Vector2Int m_targetGridPosition{};
+	Vector2Int m_currentMovementDirection{};
+	Vector2Int m_currentGridCell{}; // In world space.
+	Vector2Int m_targetGridCell{}; // In world space.
 
 
-	float m_movementSpeed{ 10 }; // Tiles per second.
+	float m_movementSpeed{ 4 }; // Tiles per second.
 
 protected:
 	Vector2Int m_desiredMovement{};
@@ -34,8 +35,8 @@ public:
 	GridEntity() = default;
 
 	GridEntity(SDL_Renderer* renderer, Vector2Int gridPosition, const std::string& spriteFilePath)
-		: m_currentGridPosition{ gridPosition }
-		, m_targetGridPosition{ gridPosition }
+		: m_currentGridCell{ gridPosition }
+		, m_targetGridCell{ gridPosition }
 		, m_sprite{ Sprite{ renderer, spriteFilePath } }
 	{
 		m_worldPosition = gridPosition;
@@ -46,7 +47,7 @@ public:
 	void Render(SDL_Renderer* renderer) const;
 
 	virtual void CalculateDesiredDirection();
-	bool MoveInDirection(Vector2Int direction);
+	bool MoveInDirection(const float dt);
 	void UpdateWorldPosition(const float dt);
 };
 

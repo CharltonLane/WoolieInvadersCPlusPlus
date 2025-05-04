@@ -14,12 +14,11 @@ void Game::Update(const float dt) {
 
 	m_player.Update(dt);
 
-	for (size_t i = 0; i < m_enemies.size(); i++)
+	for (auto enemyPointer : m_enemies)
 	{
-		if (m_enemies[i]) {
-			m_enemies[i]->Update(dt);
+		if (enemyPointer) {
+			enemyPointer->Update(dt);
 		}
-		
 	}
 
 	if (!AreEnemiesAlive()) {
@@ -34,10 +33,10 @@ void Game::Render(SDL_Renderer* renderer) const {
 	// Render entities.
 	m_player.Render(renderer);
 
-	for (size_t i = 0; i < m_enemies.size(); i++)
+	for (auto enemyPointer : m_enemies)
 	{
-		if (m_enemies[i]) {
-			m_enemies[i]->Render(renderer);
+		if (enemyPointer) {
+			enemyPointer->Render(renderer);
 		}
 	}
 

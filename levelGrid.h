@@ -42,12 +42,13 @@ private:
 		m_solidTiles = std::vector<Vector2Int>(m_solidTileIndices.size());
 		m_spawnPointTiles = std::vector<Vector2Int>(m_spawnpointIndices.size());
 
-		for (int index{ 0 }; index < m_solidTileIndices.size(); index++)
+		for (int index{ 0 }; index < std::ssize(m_solidTileIndices); index++)
 		{
-			int value = m_solidTileIndices[index];
+			std::size_t unsignedIndex = static_cast<std::size_t>(index);
+			int value = m_solidTileIndices[unsignedIndex];
 			int x = (value % m_levelWidth);
 			int y = value / m_levelWidth; // intentional int devision.
-			m_solidTiles[index] = Vector2Int{ x, y };
+			m_solidTiles[unsignedIndex] = Vector2Int{ x, y };
 		}
 	}
 

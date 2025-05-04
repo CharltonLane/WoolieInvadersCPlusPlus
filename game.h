@@ -47,12 +47,12 @@ public:
 	void Render(SDL_Renderer* renderer) const;
 
 	bool AreEnemiesAlive() const {
-		for (size_t i = 0; i < m_enemies.size(); i++)
-		{
-			if (m_enemies[i]) { 
+		for (auto enemyPointer : m_enemies) {
+			if (enemyPointer) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 	void SpawnNextWave();

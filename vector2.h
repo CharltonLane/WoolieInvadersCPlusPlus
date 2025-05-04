@@ -23,7 +23,7 @@ public:
 	int y() const { return m_y; }
 	void SetY(int y) { m_y = y; }
 
-	Vector2Int operator+=(const Vector2Int other) {
+	Vector2Int operator+(const Vector2Int other) {
 		return { m_x + other.m_x, m_y + other.m_y };
 	}
 
@@ -31,10 +31,13 @@ public:
 		return m_x != other.m_x || m_y != other.m_y;
 	}
 
-	Vector2Int operator+(const Vector2Int other) {
+	bool operator==(const Vector2Int other) {
+		return m_x == other.m_x && m_y == other.m_y;
+	}
+
+	Vector2Int operator+=(const Vector2Int other) {
 		m_x += other.m_x;
 		m_y += other.m_y;
-		return *this;
 	}
 
 };

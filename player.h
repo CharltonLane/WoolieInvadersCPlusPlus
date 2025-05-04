@@ -27,6 +27,8 @@ private:
 	bool m_isSouthInput{ false };
 	bool m_isWestInput{ false };
 
+	bool m_isAttackInputTrigger{ false };
+
 	// Sprites.
 	SDL_Texture* m_northTexture{nullptr};
 	SDL_Texture* m_eastTexture{ nullptr };
@@ -36,14 +38,16 @@ private:
 public:
 	Player() = default;
 
-	Player(SDL_Renderer* renderer, Vector2Int gridPosition)
-		: GridEntity{ renderer, gridPosition }
+	Player(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
+		: GridEntity{ renderer, level, gridPosition }
 	{
 		// Load player textures.
 		m_northTexture = Sprite::LoadImage(renderer, "images/player/playerNorth.png");
 		m_eastTexture = Sprite::LoadImage(renderer, "images/player/playerEast.png");
 		m_southTexture = Sprite::LoadImage(renderer, "images/player/playerSouth.png");
 		m_westTexture = Sprite::LoadImage(renderer, "images/player/playerWest.png");
+
+
 
 		m_sprite.SetTexture(m_northTexture);
 	}

@@ -162,8 +162,10 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gridEntity.cpp" />
+    <ClCompile Include="levelGrid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="projectile.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="vector2.cpp" />
@@ -172,7 +174,9 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gridEntity.h" />
+    <ClInclude Include="levelGrid.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="projectile.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="spaceConversion.h" />
     <ClInclude Include="sprite.h" />

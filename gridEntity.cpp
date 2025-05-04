@@ -4,13 +4,13 @@
 
 
 void GridEntity::Update(const float dt) {
-	
+
 	CalculateDesiredDirection();
 
 	CalculateFacingDirection();
 
 	MoveInDirection(dt);
-	UpdateWorldPosition(dt);
+	//UpdateWorldPosition(dt);
 
 	m_sprite.SetWorldPosition(m_worldPosition);
 }
@@ -41,35 +41,52 @@ void GridEntity::UpdateWorldPosition(const float dt) {
 		m_worldPosition += delta;
 	}
 	//m_currentGridPosition = m_targetGridPosition;
-	
+
 }
 
 void GridEntity::Render(SDL_Renderer* renderer) const {
 	m_sprite.Render(renderer);
 }
 
-void GridEntity::CalculateDesiredDirection(){}
+void GridEntity::CalculateDesiredDirection() {}
+
+bool GridEntity::IsDirectionWalkable(Vector2Int direction) {
+	// Take the current position and direction to find the target cell.
+	Vector2Int targetCell = m_currentGridCell + direction;
+
+	// Check if the target cell is solid or not.
+	// Return true if not solid (i.e. the cell is walkable).
+	return !m_level->IsTileSolid(targetCell);
+}
 
 bool GridEntity::MoveInDirection(const float dt) {
 	// If we are stopped on a tile, we can try to move in the given direction.
 	// Return true if we successfully start moving, false if blocked or already moving.
 
-	
+
 	// See if we want to start moving.
-	// TODO: Overload == on Vector2Int!
-	if (!(m_currentMovementDirection != Vector2Int::zero) && m_desiredMovement != Vector2Int::zero) {
+	if ((m_currentMovementDirection == Vector2Int::zero) && (m_desiredMovement != Vector2Int::zero) && (m_targetGridCell == m_currentGridCell)) {
+		//std::cout << "Looking to move from " << m_currentGridCell.x() << ", " << m_currentGridCell.y() << " with direction " << m_desiredMovement.x() << ", " << m_desiredMovement.y() << " \n";
 		// If both x and y are held, favour X. No particular reason, just need to choose one.
+		Vector2Int cleanDesiredMovement{};
 		if (m_desiredMovement.x() != 0 && m_desiredMovement.y() != 0) {
-			m_currentMovementDirection = Vector2Int(m_desiredMovement.x(), 0);
+			cleanDesiredMovement = Vector2Int(m_desiredMovement.x(), 0);
 		}
 		else {
-			m_currentMovementDirection = m_desiredMovement;
+			cleanDesiredMovement = m_desiredMovement;
 		}
-		m_targetGridCell = m_currentGridCell + m_currentMovementDirection;
+		if (IsDirectionWalkable(cleanDesiredMovement)) {
+			m_targetGridCell = m_currentGridCell + cleanDesiredMovement;
+			m_currentMovementDirection = cleanDesiredMovement;
+			//std::cout << "Direction is walkable, so moving from " << m_currentGridCell.x() << ", " << m_currentGridCell.y() << " to " << m_targetGridCell.x() << ", " << m_targetGridCell.y() << " \n";
+		}
+		//else {
+		//	std::cout << "Not walkable, ignoring direction " << m_desiredMovement.x() << ", " << m_desiredMovement.y() << " \n";
+		//}
 	}
-	
+
 	// If we're already moving continue movement.
-	if (m_currentMovementDirection != Vector2Int::zero) {
+	if ((m_currentMovementDirection != Vector2Int::zero)) {
 		// Continue moving towards target position.
 		if (m_currentMovementDirection.x() > 0) {
 			float newX = m_worldPosition.x() + m_currentMovementDirection.x() * m_movementSpeed * dt;
@@ -77,6 +94,7 @@ bool GridEntity::MoveInDirection(const float dt) {
 				// We've made it.
 				m_worldPosition.SetX(static_cast<float>(m_targetGridCell.x()));
 				m_currentMovementDirection = Vector2Int::zero;
+				m_currentGridCell = m_targetGridCell;
 			}
 			else {
 				// Keep moving!
@@ -84,12 +102,14 @@ bool GridEntity::MoveInDirection(const float dt) {
 			}
 			return true;
 
-		}else if (m_currentMovementDirection.x() < 0) {
+		}
+		else if (m_currentMovementDirection.x() < 0) {
 			float newX = m_worldPosition.x() + m_currentMovementDirection.x() * m_movementSpeed * dt;
 			if (newX < m_targetGridCell.x()) {
 				// We've made it.
 				m_worldPosition.SetX(static_cast<float>(m_targetGridCell.x()));
 				m_currentMovementDirection = Vector2Int::zero;
+				m_currentGridCell = m_targetGridCell;
 			}
 			else {
 				// Keep moving!
@@ -104,6 +124,7 @@ bool GridEntity::MoveInDirection(const float dt) {
 				// We've made it.
 				m_worldPosition.SetY(static_cast<float>(m_targetGridCell.y()));
 				m_currentMovementDirection = Vector2Int::zero;
+				m_currentGridCell = m_targetGridCell;
 			}
 			else {
 				// Keep moving!
@@ -117,6 +138,7 @@ bool GridEntity::MoveInDirection(const float dt) {
 				// We've made it.
 				m_worldPosition.SetY(static_cast<float>(m_targetGridCell.y()));
 				m_currentMovementDirection = Vector2Int::zero;
+				m_currentGridCell = m_targetGridCell;
 			}
 			else {
 				// Keep moving!
@@ -125,7 +147,7 @@ bool GridEntity::MoveInDirection(const float dt) {
 			return true;
 		}
 	}
-	
+
 
 	return true;
 }

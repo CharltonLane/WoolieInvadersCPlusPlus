@@ -3,10 +3,15 @@
 
 void Player::HandleInput(const SDL_Event* event) {
 
+
 	if (event->type == SDL_EVENT_KEY_DOWN) {
 		if (event->key.repeat) {
 			// Ignore repeats caused by holding down the key.
 			return;
+		}
+
+		if (event->key.key == SDLK_SPACE) {
+
 		}
 
 		if (event->key.key == SDLK_W) {

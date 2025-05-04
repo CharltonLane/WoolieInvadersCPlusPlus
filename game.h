@@ -6,12 +6,16 @@
 #include "spaceConversion.h"
 #include "player.h"
 #include "enemy.h"
+#include "levelGrid.h"
 
 class Game {
 private:
+	// Level.
+	LevelGrid m_level{};
+
 	// Entities.
 	Player m_player{};
-	std::vector<Enemy> m_enemies;
+	std::vector<Enemy*> m_enemies;
 
 	// Sprites.
 	Sprite m_shopBackground{};
@@ -24,17 +28,16 @@ private:
 	SDL_Renderer* m_renderer{};
 
 	int m_waveNumber{ 0 };
-	bool m_enemiesAlive{ false };
 
 public:
 	Game() = default;
 
 	Game(SDL_Renderer* renderer)
 		: m_renderer{ renderer }
-		, m_player{ renderer, Vector2Int{4, 4}}
+		, m_player{ renderer, &m_level, Vector2Int{4, 4}}
 		, m_shopBackground{ renderer, "images/world/shop.png" }
 		, m_hudBackground{ renderer, "images/hud/hudBG.png" }
-		, m_enemies(6)
+		, m_enemies(6, nullptr)
 	{
 		m_hudBackground.SetScreenPosition(Vector2{ 0, SpaceConversion::g_gamePixelHeight - m_hudBackground.GetImageSize().y() });
 	}
@@ -44,7 +47,13 @@ public:
 	void Render(SDL_Renderer* renderer) const;
 
 	bool AreEnemiesAlive() const {
-		return m_enemiesAlive;
+		for (size_t i = 0; i < m_enemies.size(); i++)
+		{
+			if (m_enemies[i]) { 
+				return true;
+			}
+		}
+		return false;
 	}
 	void SpawnNextWave();
 };

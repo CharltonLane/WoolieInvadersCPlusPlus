@@ -23,7 +23,7 @@ struct AppState {
 	SDL_Window* window{ nullptr };
 	SDL_Renderer* renderer{ nullptr };
 
-	Game game{};
+	Game* game{ nullptr };
 };
 
 
@@ -42,7 +42,7 @@ SDL_AppResult SDL_AppInit(void** appstate, [[maybe_unused]] int argc, [[maybe_un
 		return SDL_APP_FAILURE;
 	}
 
-	state.game = Game{ state.renderer };
+	state.game = new Game{ state.renderer };
 
 	return SDL_APP_CONTINUE;
 }
@@ -59,7 +59,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 	//std::cout << event->type << "\n";
 	if (event->type == SDL_EVENT_KEY_DOWN || event->type == SDL_EVENT_KEY_UP) {
 		//std::cout << "  " << event->key.key << "\n";
-		state.game.HandleInput(event);
+		state.game->HandleInput(event);
 	}
 
 	return SDL_APP_CONTINUE;
@@ -101,8 +101,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
 
 
-	state.game.Update(deltaTime);
-	state.game.Render(state.renderer);
+	state.game->Update(deltaTime);
+	state.game->Render(state.renderer);
 
 	SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1/deltaTime)).c_str());
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "sprite.h"
 #include "vector2.h"
-
+#include "levelGrid.h"
 
 
 class GridEntity
@@ -9,6 +9,8 @@ class GridEntity
 	// This is an entity such as the player or an enemy that is locked to the grid for movement.
 
 private:
+
+	LevelGrid* m_level;
 
 	Vector2 m_worldPosition; // Actual position in world space. Can be between grid cells.
 
@@ -35,11 +37,13 @@ protected:
 public:
 	GridEntity() = default;
 
-	GridEntity([[maybe_unused]] SDL_Renderer* renderer, Vector2Int gridPosition)
-		: m_currentGridCell{ gridPosition }
+	GridEntity([[maybe_unused]] SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
+		: m_level{ level }
+		, m_currentGridCell{ gridPosition }
 		, m_targetGridCell{ gridPosition }
 		, m_sprite{ Sprite{  } }
 	{
+
 		m_worldPosition = gridPosition;
 	}
 
@@ -50,6 +54,7 @@ public:
 	virtual void Render(SDL_Renderer* renderer) const;
 
 	virtual void CalculateDesiredDirection();
+	bool IsDirectionWalkable(Vector2Int direction);
 	bool MoveInDirection(const float dt);
 	void UpdateWorldPosition(const float dt);
 };

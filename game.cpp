@@ -16,10 +16,13 @@ void Game::Update(const float dt) {
 
 	for (size_t i = 0; i < m_enemies.size(); i++)
 	{
-		m_enemies[i].Update(dt);
+		if (m_enemies[i]) {
+			m_enemies[i]->Update(dt);
+		}
+		
 	}
 
-	if (!m_enemiesAlive) {
+	if (!AreEnemiesAlive()) {
 		SpawnNextWave();
 	}
 }
@@ -33,7 +36,9 @@ void Game::Render(SDL_Renderer* renderer) const {
 
 	for (size_t i = 0; i < m_enemies.size(); i++)
 	{
-		m_enemies[i].Render(renderer);
+		if (m_enemies[i]) {
+			m_enemies[i]->Render(renderer);
+		}
 	}
 
 	// Render HUD.
@@ -44,15 +49,12 @@ void Game::Render(SDL_Renderer* renderer) const {
 void Game::SpawnNextWave()
 {
 	m_waveNumber++;
-	int enemiesToSpawn = 2;
+	int enemiesToSpawn = 5;
 
 	for (int i = 0; i < enemiesToSpawn; i++)
 	{
 		int x = Random::get(0, 10);
 		int y = Random::get(0, 10);
-		m_enemies[i] = Enemy{ m_renderer, Vector2Int{x, y} };
+		m_enemies[i] = new Enemy{ m_renderer, &m_level, Vector2Int{x, y} };
 	}
-
-	m_enemiesAlive = true;
-
 }

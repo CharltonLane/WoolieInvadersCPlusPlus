@@ -1,7 +1,9 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <vector>
 #include "gridEntity.h"
 #include "timer.h"
+#include "projectile.h"
 
 class Player : public GridEntity
 {
@@ -18,6 +20,7 @@ private:
 
 	int m_ammo{ m_maxAmmo };
 	Timer m_ammoRegenTimer{ 1.5f }; // 1.5 seconds to regen 1 ammo.
+	std::vector<Projectile*> m_projectiles;
 
 	// Player invincibility after being hit.
 	Timer m_invincibilityTimer{ 3 }; // 3 seconds of invincibility after taking damage.
@@ -30,16 +33,20 @@ private:
 	bool m_isAttackInputTrigger{ false };
 
 	// Sprites.
-	SDL_Texture* m_northTexture{nullptr};
+	SDL_Texture* m_northTexture{ nullptr };
 	SDL_Texture* m_eastTexture{ nullptr };
 	SDL_Texture* m_southTexture{ nullptr };
 	SDL_Texture* m_westTexture{ nullptr };
+
+	Projectile* CreateProjectile();
+	void TrackProjectile(Projectile* newProjectile);
 
 public:
 	Player() = default;
 
 	Player(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
 		: GridEntity{ renderer, level, gridPosition }
+		, m_projectiles(10)
 	{
 		// Load player textures.
 		m_northTexture = Sprite::LoadImage(renderer, "images/player/playerNorth.png");
@@ -47,12 +54,11 @@ public:
 		m_southTexture = Sprite::LoadImage(renderer, "images/player/playerSouth.png");
 		m_westTexture = Sprite::LoadImage(renderer, "images/player/playerWest.png");
 
-
-
 		m_sprite.SetTexture(m_northTexture);
 	}
 
 	void CalculateDesiredDirection() override;
+	
 	void HandleInput(const SDL_Event* event);
 	void Render(SDL_Renderer* renderer) const override;
 	void Update(float dt) override;

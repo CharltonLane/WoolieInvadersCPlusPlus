@@ -11,7 +11,7 @@ void Player::HandleInput(const SDL_Event* event) {
 		}
 
 		if (event->key.key == SDLK_SPACE) {
-
+			m_isAttackInputTrigger = true;
 		}
 
 		if (event->key.key == SDLK_W) {
@@ -52,6 +52,34 @@ void Player::HandleInput(const SDL_Event* event) {
 
 }
 
+void Player::TrackProjectile(Projectile* newProjectile) {
+	// Dynamically create a new projectile object.
+
+	bool foundSpace = false;
+	for (auto& existingProjectile : m_projectiles)
+	{
+		if (existingProjectile) {
+			continue;
+		}
+		// Found an empty space in the vector. Add new projectile here.
+		foundSpace = true;
+
+		existingProjectile = newProjectile;
+		break;
+	}
+	if (!foundSpace) {
+		m_projectiles.resize(m_projectiles.size() + 1);
+		// Insert projectile at the new index.
+		m_projectiles[m_projectiles.size() - 1] = newProjectile;
+	}
+}
+
+Projectile* Player::CreateProjectile() {
+	// Dynamically create a new projectile object.
+	return new Projectile(m_renderer, m_level, GetCurrentGridCell(), m_worldPosition, m_facingDirection);
+}
+
+
 void Player::Update(float dt) {
 	GridEntity::Update(dt);
 
@@ -72,12 +100,35 @@ void Player::Update(float dt) {
 	default:
 		break;
 	}
+
+	if (m_isAttackInputTrigger) {
+		std::cout << "Shot projectile!" << "\n";
+		m_isAttackInputTrigger = false;
+		TrackProjectile(CreateProjectile());
+	}
+
+	// Update projectiles.
+	for (auto& projectile : m_projectiles)
+	{
+		if (projectile) {
+			projectile->Update(dt);
+		}
+	}
 }
 
 
 void Player::Render(SDL_Renderer* renderer) const
 {
 	m_sprite.Render(renderer);
+
+	// Update projectiles.
+	for (auto& projectile : m_projectiles)
+	{
+		if (projectile) {
+			std::cout << "rendering projectile\n";
+			projectile->Render(renderer);
+		}
+	}
 }
 
 

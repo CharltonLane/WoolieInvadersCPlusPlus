@@ -10,6 +10,8 @@ public:
 		: GridEntity{ renderer, level, gridPosition }
 	{
 		m_sprite = Sprite{ renderer, "images/enemy/enemyDown.png" };
+
+		m_movementSpeed = 3;
 	}
 
 	void CalculateDesiredDirection() override;

@@ -14,6 +14,8 @@ private:
 	SDL_Texture* m_texture;
 	SDL_FRect m_rect;
 
+	float m_rotationDegrees; // Degrees, clockwise.
+
 public:
 
 	Sprite(SDL_Renderer* renderer, const std::string& fileName)
@@ -40,7 +42,10 @@ public:
 	void SetWorldPosition(Vector2 worldPosition);
 	void SetScreenPosition(Vector2 position);
 	void SetTexture(SDL_Texture* texture);
+	void SetImageSize(Vector2 newSize);
+	void SetRotation(float degrees);
 
+	float GetRotation() const;
 	Vector2 GetImageSize() const;
 };
 

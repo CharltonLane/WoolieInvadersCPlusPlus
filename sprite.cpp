@@ -15,7 +15,16 @@ SDL_Texture* Sprite::LoadImage(SDL_Renderer* renderer, const std::string& fileNa
 }
 
 void Sprite::Render(SDL_Renderer* renderer) const {
-	SDL_RenderTexture(renderer, m_texture, NULL, &m_rect);
+	if (m_rotationDegrees == 0) {
+		SDL_RenderTexture(renderer, m_texture, NULL, &m_rect);
+	}
+	else {
+		SDL_FPoint center{};
+		center.x = m_rect.w / 2;
+		center.y = m_rect.h / 2;
+		SDL_RenderTextureRotated(renderer, m_texture, NULL, &m_rect, m_rotationDegrees, &center, SDL_FLIP_NONE);
+	}
+
 }
 
 void Sprite::SetWorldPosition(Vector2 worldPosition)
@@ -39,6 +48,20 @@ void Sprite::SetTexture(SDL_Texture* texture) {
 	Vector2 imageSize = GetImageSize();
 	m_rect.w = imageSize.x(); //the width of the texture
 	m_rect.h = imageSize.y(); //the height of the texture
+}
+
+void Sprite::SetImageSize(Vector2 newSize) {
+	m_rect.w = newSize.x(); //the width of the texture
+	m_rect.h = newSize.y(); //the height of the texture
+}
+
+void Sprite::SetRotation(float degrees) {
+	// TODO: This should be modulo'd to be within 0-360.
+	m_rotationDegrees = degrees;
+}
+
+float Sprite::GetRotation() const {
+	return m_rotationDegrees;
 }
 
 Vector2 Sprite::GetImageSize() const {

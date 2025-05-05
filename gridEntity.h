@@ -10,16 +10,10 @@ class GridEntity
 
 private:
 
-	LevelGrid* m_level;
-
-	Vector2 m_worldPosition; // Actual position in world space. Can be between grid cells.
 
 	Vector2Int m_currentMovementDirection{};
 	Vector2Int m_currentGridCell{}; // In world space.
 	Vector2Int m_targetGridCell{}; // In world space.
-
-
-	float m_movementSpeed{ 4 }; // Tiles per second.
 
 protected:
 
@@ -30,15 +24,23 @@ protected:
 		West
 	};
 
+	SDL_Renderer* m_renderer{ nullptr };
+
+	LevelGrid* m_level;
+
 	FacingDirection m_facingDirection{ FacingDirection::North };
 	Sprite m_sprite{};
 	Vector2Int m_desiredMovement{};
+	float m_movementSpeed{ 4 }; // Tiles per second.
+	Vector2 m_worldPosition; // Actual position in world space. Can be between grid cells.
+
 
 public:
 	GridEntity() = default;
 
 	GridEntity([[maybe_unused]] SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
-		: m_level{ level }
+		:m_renderer{ renderer }
+		, m_level{ level }
 		, m_currentGridCell{ gridPosition }
 		, m_targetGridCell{ gridPosition }
 		, m_sprite{ Sprite{  } }
@@ -47,9 +49,12 @@ public:
 		m_worldPosition = gridPosition;
 	}
 
+	Vector2Int GetCurrentGridCell() const;
+
 	virtual void Update(const float dt);
 
 	void CalculateFacingDirection();
+	Vector2Int CalculateDesiredMovementFromFacingDirection();
 
 	virtual void Render(SDL_Renderer* renderer) const;
 

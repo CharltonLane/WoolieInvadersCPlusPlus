@@ -26,3 +26,7 @@ void Timer::Unpause() {
 bool Timer::HasTimerLapsed() const {
 	return m_remainingSeconds <= 0.0f;
 }
+
+void Timer::Restart() {
+	m_remainingSeconds = m_startingSeconds;
+}

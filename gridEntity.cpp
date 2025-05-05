@@ -2,6 +2,9 @@
 #include <iostream>
 
 
+ Vector2Int GridEntity::GetCurrentGridCell() const {
+	return m_currentGridCell;
+}
 
 void GridEntity::Update(const float dt) {
 
@@ -31,6 +34,24 @@ void GridEntity::CalculateFacingDirection()
 	}// Else we leave it as it is.
 	//std::cout << "Facing: " << static_cast<int>(m_facingDirection) << "\n";
 }
+
+Vector2Int GridEntity::CalculateDesiredMovementFromFacingDirection()
+{
+	switch (m_facingDirection)
+	{
+	case GridEntity::FacingDirection::North:
+		return { 0, -1 };
+	case GridEntity::FacingDirection::East:
+		return { 1, 0 };
+	case GridEntity::FacingDirection::South:
+		return { 0, 1 };
+	case GridEntity::FacingDirection::West:
+		return { -1, 0 };
+	default:
+		break;
+	}
+}
+
 
 void GridEntity::UpdateWorldPosition(const float dt) {
 	if (m_targetGridCell != m_currentGridCell) {

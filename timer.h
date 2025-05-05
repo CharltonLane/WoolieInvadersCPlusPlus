@@ -19,5 +19,6 @@ public:
 	void Pause();
 	void Unpause();
 	bool HasTimerLapsed() const;
+	void Restart();
 };
 

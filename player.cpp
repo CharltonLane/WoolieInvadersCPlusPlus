@@ -156,7 +156,7 @@ void Player::Render(SDL_Renderer* renderer) const
 	for (auto& projectile : m_projectiles)
 	{
 		if (projectile) {
-			std::cout << "rendering projectile\n";
+			//std::cout << "rendering projectile\n";
 			projectile->Render(renderer);
 		}
 	}

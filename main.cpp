@@ -87,6 +87,12 @@ static Uint64 NOW = SDL_GetPerformanceCounter();
 static Uint64 LAST = 0;
 static float deltaTime = 0;
 
+static float deltaTimeSmoothed{ 0 };
+static float deltaTimeAverageSum{ 0 };
+static int deltaTimeAverageFrameCounter{ 0 };
+static int deltaTimeAverageFrameSmoothing{ 600 };
+
+
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
@@ -97,6 +103,15 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	NOW = SDL_GetPerformanceCounter();
 
 	deltaTime = (float)((NOW - LAST) / (float)SDL_GetPerformanceFrequency());
+	deltaTimeAverageSum += deltaTime;
+	deltaTimeAverageFrameCounter++;
+
+	if (deltaTimeAverageFrameCounter >= deltaTimeAverageFrameSmoothing) {
+		deltaTimeSmoothed = deltaTimeAverageSum / deltaTimeAverageFrameCounter;
+		deltaTimeAverageSum = 0;
+		deltaTimeAverageFrameCounter = 0;
+	}
+
 	//std::cout << "FPS: " << 1/deltaTime << "\n";
 
 	const char* message = "Hello World!";
@@ -125,7 +140,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	case GameState::DeathScreen:
 		updatedGameState = state.menu->Update(deltaTime, state.gameState);
 		state.menu->Render(state.renderer, state.gameState);
-		SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1 / deltaTime)).c_str());
+		//SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1 / deltaTime)).c_str());
 
 		break;
 	case GameState::Ingame:
@@ -136,8 +151,15 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 		break;
 	}
 
+	// Draw fps
+	const std::string fpsString = std::to_string(static_cast<int>(1 / deltaTimeSmoothed)) ;
+	float fpsWidth = SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(fpsString.c_str());
+	SDL_SetRenderDrawColor(state.renderer, 0, 0, 0, 127);
+	SDL_RenderDebugText(state.renderer, w / scale - fpsWidth + 1, 1, fpsString.c_str());
 
-	SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1 / deltaTime)).c_str());
+	SDL_SetRenderDrawColor(state.renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderDebugText(state.renderer, w / scale - fpsWidth, 0, fpsString.c_str());
+
 
 
 	SDL_RenderPresent(state.renderer);

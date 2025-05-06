@@ -20,6 +20,9 @@ private:
 	UIButton m_helpButton{};
 	UIButton m_quitGameButton{};
 
+	UIButton m_deathScreenDoneButton{};
+	UIButton m_helpScreenDoneButton{};
+
 public:
 	Menu() = default;
 
@@ -32,6 +35,14 @@ public:
 		m_playGameButton = { renderer, SDL_FRect{200/2-30,80,60,20}, "images/menu/buttonPlay.png", "images/menu/buttonPlayHover.png" };
 		m_helpButton = { renderer, SDL_FRect{200/2 - 30,100,60,20}, "images/menu/buttonHelp.png", "images/menu/buttonHelpHover.png" };
 		m_quitGameButton = { renderer, SDL_FRect{200 / 2 - 30,120,60,20}, "images/menu/buttonQuit.png", "images/menu/buttonQuitHover.png" };
+
+		m_deathScreenDoneButton = { renderer, SDL_FRect{200 / 2 - 30,120,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
+		m_helpScreenDoneButton = { renderer, SDL_FRect{200 / 2 - 30,120,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
+	
+		// Centered on screen.
+		// TODO: Use non-magic numbers.
+		m_deathScreenBackground.SetImageSize({100, 100});
+		m_deathScreenBackground.SetScreenPosition({(800/4/2) - 50, 600/4/2 - 50});
 	}
 
 	void HandleInput(const SDL_Event* event, GameState gameState) {
@@ -75,11 +86,14 @@ public:
 			break;
 		case GameState::HelpMenu:
 			m_helpScreenBackground.Render(renderer);
-			// TODO: Draw buttons.
+			m_helpScreenDoneButton.Render(renderer);
 			break;
 		case GameState::DeathScreen:
+			m_mainMenuBackground.Render(renderer);
 			m_deathScreenBackground.Render(renderer);
 			// TODO: Draw game info text.
+
+			m_deathScreenDoneButton.Render(renderer);
 			break;
 		default:
 			break;
@@ -111,16 +125,22 @@ public:
 			break;
 		case GameState::HelpMenu:
 			m_playGameButton.Update(m_mouseScreenPosition);
+			m_helpScreenDoneButton.Update(m_mouseScreenPosition);
 			if (m_leftMouseClicked) {
-
+				if (m_helpScreenDoneButton.IsWithinButton(m_mouseScreenPosition)) {
+					returnState = GameState::MainMenu;
+				}
 			}
 			if (m_escapePressed) {
 				returnState = GameState::MainMenu;
 			}
 			break;
 		case GameState::DeathScreen:
+			m_deathScreenDoneButton.Update(m_mouseScreenPosition);
 			if (m_leftMouseClicked) {
-				// TODO: Update buttons.
+				if (m_deathScreenDoneButton.IsWithinButton(m_mouseScreenPosition)) {
+					returnState = GameState::MainMenu;
+				}
 			}
 			if (m_escapePressed) {
 				returnState = GameState::MainMenu;

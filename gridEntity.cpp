@@ -108,7 +108,7 @@ bool GridEntity::AttemptMovement(const Vector2Int direction) {
 		if (IsDirectionWalkable(cleanDesiredMovement)) {
 			m_targetGridCell = m_currentGridCell + cleanDesiredMovement;
 			m_currentMovementDirection = cleanDesiredMovement;
-			std::cout << "Direction is walkable, so moving from " << m_currentGridCell << " to " << m_targetGridCell << "With direction " << m_currentMovementDirection << " \n";
+			//std::cout << "Direction is walkable, so moving from " << m_currentGridCell << " to " << m_targetGridCell << "With direction " << m_currentMovementDirection << " \n";
 			return true;
 		}
 		else {

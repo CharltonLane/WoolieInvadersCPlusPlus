@@ -47,6 +47,11 @@ private:
 	Projectile* CreateProjectile();
 	void TrackProjectile(Projectile* newProjectile);
 
+	// Score and combo.
+	int m_score{ 0 };
+	int m_combo{ 1 };
+	int m_maxCombo{ 10 };
+
 public:
 	Player() = default;
 
@@ -78,6 +83,18 @@ public:
 	bool IsInvincible() const { return !m_invincibilityTimer.HasTimerLapsed(); }
 	int GetHealth() const { return m_health; }
 
+	int GetScore() const { return m_score; }
+	int GetCombo() const { return m_combo; }
+
+	int GetAmmo() const { return m_ammo; }
+
+	void RecordKill(int points) {
+		m_score += m_combo * points;
+		if (m_combo < m_maxCombo) {
+			m_combo++;
+		}
+	}
+
 	void Reset() {
 		// Move back to starting position.
 		SetPosition(m_startingPosition);
@@ -86,6 +103,8 @@ public:
 		m_health = m_gameStartHealth;
 		m_ammo = m_maxAmmo;
 		m_invincibilityTimer.SetTimer(0);
+		m_score = 0;
+		m_combo = 1;
 
 		// Clear inputs.
 		m_isNorthInput = false;

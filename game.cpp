@@ -97,7 +97,14 @@ void Game::Render(SDL_Renderer* renderer) const {
 
 	// Render HUD.
 	m_hudBackground.Render(renderer);
-	SDL_RenderDebugText(renderer, 118, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())).c_str());
+	SDL_RenderDebugText(renderer, 118, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())).c_str());
+
+	SDL_RenderDebugText(renderer, 170, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(m_player.GetScore())).c_str());
+	SDL_RenderDebugText(renderer, 192, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(m_player.GetCombo())).c_str());
+
+	//SDL_RenderDebugText(renderer, 40, ((SpaceConversion::g_gamePixelHeight)-2*SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(GetEnemyCount())).c_str());
+	SDL_RenderDebugText(renderer, 30, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(m_player.GetAmmo())).c_str());
+
 
 	if (!m_newWaveTextTimer.HasTimerLapsed()) {
 		TextRendering::DrawCenteredText(renderer, "Wave " + std::to_string(m_waveNumber));

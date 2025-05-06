@@ -18,10 +18,14 @@ public:
 
 	void Kill() { m_isAlive = false; }
 	bool IsAlive() const { return m_isAlive; }
+	int GetPoints() const { return m_pointsPerKill; }
 
 	void Update(float dt) override;
 
+	// TODO: Add enemy sprites per facing direction.
+
 private:
 	bool m_isAlive{ true };
+	int m_pointsPerKill{ 10 };
 };
 

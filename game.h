@@ -34,6 +34,7 @@ private:
 	bool m_escapeKeyPressed{ false };
 
 	std::string m_gameOverReason{};
+	int m_gameOverScore{ 0 };
 
 public:
 	Game() = default;
@@ -63,6 +64,8 @@ public:
 	}
 	void SpawnNextWave();
 	void Reset() {
+
+		m_gameOverScore = m_player.GetScore();
 
 		m_escapeKeyPressed = false;
 		m_roundTimer.SetTimer(m_roundTimerStartDuration);

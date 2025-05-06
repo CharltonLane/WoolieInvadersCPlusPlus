@@ -104,11 +104,27 @@ void Player::Update(float dt) {
 	}
 
 	if (m_isAttackInputTrigger) {
-		std::cout << "Shot projectile!" << "\n";
 		m_isAttackInputTrigger = false;
-		TrackProjectile(CreateProjectile());
+
+		if (m_ammo > 0) {
+			std::cout << "Shot projectile!" << "\n";
+
+			TrackProjectile(CreateProjectile());
+
+			m_ammo--;
+		}
 	}
 
+	if (m_ammo < m_maxAmmo) {
+		m_ammoRegenTimer.Tick(dt);
+
+		if (m_ammoRegenTimer.HasTimerLapsed()) {
+			if (m_ammo < m_maxAmmo) {
+				m_ammo++;
+				m_ammoRegenTimer.Restart();
+			}
+		}
+	}
 
 
 	m_invincibilityTimer.Tick(dt);
@@ -127,6 +143,7 @@ void Player::UpdateProjectiles(float dt, std::vector<Enemy*>& enemies) {
 			for (auto* enemy : enemies) {
 				if (enemy) {
 					if (projectile->IsCollidingWith(*enemy)) {
+						RecordKill(enemy->GetPoints());
 						enemy->Kill();
 					}
 				}
@@ -144,6 +161,7 @@ void Player::TakeDamage() {
 	if (!IsInvincible()) {
 		m_health--;
 		m_invincibilityTimer.Restart();
+		m_combo = 1;
 	}
 	// Otherwise we're invincible, and no damage is to be taken!
 }

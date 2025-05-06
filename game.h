@@ -19,7 +19,7 @@ private:
 	std::vector<Enemy*> m_enemies;
 
 	// Sprites.
-	Sprite m_shopBackground{};
+	const Sprite m_shopLevelBackground{};
 	Sprite m_hudBackground{};
 
 	// Round timer.
@@ -33,13 +33,15 @@ private:
 
 	bool m_escapeKeyPressed{ false };
 
+	std::string m_gameOverReason{};
+
 public:
 	Game() = default;
 
 	Game(SDL_Renderer* renderer)
 		: m_renderer{ renderer }
 		, m_player{ renderer, &m_level, Vector2Int{4, 4}}
-		, m_shopBackground{ renderer, "images/world/shop.png" }
+		, m_shopLevelBackground{ renderer, "images/world/shop.png" }
 		, m_hudBackground{ renderer, "images/hud/hudBG.png" }
 		, m_enemies(6, nullptr)
 	{
@@ -60,5 +62,22 @@ public:
 		return false;
 	}
 	void SpawnNextWave();
+	void Reset() {
+
+		m_escapeKeyPressed = false;
+		m_roundTimer.SetTimer(m_roundTimerStartDuration);
+		m_waveNumber = 0;
+
+		m_player.Reset();
+		for (auto& enemy : m_enemies)
+		{
+			if (enemy) {
+				delete enemy;
+				enemy = nullptr;
+			}
+		}
+	}
+
+	const std::string& GetGameOverReason() { return m_gameOverReason; }
 };
 

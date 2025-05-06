@@ -4,6 +4,7 @@
 #include "spaceConversion.h"
 #include "random.h"
 #include "appState.h"
+#include "textRendering.h"
 
 void Game::HandleInput(const SDL_Event* event)
 {
@@ -50,11 +51,15 @@ GameState Game::Update(const float dt) {
 	// See if the player is dead.
 	if (!m_player.IsAlive()) {
 		std::cout << "GAME OVER! No health!" << "\n";
+		m_gameOverReason = "You died!";
+		Reset();
 		return GameState::DeathScreen;
 	}
 	// See if the player has run out of time.
 	if (m_roundTimer.HasTimerLapsed()) {
 		std::cout << "GAME OVER! Out of time!" << "\n";
+		m_gameOverReason = "Out of time!";
+		Reset();
 		return GameState::DeathScreen;
 	}
 
@@ -66,6 +71,7 @@ GameState Game::Update(const float dt) {
 
 	if (m_escapeKeyPressed) {
 		m_escapeKeyPressed = false;
+		Reset();
 		return GameState::MainMenu;
 	}
 	else {
@@ -74,24 +80,10 @@ GameState Game::Update(const float dt) {
 
 }
 
-static void DrawCenteredText(SDL_Renderer* renderer, std::string text) {
-	float x, y;
-
-	/* Center the message and scale it up */
-	x = (SpaceConversion::g_gamePixelWidth / 2 - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(text.c_str()) / 2));
-	y = (SpaceConversion::g_gamePixelHeight / 2 - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE / 2);
-
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 127);
-	SDL_RenderDebugText(renderer, x + 1, y + 1, text.c_str());
-
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-	SDL_RenderDebugText(renderer, x, y, text.c_str());
-
-}
 
 void Game::Render(SDL_Renderer* renderer) const {
 	// Draw the shop.
-	m_shopBackground.Render(renderer);
+	m_shopLevelBackground.Render(renderer);
 
 	// Render entities.
 	m_player.Render(renderer);
@@ -108,7 +100,7 @@ void Game::Render(SDL_Renderer* renderer) const {
 	SDL_RenderDebugText(renderer, 118, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())).c_str());
 
 	if (!m_newWaveTextTimer.HasTimerLapsed()) {
-		DrawCenteredText(renderer, "Wave " + std::to_string(m_waveNumber));
+		TextRendering::DrawCenteredText(renderer, "Wave " + std::to_string(m_waveNumber));
 	}
 
 }

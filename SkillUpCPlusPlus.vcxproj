@@ -184,6 +184,7 @@
     <ClInclude Include="random.h" />
     <ClInclude Include="spaceConversion.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="textRendering.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="uiButton.h" />
     <ClInclude Include="vector2.h" />

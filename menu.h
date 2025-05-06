@@ -3,6 +3,7 @@
 #include "appState.h"
 #include "sprite.h"
 #include "uiButton.h"
+#include "textRendering.h"
 
 class Menu
 {
@@ -92,6 +93,7 @@ public:
 			m_mainMenuBackground.Render(renderer);
 			m_deathScreenBackground.Render(renderer);
 			// TODO: Draw game info text.
+			TextRendering::DrawCenteredText(renderer, "TODO!");
 
 			m_deathScreenDoneButton.Render(renderer);
 			break;
@@ -112,7 +114,7 @@ public:
 			m_quitGameButton.Update(m_mouseScreenPosition);
 			if (m_leftMouseClicked) {
 				if (m_playGameButton.IsWithinButton(m_mouseScreenPosition)) {
-					std::cout << "START TEHG AME!!!\n";
+					std::cout << "START THE GAME!!!\n";
 					returnState = GameState::Ingame;
 				}
 				if (m_helpButton.IsWithinButton(m_mouseScreenPosition)) {

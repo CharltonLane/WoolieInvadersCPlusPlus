@@ -10,6 +10,8 @@ class Player : public GridEntity
 {
 private:
 
+	Vector2Int m_startingPosition{};
+
 	// Player health.
 	int m_maxHealth{ 5 };
 	int m_gameStartHealth{ 3 };
@@ -52,6 +54,7 @@ public:
 		: GridEntity{ renderer, level, gridPosition }
 		, m_projectiles(10)
 		, m_invincibilitySprite{ renderer, "images/shield.png" }
+		, m_startingPosition{ gridPosition }
 	{
 		// Load player textures.
 		m_northTexture = Sprite::LoadImage(renderer, "images/player/playerNorth.png");
@@ -74,5 +77,31 @@ public:
 	bool IsAlive() const { return m_health > 0; }
 	bool IsInvincible() const { return !m_invincibilityTimer.HasTimerLapsed(); }
 	int GetHealth() const { return m_health; }
+
+	void Reset() {
+		// Move back to starting position.
+		SetPosition(m_startingPosition);
+
+		// Reset player attributes.
+		m_health = m_gameStartHealth;
+		m_ammo = m_maxAmmo;
+		m_invincibilityTimer.SetTimer(0);
+
+		// Clear inputs.
+		m_isNorthInput = false;
+		m_isEastInput = false;
+		m_isSouthInput = false;
+		m_isWestInput = false;
+		m_isAttackInputTrigger = false;
+
+		// Destroy projectiles.
+		for (auto& projectile : m_projectiles)
+		{
+			if (projectile) {
+				delete projectile;
+				projectile = nullptr;
+			}
+		}
+	}
 };
 

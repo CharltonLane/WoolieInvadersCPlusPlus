@@ -34,6 +34,12 @@ protected:
 	float m_movementSpeed{ 4 }; // Tiles per second.
 	Vector2 m_worldPosition; // Actual position in world space. Can be between grid cells.
 
+	void SetPosition(Vector2Int position) {
+		m_currentGridCell = position;
+		m_targetGridCell = position;
+		m_worldPosition = position;
+		m_currentMovementDirection = Vector2Int::zero;
+	}
 
 public:
 	GridEntity() = default;

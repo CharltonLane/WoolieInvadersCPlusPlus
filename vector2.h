@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 class Vector2Int {
 private:
@@ -6,7 +7,7 @@ private:
 	int m_y;
 
 public:
-	 static Vector2Int zero;
+	static Vector2Int zero;
 
 	Vector2Int()
 		: m_x{ 0 }
@@ -40,8 +41,15 @@ public:
 		m_y += other.m_y;
 	}
 
+	friend std::ostream& operator<< (std::ostream& stream, const Vector2Int& vector);
 };
+
 inline Vector2Int Vector2Int::zero{ 0,0 };
+
+inline std::ostream& operator<< (std::ostream& stream, const Vector2Int& vector) {
+	stream << "\"(" << vector.m_x << ", " << vector.m_y << ")\"";
+	return stream;
+}
 
 class Vector2 {
 private:

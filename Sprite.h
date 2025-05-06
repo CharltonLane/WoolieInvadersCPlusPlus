@@ -14,7 +14,7 @@ private:
 	SDL_Texture* m_texture;
 	SDL_FRect m_rect;
 
-	float m_rotationDegrees; // Degrees, clockwise.
+	float m_rotationDegrees{ 0.0f }; // Degrees, clockwise.
 
 public:
 

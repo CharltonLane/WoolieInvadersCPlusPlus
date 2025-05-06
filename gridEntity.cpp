@@ -58,6 +58,7 @@ Vector2Int GridEntity::CalculateDesiredMovementFromFacingDirection()
 	default:
 		break;
 	}
+	return { 0,0 };
 }
 
 
@@ -107,7 +108,7 @@ bool GridEntity::AttemptMovement(const Vector2Int direction) {
 		if (IsDirectionWalkable(cleanDesiredMovement)) {
 			m_targetGridCell = m_currentGridCell + cleanDesiredMovement;
 			m_currentMovementDirection = cleanDesiredMovement;
-			std::cout << "Direction is walkable, so moving from " << m_currentGridCell.x() << ", " << m_currentGridCell.y() << " to " << m_targetGridCell.x() << ", " << m_targetGridCell.y() << "With direction " << m_currentMovementDirection.x() << ", " << m_currentMovementDirection.y() << " \n";
+			std::cout << "Direction is walkable, so moving from " << m_currentGridCell << " to " << m_targetGridCell << "With direction " << m_currentMovementDirection << " \n";
 			return true;
 		}
 		else {

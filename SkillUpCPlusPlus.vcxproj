@@ -164,6 +164,7 @@
     <ClCompile Include="gridEntity.cpp" />
     <ClCompile Include="levelGrid.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="projectile.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -171,10 +172,12 @@
     <ClCompile Include="vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="appState.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gridEntity.h" />
     <ClInclude Include="levelGrid.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="projectile.h" />
     <ClInclude Include="random.h" />

@@ -18,13 +18,9 @@
 #include "sprite.h"
 #include "gridEntity.h"
 #include "game.h"
+#include "menu.h"
+#include "appState.h"
 
-struct AppState {
-	SDL_Window* window{ nullptr };
-	SDL_Renderer* renderer{ nullptr };
-
-	Game* game{ nullptr };
-};
 
 
 /* This function runs once at startup. */
@@ -41,6 +37,7 @@ SDL_AppResult SDL_AppInit(void** appstate, [[maybe_unused]] int argc, [[maybe_un
 		return SDL_APP_FAILURE;
 	}
 
+	state.menu = new Menu{ state.renderer };
 	state.game = new Game{ state.renderer };
 
 	return SDL_APP_CONTINUE;
@@ -51,15 +48,35 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 {
 	AppState& state = *static_cast<AppState*>(appstate);
 
-	if (event->type == SDL_EVENT_QUIT || event->type == SDL_EVENT_KEY_DOWN && event->key.key == SDLK_ESCAPE) {
+	// Game exit inputs.
+	if (event->type == SDL_EVENT_QUIT) {
 		return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
 	}
 
-	//std::cout << event->type << "\n";
-	if (event->type == SDL_EVENT_KEY_DOWN || event->type == SDL_EVENT_KEY_UP) {
-		//std::cout << "  " << event->key.key << "\n";
-		state.game->HandleInput(event);
+	if (state.gameState == GameState::MainMenu) {
+		if (event->type == SDL_EVENT_KEY_DOWN && event->key.key == SDLK_ESCAPE) {
+			return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
+		}
 	}
+
+	// Standard game inputs.
+	switch (state.gameState)
+	{
+	case GameState::MainMenu:
+	case GameState::HelpMenu:
+	case GameState::DeathScreen:
+		state.menu->HandleInput(event, state.gameState);
+		break;
+	case GameState::Ingame:
+		//std::cout << event->type << "\n";
+		if (event->type == SDL_EVENT_KEY_DOWN || event->type == SDL_EVENT_KEY_UP) {
+			state.game->HandleInput(event);
+		}
+		break;
+	default:
+		break;
+	}
+
 
 	return SDL_APP_CONTINUE;
 }
@@ -99,11 +116,26 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	//SDL_RenderDebugText(state.renderer, x, y, message);
 
 
+	switch (state.gameState)
+	{
+	case GameState::MainMenu:
+	case GameState::HelpMenu:
+	case GameState::DeathScreen:
+		state.menu->Update(deltaTime, state.gameState);
+		state.menu->Render(state.renderer, state.gameState);
+		SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1 / deltaTime)).c_str());
 
-	state.game->Update(deltaTime);
-	state.game->Render(state.renderer);
+		break;
+	case GameState::Ingame:
+		state.game->Update(deltaTime);
+		state.game->Render(state.renderer);
+		break;
+	default:
+		break;
+	}
 
-	SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1/deltaTime)).c_str());
+
+	SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1 / deltaTime)).c_str());
 
 
 	SDL_RenderPresent(state.renderer);

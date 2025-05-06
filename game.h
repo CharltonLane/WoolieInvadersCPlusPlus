@@ -7,6 +7,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "levelGrid.h"
+#include "appState.h"
 
 class Game {
 private:
@@ -44,7 +45,7 @@ public:
 	}
 
 	void HandleInput(const SDL_Event* event);
-	void Update(const float dt);
+	GameState Update(const float dt);
 	void Render(SDL_Renderer* renderer) const;
 
 	bool AreEnemiesAlive() const {

@@ -3,13 +3,14 @@
 #include "timer.h"
 #include "spaceConversion.h"
 #include "random.h"
+#include "appState.h"
 
 void Game::HandleInput(const SDL_Event* event)
 {
 	m_player.HandleInput(event);
 }
 
-void Game::Update(const float dt) {
+GameState Game::Update(const float dt) {
 	m_roundTimer.Tick(dt);
 
 	// Update the player and their projectiles.
@@ -49,6 +50,8 @@ void Game::Update(const float dt) {
 	}
 
 	m_newWaveTextTimer.Tick(dt);
+
+	return GameState::Ingame;
 }
 
 static void DrawCenteredText(SDL_Renderer* renderer, std::string text) {

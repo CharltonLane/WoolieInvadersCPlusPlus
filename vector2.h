@@ -96,6 +96,11 @@ public:
 		m_y += other.y();
 		return *this;
 	}
+
+	friend std::ostream& operator<< (std::ostream& stream, const Vector2& vector);
 };
 
-
+inline std::ostream& operator<< (std::ostream& stream, const Vector2& vector) {
+	stream << "\"(" << vector.m_x << ", " << vector.m_y << ")\"";
+	return stream;
+}

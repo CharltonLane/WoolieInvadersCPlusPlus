@@ -20,6 +20,7 @@
 #include "game.h"
 #include "menu.h"
 #include "appState.h"
+#include "spaceConversion.h"
 
 
 
@@ -101,7 +102,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	const char* message = "Hello World!";
 	int w = 0, h = 0;
 	float x, y;
-	const float scale = 4.0f;
+	const float scale = SpaceConversion::g_screenPixelsPerPixelArtPixel;
 
 	/* Center the message and scale it up */
 	SDL_GetRenderOutputSize(state.renderer, &w, &h);
@@ -115,19 +116,20 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	SDL_SetRenderDrawColor(state.renderer, 255, 255, 255, 255);
 	//SDL_RenderDebugText(state.renderer, x, y, message);
 
+	GameState updatedGameState{ state.gameState };
 
 	switch (state.gameState)
 	{
 	case GameState::MainMenu:
 	case GameState::HelpMenu:
 	case GameState::DeathScreen:
-		state.menu->Update(deltaTime, state.gameState);
+		updatedGameState = state.menu->Update(deltaTime, state.gameState);
 		state.menu->Render(state.renderer, state.gameState);
 		SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1 / deltaTime)).c_str());
 
 		break;
 	case GameState::Ingame:
-		state.game->Update(deltaTime);
+		updatedGameState = state.game->Update(deltaTime);
 		state.game->Render(state.renderer);
 		break;
 	default:
@@ -140,6 +142,10 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
 	SDL_RenderPresent(state.renderer);
 
+	state.gameState = updatedGameState;
+	if (updatedGameState == GameState::Quit) {
+		return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
+	}
 	return SDL_APP_CONTINUE;
 }
 

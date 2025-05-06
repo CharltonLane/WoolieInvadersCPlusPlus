@@ -41,8 +41,12 @@ public:
 
 	void SetWorldPosition(Vector2 worldPosition);
 	void SetScreenPosition(Vector2 position);
-	void SetTexture(SDL_Texture* texture);
+	void SetTexture(SDL_Texture* texture, bool resizeToTexture = true);
 	void SetImageSize(Vector2 newSize);
+	void SetRect(SDL_FRect rect) { 
+		m_rect = rect;
+		std::cout << "Set rect of sprite to (" << m_rect.w << ", " << m_rect.h << ")\n";
+	}
 	void SetRotation(float degrees);
 
 	float GetRotation() const;

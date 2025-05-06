@@ -15,11 +15,17 @@ namespace SpaceConversion {
 	constexpr float g_gamePixelHeight{ 150 };
 	constexpr float g_pixelsPerUnit{ 8 };
 
+	constexpr float g_screenPixelsPerPixelArtPixel{ 4.0f };
+
 	inline Vector2 WorldToPixel(const Vector2& worldSpace) {
 		return { worldSpace * g_pixelsPerUnit };
 	}
 
 	inline Vector2 PixelToWorld(const Vector2& pixelSpace) {
 		return { pixelSpace / g_pixelsPerUnit };
+	}
+	
+	inline Vector2 ScreenToPixel(const Vector2& screenSpace) {
+		return { screenSpace / g_screenPixelsPerPixelArtPixel };
 	}
 }

@@ -1,6 +1,8 @@
 #pragma once
+#include <iostream>
 #include "appState.h"
 #include "sprite.h"
+#include "uiButton.h"
 
 class Menu
 {
@@ -14,6 +16,10 @@ private:
 	bool m_leftMouseClicked{ false };
 	Vector2 m_mouseScreenPosition{}; // Screen space, not pixel art pixel space.
 
+	UIButton m_playGameButton{};
+	UIButton m_helpButton{};
+	UIButton m_quitGameButton{};
+
 public:
 	Menu() = default;
 
@@ -22,6 +28,10 @@ public:
 		, m_helpScreenBackground{ renderer, "images/menu/menuHelpBG.png" }
 		, m_deathScreenBackground{ renderer, "images/menu/gameOverBG.png" }
 	{
+
+		m_playGameButton = { renderer, SDL_FRect{200/2-30,80,60,20}, "images/menu/buttonPlay.png", "images/menu/buttonPlayHover.png" };
+		m_helpButton = { renderer, SDL_FRect{200/2 - 30,100,60,20}, "images/menu/buttonHelp.png", "images/menu/buttonHelpHover.png" };
+		m_quitGameButton = { renderer, SDL_FRect{200 / 2 - 30,120,60,20}, "images/menu/buttonQuit.png", "images/menu/buttonQuitHover.png" };
 	}
 
 	void HandleInput(const SDL_Event* event, GameState gameState) {
@@ -47,6 +57,7 @@ public:
 		else if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
 			if (event->button.button == SDL_BUTTON_LEFT) {
 				m_leftMouseClicked = true;
+				std::cout << "Click!" << "\n";
 			}
 		}
 
@@ -58,7 +69,9 @@ public:
 		{
 		case GameState::MainMenu:
 			m_mainMenuBackground.Render(renderer);
-			// TODO: Draw buttons.
+			m_playGameButton.Render(renderer);
+			m_helpButton.Render(renderer);
+			m_quitGameButton.Render(renderer);
 			break;
 		case GameState::HelpMenu:
 			m_helpScreenBackground.Render(renderer);
@@ -75,38 +88,52 @@ public:
 
 	GameState Update(float dt, GameState gameState) {
 
+		GameState returnState{ gameState };
+
 		switch (gameState)
 		{
 		case GameState::MainMenu:
+			m_playGameButton.Update(m_mouseScreenPosition);
+			m_helpButton.Update(m_mouseScreenPosition);
+			m_quitGameButton.Update(m_mouseScreenPosition);
 			if (m_leftMouseClicked) {
-				// TODO: Update buttons.
+				if (m_playGameButton.IsWithinButton(m_mouseScreenPosition)) {
+					std::cout << "START TEHG AME!!!\n";
+					returnState = GameState::Ingame;
+				}
+				if (m_helpButton.IsWithinButton(m_mouseScreenPosition)) {
+					returnState = GameState::HelpMenu;
+				}
+				if (m_quitGameButton.IsWithinButton(m_mouseScreenPosition)) {
+					returnState = GameState::Quit;
+				}
 			}
 			break;
 		case GameState::HelpMenu:
+			m_playGameButton.Update(m_mouseScreenPosition);
 			if (m_leftMouseClicked) {
-				// TODO: Update buttons.
+
 			}
 			if (m_escapePressed) {
-				return GameState::MainMenu;
+				returnState = GameState::MainMenu;
 			}
 			break;
 		case GameState::DeathScreen:
 			if (m_leftMouseClicked) {
 				// TODO: Update buttons.
-			}			
+			}
 			if (m_escapePressed) {
-				return GameState::MainMenu;
+				returnState = GameState::MainMenu;
 			}
 			break;
 		default:
 			break;
 		}
 
-
 		m_escapePressed = false;
 		m_leftMouseClicked = false;
 
-		return GameState::MainMenu;
+		return returnState;
 	}
 
 };

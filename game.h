@@ -31,6 +31,8 @@ private:
 	int m_waveNumber{ 0 };
 	Timer m_newWaveTextTimer{ 3 };
 
+	bool m_escapeKeyPressed{ false };
+
 public:
 	Game() = default;
 

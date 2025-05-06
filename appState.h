@@ -6,7 +6,8 @@ enum class GameState {
 	MainMenu,
 	HelpMenu,
 	Ingame,
-	DeathScreen
+	DeathScreen,
+	Quit
 };
 
 class Menu;

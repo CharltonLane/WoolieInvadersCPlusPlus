@@ -41,16 +41,22 @@ void Sprite::SetScreenPosition(Vector2 position)
 	m_rect.y = position.y();
 }
 
-void Sprite::SetTexture(SDL_Texture* texture) {
+void Sprite::SetTexture(SDL_Texture* texture, bool resizeToTexture) {
 	//std::cout << "Set sprite texture" << "\n";
+	if (m_texture == texture) {
+		return;
+	}
 	m_texture = texture;
 
-	Vector2 imageSize = GetImageSize();
-	m_rect.w = imageSize.x(); //the width of the texture
-	m_rect.h = imageSize.y(); //the height of the texture
+	if (resizeToTexture) {
+		Vector2 imageSize = GetImageSize();
+		m_rect.w = imageSize.x(); //the width of the texture
+		m_rect.h = imageSize.y(); //the height of the texture
+	}
 }
 
 void Sprite::SetImageSize(Vector2 newSize) {
+	std::cout << "Set size of sprite to " << newSize << "\n";
 	m_rect.w = newSize.x(); //the width of the texture
 	m_rect.h = newSize.y(); //the height of the texture
 }

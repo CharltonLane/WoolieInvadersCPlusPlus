@@ -10,8 +10,6 @@ class GridEntity
 
 private:
 
-
-	Vector2Int m_currentMovementDirection{};
 	Vector2Int m_currentGridCell{}; // In world space.
 	Vector2Int m_targetGridCell{}; // In world space.
 
@@ -23,6 +21,8 @@ protected:
 		South,
 		West
 	};
+
+	Vector2Int m_currentMovementDirection{};
 
 	SDL_Renderer* m_renderer{ nullptr };
 
@@ -53,15 +53,23 @@ public:
 
 	virtual void Update(const float dt);
 
-	void CalculateFacingDirection();
+	void CalculateFacingDirection(Vector2Int direction);
 	Vector2Int CalculateDesiredMovementFromFacingDirection();
 
 	virtual void Render(SDL_Renderer* renderer) const;
 
 	virtual void CalculateDesiredDirection();
+	bool AttemptMovement(Vector2Int direction);
 	bool IsDirectionWalkable(Vector2Int direction);
-	bool MoveInDirection(const float dt);
+	bool IsMovingBetweenSpaces() {
+		return (m_currentMovementDirection != Vector2Int::zero) && (m_targetGridCell != m_currentGridCell);
+	}
+
+	bool ContinueCurrentMovement(const float dt);
 	void UpdateWorldPosition(const float dt);
+
+
+
 };
 
 

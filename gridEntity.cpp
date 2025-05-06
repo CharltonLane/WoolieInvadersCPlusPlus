@@ -2,7 +2,7 @@
 #include <iostream>
 
 
- Vector2Int GridEntity::GetCurrentGridCell() const {
+Vector2Int GridEntity::GetCurrentGridCell() const {
 	return m_currentGridCell;
 }
 
@@ -10,28 +10,36 @@ void GridEntity::Update(const float dt) {
 
 	CalculateDesiredDirection();
 
-	CalculateFacingDirection();
 
-	MoveInDirection(dt);
-	//UpdateWorldPosition(dt);
+	if (IsMovingBetweenSpaces()) {
+		//std::cout << "Moving between spaces" << "\n";
+		ContinueCurrentMovement(dt);
+		CalculateFacingDirection(m_currentMovementDirection);
+	}
+	else {
+		//std::cout << "Trying to move" << m_desiredMovement.x() << ", " << m_desiredMovement.y() << "\n";
+		AttemptMovement(m_desiredMovement);
+		CalculateFacingDirection(m_desiredMovement);
+	}
 
 	m_sprite.SetWorldPosition(m_worldPosition);
 }
 
-void GridEntity::CalculateFacingDirection()
+void GridEntity::CalculateFacingDirection(Vector2Int direction)
 {
-	if (m_currentMovementDirection.x() < 0) {
+	if (direction.x() < 0) {
 		m_facingDirection = FacingDirection::West;
 	}
-	else if (m_currentMovementDirection.x() > 0) {
+	else if (direction.x() > 0) {
 		m_facingDirection = FacingDirection::East;
 	}
-	else if (m_currentMovementDirection.y() < 0) {
+	else if (direction.y() < 0) {
 		m_facingDirection = FacingDirection::North;
 	}
-	else if (m_currentMovementDirection.y() > 0) {
+	else if (direction.y() > 0) {
 		m_facingDirection = FacingDirection::South;
-	}// Else we leave it as it is.
+	}
+	// Else we leave it as it is.
 	//std::cout << "Facing: " << static_cast<int>(m_facingDirection) << "\n";
 }
 
@@ -80,31 +88,41 @@ bool GridEntity::IsDirectionWalkable(Vector2Int direction) {
 	return !m_level->IsTileSolid(targetCell);
 }
 
-bool GridEntity::MoveInDirection(const float dt) {
-	// If we are stopped on a tile, we can try to move in the given direction.
-	// Return true if we successfully start moving, false if blocked or already moving.
-
+bool GridEntity::AttemptMovement(const Vector2Int direction) {
+	// Try to move in the given direction. 
+	// True if possible, false otherwise.
 
 	// See if we want to start moving.
-	if ((m_currentMovementDirection == Vector2Int::zero) && (m_desiredMovement != Vector2Int::zero) && (m_targetGridCell == m_currentGridCell)) {
+	if (direction != Vector2Int::zero) {
 		//std::cout << "Looking to move from " << m_currentGridCell.x() << ", " << m_currentGridCell.y() << " with direction " << m_desiredMovement.x() << ", " << m_desiredMovement.y() << " \n";
 		// If both x and y are held, favour X. No particular reason, just need to choose one.
 		Vector2Int cleanDesiredMovement{};
-		if (m_desiredMovement.x() != 0 && m_desiredMovement.y() != 0) {
-			cleanDesiredMovement = Vector2Int(m_desiredMovement.x(), 0);
+		if (direction.x() != 0 && direction.y() != 0) {
+			cleanDesiredMovement = Vector2Int(direction.x(), 0);
 		}
 		else {
-			cleanDesiredMovement = m_desiredMovement;
+			cleanDesiredMovement = direction;
 		}
+
 		if (IsDirectionWalkable(cleanDesiredMovement)) {
 			m_targetGridCell = m_currentGridCell + cleanDesiredMovement;
 			m_currentMovementDirection = cleanDesiredMovement;
-			//std::cout << "Direction is walkable, so moving from " << m_currentGridCell.x() << ", " << m_currentGridCell.y() << " to " << m_targetGridCell.x() << ", " << m_targetGridCell.y() << " \n";
+			std::cout << "Direction is walkable, so moving from " << m_currentGridCell.x() << ", " << m_currentGridCell.y() << " to " << m_targetGridCell.x() << ", " << m_targetGridCell.y() << "With direction " << m_currentMovementDirection.x() << ", " << m_currentMovementDirection.y() << " \n";
+			return true;
 		}
-		//else {
-		//	std::cout << "Not walkable, ignoring direction " << m_desiredMovement.x() << ", " << m_desiredMovement.y() << " \n";
-		//}
+		else {
+			//	std::cout << "Not walkable, ignoring direction " << m_desiredMovement.x() << ", " << m_desiredMovement.y() << " \n";
+			return false;
+		}
+
 	}
+	return false;
+}
+
+bool GridEntity::ContinueCurrentMovement(const float dt) {
+	// If we are stopped on a tile, we can try to move in the given direction.
+	// Return true if we successfully start moving, false if blocked or already moving.
+
 
 	// If we're already moving continue movement.
 	if ((m_currentMovementDirection != Vector2Int::zero)) {

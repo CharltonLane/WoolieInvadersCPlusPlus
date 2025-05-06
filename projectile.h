@@ -23,8 +23,14 @@ public:
 
 	void Update(float dt) override;
 
+	bool HasHitWall() const {
+		return m_hasHitWall;
+	}
+
 private:
 	SDL_Texture* m_projectileTexture{ nullptr };
 	Timer m_spinTimer{ 0.08f };
+
+	bool m_hasHitWall{ false };
 };
 

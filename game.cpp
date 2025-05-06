@@ -48,7 +48,7 @@ void Game::Render(SDL_Renderer* renderer) const {
 void Game::SpawnNextWave()
 {
 	m_waveNumber++;
-	int enemiesToSpawn = 5;
+	int enemiesToSpawn = 0;
 
 	for (int i = 0; i < enemiesToSpawn; i++)
 	{

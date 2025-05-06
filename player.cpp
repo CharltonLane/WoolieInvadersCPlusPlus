@@ -76,7 +76,7 @@ void Player::TrackProjectile(Projectile* newProjectile) {
 
 Projectile* Player::CreateProjectile() {
 	// Dynamically create a new projectile object.
-	return new Projectile(m_renderer, m_level, GetCurrentGridCell(), m_worldPosition, m_facingDirection);
+	return new Projectile{ m_renderer, m_level, GetCurrentGridCell(), m_worldPosition, m_facingDirection };
 }
 
 
@@ -112,6 +112,10 @@ void Player::Update(float dt) {
 	{
 		if (projectile) {
 			projectile->Update(dt);
+			if (projectile->HasHitWall()) {
+				delete projectile;
+				projectile = nullptr;
+			}
 		}
 	}
 }

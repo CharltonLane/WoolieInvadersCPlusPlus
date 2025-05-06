@@ -28,6 +28,7 @@ private:
 	SDL_Renderer* m_renderer{};
 
 	int m_waveNumber{ 0 };
+	Timer m_newWaveTextTimer{ 3 };
 
 public:
 	Game() = default;

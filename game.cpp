@@ -47,6 +47,23 @@ void Game::Update(const float dt) {
 	if (!AreEnemiesAlive()) {
 		SpawnNextWave();
 	}
+
+	m_newWaveTextTimer.Tick(dt);
+}
+
+static void DrawCenteredText(SDL_Renderer* renderer, std::string text) {
+	float x, y;
+
+	/* Center the message and scale it up */
+	x = (SpaceConversion::g_gamePixelWidth/2 - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(text.c_str())/2));
+	y = (SpaceConversion::g_gamePixelHeight/2 - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE/2);
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 127);
+	SDL_RenderDebugText(renderer, x + 1, y + 1, text.c_str());
+
+	SDL_SetRenderDrawColor(renderer,255, 255,255, SDL_ALPHA_OPAQUE);
+	SDL_RenderDebugText(renderer, x, y, text.c_str());
+
 }
 
 void Game::Render(SDL_Renderer* renderer) const {
@@ -66,7 +83,14 @@ void Game::Render(SDL_Renderer* renderer) const {
 	// Render HUD.
 	m_hudBackground.Render(renderer);
 	SDL_RenderDebugText(renderer, 118, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())).c_str());
+	
+	if (!m_newWaveTextTimer.HasTimerLapsed()) {
+		DrawCenteredText(renderer, "Wave " + std::to_string(m_waveNumber));
+	}
+
 }
+
+
 
 void Game::SpawnNextWave()
 {
@@ -79,4 +103,6 @@ void Game::SpawnNextWave()
 		int y = Random::get(0, 10);
 		m_enemies[i] = new Enemy{ m_renderer, &m_level, Vector2Int{x, y} };
 	}
+
+	m_newWaveTextTimer.Restart();
 }

@@ -11,7 +11,7 @@ public:
 	{
 		m_sprite = Sprite{ renderer, "images/enemy/enemyDown.png" };
 
-		m_movementSpeed = 3;
+		m_movementSpeed = 2;
 	}
 
 	void CalculateDesiredDirection() override;

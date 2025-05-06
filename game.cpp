@@ -12,17 +12,28 @@ void Game::HandleInput(const SDL_Event* event)
 void Game::Update(const float dt) {
 	m_roundTimer.Tick(dt);
 
+	// Update the player and their projectiles.
 	m_player.Update(dt);
+	m_player.UpdateProjectiles(dt, m_enemies);
 
-	for (auto enemyPointer : m_enemies)
+
+	// Update enemies.
+	for (auto& enemyPointer : m_enemies)
 	{
 		if (enemyPointer) {
 			enemyPointer->Update(dt);
 			if (enemyPointer->IsCollidingWith(m_player)) {
 				m_player.TakeDamage();
 			}
+
+			// Handle dead enemies.
+			if (!enemyPointer->IsAlive()) {
+				delete enemyPointer;
+				enemyPointer = nullptr;
+			}
 		}
 	}
+
 
 	// See if the player is dead.
 	if (!m_player.IsAlive()) {
@@ -60,7 +71,7 @@ void Game::Render(SDL_Renderer* renderer) const {
 void Game::SpawnNextWave()
 {
 	m_waveNumber++;
-	int enemiesToSpawn = 5;
+	int enemiesToSpawn = 2;
 
 	for (int i = 0; i < enemiesToSpawn; i++)
 	{

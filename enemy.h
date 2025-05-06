@@ -15,5 +15,13 @@ public:
 	}
 
 	void CalculateDesiredDirection() override;
+
+	void Kill() { m_isAlive = false; }
+	bool IsAlive() const { return m_isAlive; }
+
+	void Update(float dt) override;
+
+private:
+	bool m_isAlive{ true };
 };
 

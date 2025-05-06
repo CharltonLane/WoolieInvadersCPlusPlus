@@ -1,5 +1,7 @@
 #include <iostream>
+#include <vector>
 #include "player.h"
+#include "enemy.h"
 
 void Player::HandleInput(const SDL_Event* event) {
 
@@ -107,17 +109,7 @@ void Player::Update(float dt) {
 		TrackProjectile(CreateProjectile());
 	}
 
-	// Update projectiles.
-	for (auto& projectile : m_projectiles)
-	{
-		if (projectile) {
-			projectile->Update(dt);
-			if (projectile->HasHitWall()) {
-				delete projectile;
-				projectile = nullptr;
-			}
-		}
-	}
+
 
 	m_invincibilityTimer.Tick(dt);
 	if (IsInvincible()) {
@@ -125,6 +117,36 @@ void Player::Update(float dt) {
 	}
 }
 
+void Player::UpdateProjectiles(float dt, std::vector<Enemy*>& enemies) {
+	// Move projectiles and see if there are enemy collisions.
+	for (auto& projectile : m_projectiles)
+	{
+		if (projectile) {
+			projectile->Update(dt);
+
+			for (auto* enemy : enemies) {
+				if (enemy) {
+					if (projectile->IsCollidingWith(*enemy)) {
+						enemy->Kill();
+					}
+				}
+			}
+
+			if (projectile->HasHitWall()) {
+				delete projectile;
+				projectile = nullptr;
+			}
+		}
+	}
+}
+
+void Player::TakeDamage() {
+	if (!IsInvincible()) {
+		m_health--;
+		m_invincibilityTimer.Restart();
+	}
+	// Otherwise we're invincible, and no damage is to be taken!
+}
 
 void Player::Render(SDL_Renderer* renderer) const
 {

@@ -28,3 +28,13 @@ void Enemy::CalculateDesiredDirection()
 		break;
 	}
 }
+
+void Enemy::Update(float dt)
+{
+	if (!m_isAlive) {
+		return;
+	}
+
+	GridEntity::Update(dt);
+
+}

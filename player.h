@@ -4,6 +4,7 @@
 #include "gridEntity.h"
 #include "timer.h"
 #include "projectile.h"
+#include "enemy.h"
 
 class Player : public GridEntity
 {
@@ -66,14 +67,9 @@ public:
 	void HandleInput(const SDL_Event* event);
 	void Render(SDL_Renderer* renderer) const override;
 	void Update(float dt) override;
+	void UpdateProjectiles(float dt, std::vector<Enemy*>& enemies);
 
-	void TakeDamage() {
-		if (!IsInvincible()) {
-			m_health--;
-			m_invincibilityTimer.Restart();
-		}
-		// Otherwise we're invincible, and no damage is to be taken!
-	}
+	void TakeDamage();
 
 	bool IsAlive() const { return m_health > 0; }
 	bool IsInvincible() const { return !m_invincibilityTimer.HasTimerLapsed(); }

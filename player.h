@@ -23,7 +23,7 @@ private:
 	std::vector<Projectile*> m_projectiles;
 
 	// Player invincibility after being hit.
-	Timer m_invincibilityTimer{ 3 }; // 3 seconds of invincibility after taking damage.
+	Timer m_invincibilityTimer{ 3, 0, false }; // 3 seconds of invincibility after taking damage.
 
 	bool m_isNorthInput{ false };
 	bool m_isEastInput{ false };
@@ -32,11 +32,14 @@ private:
 
 	bool m_isAttackInputTrigger{ false };
 
-	// Sprites.
+	// Player textures.
 	SDL_Texture* m_northTexture{ nullptr };
 	SDL_Texture* m_eastTexture{ nullptr };
 	SDL_Texture* m_southTexture{ nullptr };
 	SDL_Texture* m_westTexture{ nullptr };
+
+	// Invincibility sprite.
+	Sprite m_invincibilitySprite{};
 
 	Projectile* CreateProjectile();
 	void TrackProjectile(Projectile* newProjectile);
@@ -47,6 +50,7 @@ public:
 	Player(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
 		: GridEntity{ renderer, level, gridPosition }
 		, m_projectiles(10)
+		, m_invincibilitySprite{ renderer, "images/shield.png" }
 	{
 		// Load player textures.
 		m_northTexture = Sprite::LoadImage(renderer, "images/player/playerNorth.png");
@@ -58,9 +62,21 @@ public:
 	}
 
 	void CalculateDesiredDirection() override;
-	
+
 	void HandleInput(const SDL_Event* event);
 	void Render(SDL_Renderer* renderer) const override;
 	void Update(float dt) override;
+
+	void TakeDamage() {
+		if (!IsInvincible()) {
+			m_health--;
+			m_invincibilityTimer.Restart();
+		}
+		// Otherwise we're invincible, and no damage is to be taken!
+	}
+
+	bool IsAlive() const { return m_health > 0; }
+	bool IsInvincible() const { return !m_invincibilityTimer.HasTimerLapsed(); }
+	int GetHealth() const { return m_health; }
 };
 

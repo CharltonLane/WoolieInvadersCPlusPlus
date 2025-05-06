@@ -8,6 +8,10 @@ void Timer::Tick(float dt) {
 	if (m_isPaused) {
 		return;
 	}
+	if (m_remainingSeconds <= 0.0f) {
+		return;
+	}
+
 	m_remainingSeconds -= dt;
 }
 
@@ -28,5 +32,5 @@ bool Timer::HasTimerLapsed() const {
 }
 
 void Timer::Restart() {
-	m_remainingSeconds = m_startingSeconds;
+	m_remainingSeconds = m_durationSeconds;
 }

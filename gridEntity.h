@@ -68,7 +68,16 @@ public:
 	bool ContinueCurrentMovement(const float dt);
 	void UpdateWorldPosition(const float dt);
 
+	bool IsCollidingWith(GridEntity other) {
+		// Check if this grid entity and the other are colliding.
+		// A collision occurs when two grid entities share a cell between their current or target positions (in any combination).
+		// This is so that an enemy leaving one cell will still be hit by a projectile entering that cell. Comparing just target cells for example would miss this.
 
+		return m_currentGridCell == other.m_currentGridCell
+			|| m_currentGridCell == other.m_targetGridCell
+			|| m_targetGridCell == other.m_currentGridCell
+			|| m_targetGridCell == other.m_targetGridCell;
+	}
 
 };
 

@@ -3,13 +3,19 @@ class Timer
 {
 private:
 	float m_remainingSeconds{};
-	float m_startingSeconds{};
+	float m_durationSeconds{};
 	bool m_isPaused{ false };
 
 public:
 	Timer(float startingDuration, bool startPaused = false)
-		: m_startingSeconds{ startingDuration }
+		: m_durationSeconds{ startingDuration }
 		, m_remainingSeconds{ startingDuration }
+		, m_isPaused{ startPaused }
+	{}
+
+	Timer(float durationSeconds, float startingSeconds, bool startPaused = false)
+		: m_durationSeconds{ durationSeconds }
+		, m_remainingSeconds{ startingSeconds }
 		, m_isPaused{ startPaused }
 	{}
 

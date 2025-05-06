@@ -118,6 +118,11 @@ void Player::Update(float dt) {
 			}
 		}
 	}
+
+	m_invincibilityTimer.Tick(dt);
+	if (IsInvincible()) {
+		m_invincibilitySprite.SetWorldPosition(m_worldPosition);
+	}
 }
 
 
@@ -132,6 +137,10 @@ void Player::Render(SDL_Renderer* renderer) const
 			std::cout << "rendering projectile\n";
 			projectile->Render(renderer);
 		}
+	}
+
+	if (IsInvincible()) {
+		m_invincibilitySprite.Render(renderer);
 	}
 }
 

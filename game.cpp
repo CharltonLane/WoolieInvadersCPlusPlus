@@ -18,7 +18,19 @@ void Game::Update(const float dt) {
 	{
 		if (enemyPointer) {
 			enemyPointer->Update(dt);
+			if (enemyPointer->IsCollidingWith(m_player)) {
+				m_player.TakeDamage();
+			}
 		}
+	}
+
+	// See if the player is dead.
+	if (!m_player.IsAlive()) {
+		std::cout << "GAME OVER!" << "\n";
+	}
+	// See if the player has run out of time.
+	if (m_roundTimer.HasTimerLapsed()) {
+		std::cout << "GAME OVER!" << "\n";
 	}
 
 	if (!AreEnemiesAlive()) {
@@ -48,7 +60,7 @@ void Game::Render(SDL_Renderer* renderer) const {
 void Game::SpawnNextWave()
 {
 	m_waveNumber++;
-	int enemiesToSpawn = 0;
+	int enemiesToSpawn = 5;
 
 	for (int i = 0; i < enemiesToSpawn; i++)
 	{

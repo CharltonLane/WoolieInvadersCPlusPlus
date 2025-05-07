@@ -152,10 +152,19 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 		state.menu->Render(state.renderer, state.gameState);
 		//SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1 / deltaTime)).c_str());
 
+		if (updatedGameState == GameState::Ingame) {
+			state.game->StartGame();
+		}
+
 		break;
 	case GameState::Ingame:
 		updatedGameState = state.game->Update(deltaTime);
 		state.game->Render(state.renderer);
+
+		if (updatedGameState != GameState::Ingame) {
+			state.game->EndGame();
+		}
+
 		break;
 	default:
 		break;

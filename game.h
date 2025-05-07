@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL3_mixer/SDL_mixer.h>
 #include "gridEntity.h"
 #include "vector2.h"
 #include <vector>
@@ -36,6 +37,9 @@ private:
 	std::string m_gameOverReason{};
 	int m_gameOverScore{ 0 };
 
+	// Audio.
+	Mix_Music* m_ingameMusic;
+
 public:
 	Game() = default;
 
@@ -47,6 +51,23 @@ public:
 		, m_enemies(6, nullptr)
 	{
 		m_hudBackground.SetScreenPosition(Vector2{ 0, SpaceConversion::g_gamePixelHeight - m_hudBackground.GetImageSize().y() });
+	}
+
+	void StartGame() {
+
+		Mix_VolumeMusic(MIX_MAX_VOLUME/2);
+		m_ingameMusic = Mix_LoadMUS("audio\\downdown.ogg");
+		if (m_ingameMusic) {
+			Mix_PlayMusic(m_ingameMusic, -1);
+		}
+		else {
+			printf("Music is null %s\n", SDL_GetError());
+		}
+	}
+
+	void EndGame() {
+		// Fade music over 3 seconds.
+		Mix_FadeOutMusic(3000);
 	}
 
 	void HandleInput(const SDL_Event* event);

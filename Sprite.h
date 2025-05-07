@@ -37,7 +37,7 @@ public:
 
 	static SDL_Texture* LoadImage(SDL_Renderer* renderer, const std::string& fileName);
 
-	void Render(SDL_Renderer* renderer) const;
+	void Render(SDL_Renderer* renderer, Vector2 cameraPosition = {}) const;
 
 	void SetWorldPosition(Vector2 worldPosition);
 	void SetScreenPosition(Vector2 position);

@@ -2,6 +2,7 @@
 #include <vector>
 #include "player.h"
 #include "enemy.h"
+#include "spaceConversion.h"
 
 void Player::HandleInput(const SDL_Event* event) {
 
@@ -168,7 +169,7 @@ void Player::TakeDamage() {
 
 void Player::Render(SDL_Renderer* renderer) const
 {
-	m_sprite.Render(renderer);
+	m_sprite.Render(renderer, SpaceConversion::g_cameraPosition);
 
 	// Update projectiles.
 	for (auto& projectile : m_projectiles)

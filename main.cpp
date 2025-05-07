@@ -43,7 +43,7 @@ SDL_AppResult SDL_AppInit(void** appstate, [[maybe_unused]] int argc, [[maybe_un
 
 	/* Create the window */
 	// Use SDL_WINDOW_FULLSCREEN for fullscreen.
-	if (!SDL_CreateWindowAndRenderer("Woolie Invaders (C++ Edition!)", 800, 600, 0, &state.window, &state.renderer)) {
+	if (!SDL_CreateWindowAndRenderer("Woolie Invaders (C++ Edition!)", SpaceConversion::g_windowWidth, SpaceConversion::g_windowHeight, 0, &state.window, &state.renderer)) {
 		SDL_Log("Couldn't create window and renderer: %s", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}

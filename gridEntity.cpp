@@ -1,5 +1,6 @@
-#include "gridEntity.h"
 #include <iostream>
+#include "gridEntity.h"
+#include "spaceConversion.h"
 
 
 Vector2Int GridEntity::GetCurrentGridCell() const {
@@ -75,7 +76,7 @@ void GridEntity::UpdateWorldPosition(const float dt) {
 }
 
 void GridEntity::Render(SDL_Renderer* renderer) const {
-	m_sprite.Render(renderer);
+	m_sprite.Render(renderer, SpaceConversion::g_cameraPosition);
 }
 
 void GridEntity::CalculateDesiredDirection() {}

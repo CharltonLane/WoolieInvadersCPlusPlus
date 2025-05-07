@@ -14,15 +14,23 @@ SDL_Texture* Sprite::LoadImage(SDL_Renderer* renderer, const std::string& fileNa
 	return tex;
 }
 
-void Sprite::Render(SDL_Renderer* renderer) const {
+void Sprite::Render(SDL_Renderer* renderer, Vector2 cameraPosition) const {
+
+	SDL_FRect cameraOffsetPosition
+	{   m_rect.x - cameraPosition.x(),
+		m_rect.y - cameraPosition.y(),
+		m_rect.w, 
+		m_rect.h 
+	};
+
 	if (m_rotationDegrees == 0) {
-		SDL_RenderTexture(renderer, m_texture, NULL, &m_rect);
+		SDL_RenderTexture(renderer, m_texture, NULL, &cameraOffsetPosition);
 	}
 	else {
 		SDL_FPoint center{};
 		center.x = m_rect.w / 2;
 		center.y = m_rect.h / 2;
-		SDL_RenderTextureRotated(renderer, m_texture, NULL, &m_rect, m_rotationDegrees, &center, SDL_FLIP_NONE);
+		SDL_RenderTextureRotated(renderer, m_texture, NULL, &cameraOffsetPosition, m_rotationDegrees, &center, SDL_FLIP_NONE);
 	}
 
 }

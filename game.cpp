@@ -100,7 +100,7 @@ GameState Game::Update(const float dt) {
 
 void Game::Render(SDL_Renderer* renderer) const {
 	// Draw the shop.
-	m_shopLevelBackground.Render(renderer);
+	m_shopLevelBackground.Render(renderer, SpaceConversion::g_cameraPosition);
 
 	// Render entities.
 	m_player.Render(renderer);

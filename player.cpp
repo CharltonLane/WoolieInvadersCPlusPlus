@@ -158,6 +158,10 @@ void Player::UpdateProjectiles(float dt, std::vector<Enemy*>& enemies) {
 	}
 }
 
+void Player::AddHealth(int healthToAdd) {
+	m_health = std::min(m_health + healthToAdd, m_maxHealth);
+}
+
 void Player::TakeDamage() {
 	if (!IsInvincible()) {
 		m_health--;
@@ -181,7 +185,7 @@ void Player::Render(SDL_Renderer* renderer) const
 	}
 
 	if (IsInvincible()) {
-		m_invincibilitySprite.Render(renderer);
+		m_invincibilitySprite.Render(renderer, SpaceConversion::g_cameraPosition);
 	}
 }
 

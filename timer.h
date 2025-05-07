@@ -20,6 +20,7 @@ public:
 	{}
 
 	void SetTimer(float newValue);
+	void AddTime(float secondsToAdd);
 	void Tick(float dt);
 	float GetTimeRemaining() const;
 	void Pause();

@@ -4,6 +4,10 @@ void Timer::SetTimer(float newValue) {
 	m_remainingSeconds = newValue;
 }
 
+void Timer::AddTime(float secondsToAdd) {
+	m_remainingSeconds += secondsToAdd;
+}
+
 void Timer::Tick(float dt) {
 	if (m_isPaused) {
 		return;

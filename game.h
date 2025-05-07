@@ -57,6 +57,7 @@ private:
 	Sprite m_hudBackground{};
 
 	// Round timer.
+	float m_secondsAddedOnNewRound{ 20.0f };
 	float m_roundTimerStartDuration{ 30.0f };
 	Timer m_roundTimer{ m_roundTimerStartDuration };
 

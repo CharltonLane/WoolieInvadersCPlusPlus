@@ -82,6 +82,10 @@ GameState Game::Update(const float dt) {
 
 	if (!AreEnemiesAlive()) {
 		SpawnNextWave();
+		m_roundTimer.AddTime(m_secondsAddedOnNewRound);
+		if (m_waveNumber % 2 == 0) {
+			m_player.AddHealth(1);
+		}
 	}
 
 	m_newWaveTextTimer.Tick(dt);
@@ -126,8 +130,8 @@ void Game::Render(SDL_Renderer* renderer) const {
 
 	// Top row.
 	TextRendering::DrawTextAt(renderer, GetEnemiesAliveCount(), { 40, topRowY });
-	TextRendering::DrawTextAt(renderer, m_waveNumber, { 118, topRowY });
-	TextRendering::DrawTextAt(renderer, m_player.GetHealth(), { 170, topRowY });
+	TextRendering::DrawTextAt(renderer, m_waveNumber, { 170, topRowY });
+	TextRendering::DrawTextAt(renderer, m_player.GetHealth(), { 118, topRowY });
 
 	if (!m_newWaveTextTimer.HasTimerLapsed()) {
 		TextRendering::DrawCenteredText(renderer, "Wave " + std::to_string(m_waveNumber));

@@ -77,6 +77,7 @@ public:
 	void Update(float dt) override;
 	void UpdateProjectiles(float dt, std::vector<Enemy*>& enemies);
 
+	void AddHealth(int healthToAdd);
 	void TakeDamage();
 
 	bool IsAlive() const { return m_health > 0; }

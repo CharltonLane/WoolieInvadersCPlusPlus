@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include "sprite.h"
 #include "vector2.h"
 #include "vector2Int.h"
@@ -75,15 +76,16 @@ public:
 	bool ContinueCurrentMovement(const float dt);
 	void UpdateWorldPosition(const float dt);
 
-	bool IsCollidingWith(const GridEntity& other) {
-		// Check if this grid entity and the other are colliding.
-		// A collision occurs when two grid entities share a cell between their current or target positions (in any combination).
-		// This is so that an enemy leaving one cell will still be hit by a projectile entering that cell. Comparing just target cells for example would miss this.
+	Vector2Int FindActiveTile() const {
+		// Looks at where this entity is in world space and finds the closest tile.
+		// Useful for collisions. Makes it feel more fair by finding which tile an entity is "mostly" on, rather than the one they are going to or the one they were on.
 
-		return m_currentGridCell == other.m_currentGridCell
-			|| m_currentGridCell == other.m_targetGridCell
-			|| m_targetGridCell == other.m_currentGridCell
-			|| m_targetGridCell == other.m_targetGridCell;
+		return { static_cast<int>(std::round(m_worldPosition.x())), static_cast<int>(std::round(m_worldPosition.y())) };
+	}
+
+	bool IsCollidingWith(const GridEntity& other) const {
+		// Check if this grid entity and the other are colliding.
+		return FindActiveTile() == other.FindActiveTile();
 	}
 
 };

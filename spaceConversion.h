@@ -16,8 +16,8 @@ namespace SpaceConversion {
 
 	inline Vector2 g_cameraPosition{ -60,0 };
 
-	constexpr float g_windowWidth{ 1280 };
-	constexpr float g_windowHeight{ 720 };
+	constexpr int g_windowWidth{ 1280 };
+	constexpr int g_windowHeight{ 720 };
 
 	constexpr float g_gamePixelWidth{ 320 };
 	constexpr float g_gamePixelHeight{ 180 };

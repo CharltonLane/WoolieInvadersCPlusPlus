@@ -1,6 +1,7 @@
 #pragma once
 #include "sprite.h"
 #include "vector2.h"
+#include "vector2Int.h"
 #include "levelGrid.h"
 
 

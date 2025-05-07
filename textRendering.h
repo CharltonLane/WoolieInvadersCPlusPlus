@@ -1,11 +1,12 @@
 #pragma once
 #include <iostream>
 #include <SDL3/SDL.h>
+#include "vector2.h"
 #include "spaceConversion.h"
 
 namespace TextRendering {
 
-	static void DrawTextAt(SDL_Renderer* renderer, std::string text, Vector2 position, bool useUnderlay = true) {
+	inline static void DrawTextAt(SDL_Renderer* renderer, std::string text, Vector2 position, bool useUnderlay = true) {
 		// Top-left aligned text relative to position.
 		if (useUnderlay) {
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 127);
@@ -16,12 +17,12 @@ namespace TextRendering {
 		SDL_RenderDebugText(renderer, position.x(), position.y(), text.c_str());
 	}
 
-	static void DrawTextAt(SDL_Renderer* renderer, int integerValue, Vector2 position, bool useUnderlay = true) {
+	inline static void DrawTextAt(SDL_Renderer* renderer, int integerValue, Vector2 position, bool useUnderlay = true) {
 		std::string string = std::to_string(static_cast<int>(integerValue));
 		DrawTextAt(renderer, string, position, useUnderlay);
 	}
 
-	static void DrawCenteredText(SDL_Renderer* renderer, std::string text) {
+	inline static void DrawCenteredText(SDL_Renderer* renderer, std::string text) {
 		float x, y;
 
 		/* Center the message and scale it up */

@@ -124,7 +124,7 @@ void Game::Render(SDL_Renderer* renderer) const {
 
 	// Bottom row.
 	TextRendering::DrawTextAt(renderer, m_player.GetAmmo(), { 30, bottomRowY });
-	TextRendering::DrawTextAt(renderer, m_roundTimer.GetTimeRemaining(), { 118, bottomRowY});
+	TextRendering::DrawTextAt(renderer, static_cast<int>(m_roundTimer.GetTimeRemaining()), { 118, bottomRowY});
 	TextRendering::DrawTextAt(renderer, m_player.GetScore(), { 170, bottomRowY });
 	TextRendering::DrawTextAt(renderer, m_player.GetCombo(), { 192, bottomRowY });
 

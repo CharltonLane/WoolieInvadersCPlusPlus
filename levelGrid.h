@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include "vector2.h"
+#include "vector2Int.h"
 
 class LevelGrid
 {

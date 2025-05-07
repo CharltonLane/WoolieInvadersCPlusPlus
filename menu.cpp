@@ -27,7 +27,7 @@ void Menu::HandleInput(const SDL_Event* event) {
 	}
 }
 
-GameState Menu::Update([[maybe_unused]]float dt, GameState gameState) {
+GameState Menu::Update(GameState gameState) {
 
 	GameState returnState{ gameState };
 

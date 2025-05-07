@@ -1,5 +1,6 @@
 #include "levelGrid.h"
 #include "random.h"
+#include "vector2Int.h"
 
 bool LevelGrid::IsTileSolid(const Vector2Int& worldPosition) {
 	bool solid{ std::count(m_solidTiles.begin(), m_solidTiles.end(), worldPosition) > 0 };

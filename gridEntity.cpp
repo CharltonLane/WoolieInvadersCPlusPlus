@@ -1,5 +1,6 @@
 #include <iostream>
 #include "gridEntity.h"
+#include "vector2Int.h"
 #include "spaceConversion.h"
 
 

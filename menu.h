@@ -49,7 +49,7 @@ public:
 	}
 
 	void HandleInput(const SDL_Event* event);
-	GameState Update([[maybe_unused]] float dt, GameState gameState);
+	GameState Update(GameState gameState);
 	void Render(SDL_Renderer* renderer, GameState gameState) const;
 };
 

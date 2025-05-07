@@ -1,55 +1,7 @@
 #pragma once
 #include <iostream>
+#include "vector2Int.h"
 
-class Vector2Int {
-private:
-	int m_x;
-	int m_y;
-
-public:
-	static Vector2Int zero;
-
-	Vector2Int()
-		: m_x{ 0 }
-		, m_y{ 0 }
-	{}
-
-	Vector2Int(int x, int y)
-		: m_x{ x }
-		, m_y{ y }
-	{}
-
-	int x() const { return m_x; }
-	void SetX(int x) { m_x = x; }
-	int y() const { return m_y; }
-	void SetY(int y) { m_y = y; }
-
-	Vector2Int operator+(const Vector2Int other) {
-		return { m_x + other.m_x, m_y + other.m_y };
-	}
-
-	bool operator!=(const Vector2Int other) {
-		return m_x != other.m_x || m_y != other.m_y;
-	}
-
-	bool operator==(const Vector2Int other) {
-		return m_x == other.m_x && m_y == other.m_y;
-	}
-
-	Vector2Int operator+=(const Vector2Int other) {
-		m_x += other.m_x;
-		m_y += other.m_y;
-	}
-
-	friend std::ostream& operator<< (std::ostream& stream, const Vector2Int& vector);
-};
-
-inline Vector2Int Vector2Int::zero{ 0,0 };
-
-inline std::ostream& operator<< (std::ostream& stream, const Vector2Int& vector) {
-	stream << "\"(" << vector.m_x << ", " << vector.m_y << ")\"";
-	return stream;
-}
 
 class Vector2 {
 private:
@@ -77,30 +29,34 @@ public:
 	float y() const { return m_y; }
 	void SetY(float y) { m_y = y; }
 
-	Vector2 operator*(const float scalar) const {
-		return Vector2{ m_x * scalar, m_y * scalar };
-	}
-
-	Vector2 operator/(const float scalar) const {
-		return Vector2{ m_x / scalar, m_y / scalar };
-	}
 
 	Vector2 operator+=(const Vector2 other) {
 		m_x += other.m_x;
 		m_y += other.m_y;
 		return *this;
 	}
-
-	Vector2 operator+(const Vector2Int other) {
-		m_x += other.x();
-		m_y += other.y();
-		return *this;
-	}
-
-	friend std::ostream& operator<< (std::ostream& stream, const Vector2& vector);
 };
 
+inline Vector2 operator*(const Vector2 vector, const float scalar) {
+	return Vector2{ vector.x() * scalar, vector.y() * scalar };
+}
+inline Vector2 operator*(const float scalar, const Vector2 vector) {
+	return vector * scalar;
+}
+
+
+inline Vector2 operator/(const Vector2 vector, const float scalar) {
+	return Vector2{ vector.x() / scalar, vector.y() / scalar };
+}
+inline Vector2 operator/(const float scalar, const Vector2 vector) {
+	return vector / scalar;
+}
+
+inline Vector2 operator+(const Vector2 vector1, const Vector2Int vector2) {
+	return { vector1.x() + vector2.x(), vector1.y() * vector2.y() };
+}
+
 inline std::ostream& operator<< (std::ostream& stream, const Vector2& vector) {
-	stream << "\"(" << vector.m_x << ", " << vector.m_y << ")\"";
+	stream << "\"(" << vector.x() << ", " << vector.y() << ")\"";
 	return stream;
 }

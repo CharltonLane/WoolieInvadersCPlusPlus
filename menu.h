@@ -113,14 +113,14 @@ public:
 			m_helpButton.Update(m_mouseScreenPosition);
 			m_quitGameButton.Update(m_mouseScreenPosition);
 			if (m_leftMouseClicked) {
-				if (m_playGameButton.IsWithinButton(m_mouseScreenPosition)) {
+				if (m_playGameButton.IsWithinButton(m_mouseScreenPosition, true)) {
 					std::cout << "START THE GAME!!!\n";
 					returnState = GameState::Ingame;
 				}
-				if (m_helpButton.IsWithinButton(m_mouseScreenPosition)) {
+				if (m_helpButton.IsWithinButton(m_mouseScreenPosition, true)) {
 					returnState = GameState::HelpMenu;
 				}
-				if (m_quitGameButton.IsWithinButton(m_mouseScreenPosition)) {
+				if (m_quitGameButton.IsWithinButton(m_mouseScreenPosition, true)) {
 					returnState = GameState::Quit;
 				}
 			}
@@ -129,7 +129,7 @@ public:
 			m_playGameButton.Update(m_mouseScreenPosition);
 			m_helpScreenDoneButton.Update(m_mouseScreenPosition);
 			if (m_leftMouseClicked) {
-				if (m_helpScreenDoneButton.IsWithinButton(m_mouseScreenPosition)) {
+				if (m_helpScreenDoneButton.IsWithinButton(m_mouseScreenPosition, true)) {
 					returnState = GameState::MainMenu;
 				}
 			}
@@ -140,7 +140,7 @@ public:
 		case GameState::DeathScreen:
 			m_deathScreenDoneButton.Update(m_mouseScreenPosition);
 			if (m_leftMouseClicked) {
-				if (m_deathScreenDoneButton.IsWithinButton(m_mouseScreenPosition)) {
+				if (m_deathScreenDoneButton.IsWithinButton(m_mouseScreenPosition, true)) {
 					returnState = GameState::MainMenu;
 				}
 			}

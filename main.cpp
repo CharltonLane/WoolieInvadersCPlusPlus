@@ -12,6 +12,7 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_image/SDL_image.h>
 #include <string>
 #include <iostream>
@@ -22,7 +23,7 @@
 #include "appState.h"
 #include "spaceConversion.h"
 
-
+SDL_AudioSpec g_audioSpec{ MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, MIX_DEFAULT_FREQUENCY };
 
 /* This function runs once at startup. */
 // https://wiki.libsdl.org/SDL3/README/main-functions
@@ -30,6 +31,15 @@ SDL_AppResult SDL_AppInit(void** appstate, [[maybe_unused]] int argc, [[maybe_un
 {
 	*appstate = new AppState;
 	AppState& state = *static_cast<AppState*>(*appstate);
+
+	// Init audio.
+	if (!SDL_Init(SDL_INIT_AUDIO)) {
+		printf("SDL_INIT_AUDIO could not initialize! SDL_mixer Error: %s\n", SDL_GetError());
+	}
+	if (!Mix_OpenAudio(0, &g_audioSpec))
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", SDL_GetError());
+	}
 
 	/* Create the window */
 	// Use SDL_WINDOW_FULLSCREEN for fullscreen.

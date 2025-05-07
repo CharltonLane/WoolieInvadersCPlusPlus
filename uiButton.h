@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include "sprite.h"
 #include "spaceConversion.h"
 
@@ -18,6 +19,9 @@ private:
 
 	SDL_FRect m_rect{};
 
+	// Audio.
+	static Mix_Chunk* m_clickSFX;
+
 public:
 	UIButton() = default;
 
@@ -29,13 +33,25 @@ public:
 
 		m_buttonSprite.SetRect(m_rect);
 		m_buttonSprite.SetTexture(m_standardTexture, false);
+
+		// We do this here and not in global scope at program start because we need the audio device to be opened by app init.
+		if (!m_clickSFX) {
+			m_clickSFX = Mix_LoadWAV("audio\\buttonClick.wav");
+		}
 	}
 
-	bool IsWithinButton(Vector2& screenPosition) const {
+	bool IsWithinButton(Vector2& screenPosition, bool click = false) const {
 		Vector2 pixelSpacePosition = SpaceConversion::ScreenToPixel(screenPosition);
 
-		return (pixelSpacePosition.x() >= m_rect.x && pixelSpacePosition.x() <= m_rect.x + m_rect.w)
+		bool isWithin = (pixelSpacePosition.x() >= m_rect.x && pixelSpacePosition.x() <= m_rect.x + m_rect.w)
 			&& (pixelSpacePosition.y() >= m_rect.y && pixelSpacePosition.y() <= m_rect.y + m_rect.h);
+
+		if (isWithin && click) {
+			if (m_clickSFX) {
+				Mix_PlayChannel(-1, m_clickSFX, 0);
+			}
+		}
+		return isWithin;
 	}
 
 	void Update(Vector2& mousePosition) {
@@ -51,4 +67,6 @@ public:
 		m_buttonSprite.Render(renderer);
 	}
 };
+
+inline Mix_Chunk* UIButton::m_clickSFX{ nullptr };
 

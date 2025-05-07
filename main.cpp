@@ -149,7 +149,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	case GameState::HelpMenu:
 	case GameState::DeathScreen:
 		updatedGameState = state.menu->Update(state.gameState);
-		state.menu->Render(state.renderer, state.gameState);
+		state.menu->Render(state.renderer, state);
 		//SDL_RenderDebugText(state.renderer, x, ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE), std::to_string(static_cast<int>(1 / deltaTime)).c_str());
 
 		if (updatedGameState == GameState::Ingame) {

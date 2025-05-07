@@ -4,6 +4,7 @@
 #include "sprite.h"
 #include "uiButton.h"
 #include "textRendering.h"
+#include "appState.h"
 
 class Menu
 {
@@ -37,8 +38,8 @@ public:
 		m_helpButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,100,60,20}, "images/menu/buttonHelp.png", "images/menu/buttonHelpHover.png" };
 		m_quitGameButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,120,60,20}, "images/menu/buttonQuit.png", "images/menu/buttonQuitHover.png" };
 
-		m_deathScreenDoneButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,120,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
-		m_helpScreenDoneButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,120,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
+		m_deathScreenDoneButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,130,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
+		m_helpScreenDoneButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,130,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
 
 		// Centered on screen.
 		// TODO: Use non-magic numbers.
@@ -50,6 +51,6 @@ public:
 
 	void HandleInput(const SDL_Event* event);
 	GameState Update(GameState gameState);
-	void Render(SDL_Renderer* renderer, GameState gameState) const;
+	void Render(SDL_Renderer* renderer, const AppState& appState) const;
 };
 

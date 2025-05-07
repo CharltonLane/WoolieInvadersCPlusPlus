@@ -126,7 +126,9 @@ void Game::Render(SDL_Renderer* renderer) const {
 	TextRendering::DrawTextAt(renderer, m_player.GetAmmo(), { 30, bottomRowY });
 	TextRendering::DrawTextAt(renderer, static_cast<int>(m_roundTimer.GetTimeRemaining()), { 118, bottomRowY});
 	TextRendering::DrawTextAt(renderer, m_player.GetScore(), { 170, bottomRowY });
+	TextRendering::SetTextColor(TextRendering::g_colorYellow);
 	TextRendering::DrawTextAt(renderer, m_player.GetCombo(), { 192, bottomRowY });
+	TextRendering::SetTextColor(TextRendering::g_colorWhite);
 
 	// Top row.
 	TextRendering::DrawTextAt(renderer, GetEnemiesAliveCount(), { 40, topRowY });

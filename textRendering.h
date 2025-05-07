@@ -16,6 +16,11 @@ namespace TextRendering {
 		SDL_RenderDebugText(renderer, position.x(), position.y(), text.c_str());
 	}
 
+	static void DrawTextAt(SDL_Renderer* renderer, int integerValue, Vector2 position, bool useUnderlay = true) {
+		std::string string = std::to_string(static_cast<int>(integerValue));
+		DrawTextAt(renderer, string, position, useUnderlay);
+	}
+
 	static void DrawCenteredText(SDL_Renderer* renderer, std::string text) {
 		float x, y;
 

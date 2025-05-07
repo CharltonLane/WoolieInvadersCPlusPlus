@@ -34,6 +34,7 @@ public:
 	void StartGame();
 	void EndGame();
 
+	int GetEnemiesAliveCount() const;
 	bool AreEnemiesAlive() const;
 	void SpawnNextWave();
 	void Reset();

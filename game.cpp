@@ -116,13 +116,18 @@ void Game::Render(SDL_Renderer* renderer) const {
 	m_hudBackground.Render(renderer);
 
 	float bottomRowY = ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1;
+	float topRowY = ((SpaceConversion::g_gamePixelHeight)-(2*SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) + 1;
 
 	// Bottom row.
-	TextRendering::DrawTextAt(renderer, std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())), { 170, bottomRowY});
-	TextRendering::DrawTextAt(renderer, std::to_string(static_cast<int>(m_player.GetScore())), { 118, bottomRowY });
-	TextRendering::DrawTextAt(renderer, std::to_string(static_cast<int>(m_player.GetCombo())), { 192, bottomRowY });
-	TextRendering::DrawTextAt(renderer, std::to_string(static_cast<int>(m_player.GetAmmo())), { 30, bottomRowY });
+	TextRendering::DrawTextAt(renderer, m_player.GetAmmo(), { 30, bottomRowY });
+	TextRendering::DrawTextAt(renderer, m_roundTimer.GetTimeRemaining(), { 118, bottomRowY});
+	TextRendering::DrawTextAt(renderer, m_player.GetScore(), { 170, bottomRowY });
+	TextRendering::DrawTextAt(renderer, m_player.GetCombo(), { 192, bottomRowY });
 
+	// Top row.
+	TextRendering::DrawTextAt(renderer, GetEnemiesAliveCount(), { 40, topRowY });
+	TextRendering::DrawTextAt(renderer, m_waveNumber, { 118, topRowY });
+	TextRendering::DrawTextAt(renderer, m_player.GetHealth(), { 170, topRowY });
 
 	if (!m_newWaveTextTimer.HasTimerLapsed()) {
 		TextRendering::DrawCenteredText(renderer, "Wave " + std::to_string(m_waveNumber));
@@ -130,15 +135,18 @@ void Game::Render(SDL_Renderer* renderer) const {
 
 }
 
-
-bool Game::AreEnemiesAlive() const {
+int Game::GetEnemiesAliveCount() const {
+	int count{ 0 };
 	for (auto enemyPointer : m_enemies) {
 		if (enemyPointer) {
-			return true;
+			count++;
 		}
 	}
+	return count;
+}
 
-	return false;
+bool Game::AreEnemiesAlive() const {
+	return GetEnemiesAliveCount() > 0;
 }
 
 void Game::SpawnNextWave()

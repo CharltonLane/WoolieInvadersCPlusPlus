@@ -6,6 +6,23 @@
 #include "appState.h"
 #include "textRendering.h"
 
+void Game::StartGame() {
+
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
+	m_ingameMusic = Mix_LoadMUS("audio\\downdown.mp3");
+	if (m_ingameMusic) {
+		Mix_PlayMusic(m_ingameMusic, -1);
+	}
+	else {
+		printf("Music is null %s\n", SDL_GetError());
+	}
+}
+
+void Game::EndGame() {
+	// Fade music over 3 seconds.
+	Mix_FadeOutMusic(3000);
+}
+
 void Game::HandleInput(const SDL_Event* event)
 {
 	if (event->type == SDL_EVENT_KEY_DOWN) {
@@ -97,13 +114,14 @@ void Game::Render(SDL_Renderer* renderer) const {
 
 	// Render HUD.
 	m_hudBackground.Render(renderer);
-	SDL_RenderDebugText(renderer, 118, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())).c_str());
 
-	SDL_RenderDebugText(renderer, 170, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(m_player.GetScore())).c_str());
-	SDL_RenderDebugText(renderer, 192, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(m_player.GetCombo())).c_str());
+	float bottomRowY = ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1;
 
-	//SDL_RenderDebugText(renderer, 40, ((SpaceConversion::g_gamePixelHeight)-2*SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(GetEnemyCount())).c_str());
-	SDL_RenderDebugText(renderer, 30, ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1, std::to_string(static_cast<int>(m_player.GetAmmo())).c_str());
+	// Bottom row.
+	TextRendering::DrawTextAt(renderer, std::to_string(static_cast<int>(m_roundTimer.GetTimeRemaining())), { 170, bottomRowY});
+	TextRendering::DrawTextAt(renderer, std::to_string(static_cast<int>(m_player.GetScore())), { 118, bottomRowY });
+	TextRendering::DrawTextAt(renderer, std::to_string(static_cast<int>(m_player.GetCombo())), { 192, bottomRowY });
+	TextRendering::DrawTextAt(renderer, std::to_string(static_cast<int>(m_player.GetAmmo())), { 30, bottomRowY });
 
 
 	if (!m_newWaveTextTimer.HasTimerLapsed()) {
@@ -113,18 +131,57 @@ void Game::Render(SDL_Renderer* renderer) const {
 }
 
 
+bool Game::AreEnemiesAlive() const {
+	for (auto enemyPointer : m_enemies) {
+		if (enemyPointer) {
+			return true;
+		}
+	}
+
+	return false;
+}
 
 void Game::SpawnNextWave()
 {
 	m_waveNumber++;
-	int enemiesToSpawn = 2;
 
-	for (int i = 0; i < enemiesToSpawn; i++)
+	// Enemies per wave:
+	// Wave 1    : 1
+	// Wave 2,3  : 2
+	// Wave 4,5  : 3
+	// Wave 6,7  : 4
+	// Wave 8+   : 5
+	int enemiesToSpawn = std::min(5, 1 + (m_waveNumber / 2));
+
+	std::vector<Vector2Int> spawnPoints{ m_level.GetRandomSpawnPoints(enemiesToSpawn) };
+
+	for (int i = 0; i < spawnPoints.size(); i++)
 	{
-		int x = Random::get(0, 10);
-		int y = Random::get(0, 10);
-		m_enemies[i] = new Enemy{ m_renderer, &m_level, Vector2Int{x, y} };
+		// m_enemies[] must be nullptr else we risk a memory leak!
+		if (m_enemies[i]) {
+			std::cout << "Error, an enemy isstill alive when a new wave is being spawned. This must not happen!\n";
+			continue;
+		}
+		m_enemies[i] = new Enemy{ m_renderer, &m_level, spawnPoints[i] };
 	}
 
 	m_newWaveTextTimer.Restart();
+}
+
+void Game::Reset() {
+
+	m_gameOverScore = m_player.GetScore();
+
+	m_escapeKeyPressed = false;
+	m_roundTimer.SetTimer(m_roundTimerStartDuration);
+	m_waveNumber = 0;
+
+	m_player.Reset();
+	for (auto& enemy : m_enemies)
+	{
+		if (enemy) {
+			delete enemy;
+			enemy = nullptr;
+		}
+	}
 }

@@ -76,7 +76,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 	case GameState::MainMenu:
 	case GameState::HelpMenu:
 	case GameState::DeathScreen:
-		state.menu->HandleInput(event, state.gameState);
+		state.menu->HandleInput(event);
 		break;
 	case GameState::Ingame:
 		//std::cout << event->type << "\n";
@@ -172,7 +172,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
 	// Draw fps
 	const std::string fpsString = std::to_string(static_cast<int>(1 / deltaTimeSmoothed)) ;
-	float fpsWidth = SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(fpsString.c_str());
+	float fpsWidth = SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * static_cast<float>(SDL_strlen(fpsString.c_str()));
 	SDL_SetRenderDrawColor(state.renderer, 0, 0, 0, 127);
 	SDL_RenderDebugText(state.renderer, w / scale - fpsWidth + 1, 1, fpsString.c_str());
 

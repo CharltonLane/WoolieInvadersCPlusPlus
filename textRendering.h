@@ -4,6 +4,18 @@
 #include "spaceConversion.h"
 
 namespace TextRendering {
+
+	static void DrawTextAt(SDL_Renderer* renderer, std::string text, Vector2 position, bool useUnderlay = true) {
+		// Top-left aligned text relative to position.
+		if (useUnderlay) {
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 127);
+			SDL_RenderDebugText(renderer, position.x() + 1, position.y() + 1, text.c_str());
+		}
+
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+		SDL_RenderDebugText(renderer, position.x(), position.y(), text.c_str());
+	}
+
 	static void DrawCenteredText(SDL_Renderer* renderer, std::string text) {
 		float x, y;
 
@@ -11,11 +23,6 @@ namespace TextRendering {
 		x = (SpaceConversion::g_gamePixelWidth / 2 - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(text.c_str()) / 2));
 		y = (SpaceConversion::g_gamePixelHeight / 2 - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE / 2);
 
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 127);
-		SDL_RenderDebugText(renderer, x + 1, y + 1, text.c_str());
-
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-		SDL_RenderDebugText(renderer, x, y, text.c_str());
-
+		DrawTextAt(renderer, text, { x,y });
 	}
 }

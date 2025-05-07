@@ -85,7 +85,6 @@ public:
 
 	int GetScore() const { return m_score; }
 	int GetCombo() const { return m_combo; }
-
 	int GetAmmo() const { return m_ammo; }
 
 	void RecordKill(int points) {

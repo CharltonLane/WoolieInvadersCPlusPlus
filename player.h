@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include <vector>
 #include "gridEntity.h"
 #include "timer.h"
@@ -52,6 +53,9 @@ private:
 	int m_combo{ 1 };
 	int m_maxCombo{ 10 };
 
+	// Audio.
+	Mix_Chunk* m_takeDamageSFX{ nullptr };
+
 public:
 	Player() = default;
 
@@ -60,6 +64,7 @@ public:
 		, m_projectiles(10)
 		, m_invincibilitySprite{ renderer, "images/shield.png" }
 		, m_startingPosition{ gridPosition }
+		, m_takeDamageSFX{ Mix_LoadWAV("audio\\takeDamage.wav") }
 	{
 		// Load player textures.
 		m_northTexture = Sprite::LoadImage(renderer, "images/player/playerNorth.png");

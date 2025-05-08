@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL3_mixer/SDL_mixer.h>
 #include "gridEntity.h"
 
 class Enemy : public GridEntity
@@ -19,11 +20,15 @@ public:
 		m_westTexture = Sprite::LoadImage(renderer, "images/enemy/enemyWest.png");
 
 		m_sprite.SetTexture(m_northTexture);
+
+		if (!m_hitMarkerSFX) {
+			m_hitMarkerSFX = Mix_LoadWAV("audio\\hitMarker.wav");
+		}
 	}
 
 	void CalculateDesiredDirection() override;
 
-	void Kill() { m_isAlive = false; }
+	void Kill();
 	bool IsAlive() const { return m_isAlive; }
 	int GetPoints() const { return m_pointsPerKill; }
 
@@ -38,5 +43,9 @@ private:
 
 	bool m_isAlive{ true };
 	int m_pointsPerKill{ 10 };
+
+	// Audio.
+	static Mix_Chunk* m_hitMarkerSFX;
 };
 
+inline Mix_Chunk* Enemy::m_hitMarkerSFX{ nullptr };

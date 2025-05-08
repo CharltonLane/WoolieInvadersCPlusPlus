@@ -57,3 +57,8 @@ void Enemy::Update(float dt)
 	}
 
 }
+
+void Enemy::Kill() {
+	m_isAlive = false;
+	Mix_PlayChannel(-1, m_hitMarkerSFX, 0);
+}

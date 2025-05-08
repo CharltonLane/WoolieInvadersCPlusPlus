@@ -25,6 +25,8 @@ public:
 		, m_handIcons{ renderer, SDL_FRect{137.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/hud/hudIconHand.png" }
 		, m_heartIcons{ renderer, SDL_FRect{72.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/hud/hudIconHeart.png" }
 		, m_enemyIcons{ renderer, SDL_FRect{228.0f, SpaceConversion::g_gamePixelHeight - 22, 8,8}, "images/enemy/enemySouth.png" }
+		, m_gameOverSFX{ Mix_LoadWAV("audio\\gameOver.wav") }
+		, m_clockTickSFX{ Mix_LoadWAV("audio\\tick.wav") }
 	{
 		m_hudBackground.SetScreenPosition(Vector2{ 0, SpaceConversion::g_gamePixelHeight - m_hudBackground.GetImageSize().y() });
 	}
@@ -79,6 +81,11 @@ private:
 
 	// Audio.
 	Mix_Music* m_ingameMusic{ nullptr };
+	Mix_Chunk* m_gameOverSFX{ nullptr };
+
+	Mix_Chunk* m_clockTickSFX{ nullptr };
+	bool m_lowOnTime{ false };
+	int m_tickChannel{ -1 };
 
 	// UI.
 	UIIconRow m_handIcons{};

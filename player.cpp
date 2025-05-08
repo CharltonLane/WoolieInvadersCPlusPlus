@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <SDL3_mixer/SDL_mixer.h>
 #include "player.h"
 #include "enemy.h"
 #include "spaceConversion.h"
@@ -18,37 +19,37 @@ void Player::HandleInput(const SDL_Event* event) {
 		}
 
 		if (event->key.key == SDLK_W) {
-			std::cout << "Got W key down!" << "\n";
+			//std::cout << "Got W key down!" << "\n";
 			m_isNorthInput = true;
 		}
 		else if (event->key.key == SDLK_A) {
-			std::cout << "Got A key down!" << "\n";
+			//std::cout << "Got A key down!" << "\n";
 			m_isWestInput = true;
 		}
 		else if (event->key.key == SDLK_S) {
-			std::cout << "Got S key down!" << "\n";
+			//std::cout << "Got S key down!" << "\n";
 			m_isSouthInput = true;
 		}
 		else if (event->key.key == SDLK_D) {
-			std::cout << "Got D key down!" << "\n";
+			//std::cout << "Got D key down!" << "\n";
 			m_isEastInput = true;
 		}
 	}
 	else if (event->type == SDL_EVENT_KEY_UP) {
 		if (event->key.key == SDLK_W) {
-			std::cout << "Got W key up!" << "\n";
+			//std::cout << "Got W key up!" << "\n";
 			m_isNorthInput = false;
 		}
 		else if (event->key.key == SDLK_A) {
-			std::cout << "Got A key up!" << "\n";
+			//std::cout << "Got A key up!" << "\n";
 			m_isWestInput = false;
 		}
 		else if (event->key.key == SDLK_S) {
-			std::cout << "Got S key up!" << "\n";
+			//std::cout << "Got S key up!" << "\n";
 			m_isSouthInput = false;
 		}
 		else if (event->key.key == SDLK_D) {
-			std::cout << "Got D key up!" << "\n";
+			//std::cout << "Got D key up!" << "\n";
 			m_isEastInput = false;
 		}
 	}
@@ -167,6 +168,7 @@ void Player::TakeDamage() {
 		m_health--;
 		m_invincibilityTimer.Restart();
 		m_combo = 1;
+		Mix_PlayChannel(-1, m_takeDamageSFX, 0);
 	}
 	// Otherwise we're invincible, and no damage is to be taken!
 }

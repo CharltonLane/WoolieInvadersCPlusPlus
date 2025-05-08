@@ -34,6 +34,8 @@ void Game::EndGame() {
 		SaveData::WriteHighscoreToDisk(m_gameOverScore);
 	}
 
+	// Game over sound.
+	
 }
 
 void Game::HandleInput(const SDL_Event* event)
@@ -54,6 +56,16 @@ void Game::HandleInput(const SDL_Event* event)
 
 GameState Game::Update(const float dt) {
 	m_roundTimer.Tick(dt);
+
+	// Play a ticking sound when low on time.
+	if (!m_lowOnTime && m_roundTimer.GetTimeRemaining() <= 10.0f) {
+		m_tickChannel = Mix_PlayChannel(-1, m_clockTickSFX, -1);
+		m_lowOnTime = true;
+	}
+	if (m_lowOnTime && m_roundTimer.GetTimeRemaining() > 10.0f) {
+		Mix_HaltChannel(m_tickChannel);
+		m_lowOnTime = false;
+	}
 
 	// Update the player and their projectiles.
 	m_player.Update(dt);
@@ -81,6 +93,7 @@ GameState Game::Update(const float dt) {
 	if (!m_player.IsAlive()) {
 		std::cout << "GAME OVER! No health!" << "\n";
 		m_gameOverReason = "You died!";
+		Mix_PlayChannel(-1, m_gameOverSFX, 0);
 		Reset();
 		return GameState::DeathScreen;
 	}
@@ -88,6 +101,7 @@ GameState Game::Update(const float dt) {
 	if (m_roundTimer.HasTimerLapsed()) {
 		std::cout << "GAME OVER! Out of time!" << "\n";
 		m_gameOverReason = "Out of time!";
+		Mix_PlayChannel(-1, m_gameOverSFX, 0);
 		Reset();
 		return GameState::DeathScreen;
 	}
@@ -224,5 +238,10 @@ void Game::Reset() {
 			delete enemy;
 			enemy = nullptr;
 		}
+	}
+
+	if (m_lowOnTime) {
+		Mix_HaltChannel(m_tickChannel);
+		m_lowOnTime = false;
 	}
 }

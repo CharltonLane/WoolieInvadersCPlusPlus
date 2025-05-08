@@ -8,7 +8,7 @@ namespace TextRendering {
 
 	constexpr SDL_Color g_colorBlack{ 0, 0, 0, 255 };
 	constexpr SDL_Color g_colorWhite{ 255, 255, 255, 255 };
-	constexpr SDL_Color g_colorYellow{ 255, 195, 67, 255 };
+	constexpr SDL_Color g_colorYellow{ 255, 213, 65, 255 };
 
 	inline static SDL_Color g_textColor{ g_colorWhite };
 

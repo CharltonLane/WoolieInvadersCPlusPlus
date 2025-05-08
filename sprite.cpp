@@ -64,7 +64,7 @@ void Sprite::SetTexture(SDL_Texture* texture, bool resizeToTexture) {
 }
 
 void Sprite::SetImageSize(Vector2 newSize) {
-	std::cout << "Set size of sprite to " << newSize << "\n";
+	//std::cout << "Set size of sprite to " << newSize << "\n";
 	m_rect.w = newSize.x(); //the width of the texture
 	m_rect.h = newSize.y(); //the height of the texture
 }

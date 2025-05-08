@@ -3,30 +3,37 @@
 
 void Enemy::CalculateDesiredDirection()
 {
-	int directionChoice = Random::get(0, 4);
-
-	FacingDirection direction = static_cast<FacingDirection>(directionChoice);
-	switch (direction)
-	{
-	case FacingDirection::North:
-		m_desiredMovement.SetY(-1);
-		m_desiredMovement.SetX(0);
-		break;
-	case FacingDirection::East:
-		m_desiredMovement.SetY(0);
-		m_desiredMovement.SetX(1);
-		break;
-	case FacingDirection::South:
-		m_desiredMovement.SetY(1);
-		m_desiredMovement.SetX(0);
-		break;
-	case FacingDirection::West:
-		m_desiredMovement.SetY(0);
-		m_desiredMovement.SetX(-1);
-		break;
-	default:
-		break;
+	if (!IsMovingBetweenSpaces()) {
+		m_desiredMovement = GetRandomUnobstructedDirection();
 	}
+}
+
+Vector2Int Enemy::GetRandomUnobstructedDirection() const {
+	// From out current position, check each direction randomly. 
+	// Return one that's unobstructed, or current position if all obstructed.
+
+	std::vector<Vector2Int> directions
+	{ 
+		Vector2Int{1,0}, 
+		Vector2Int{0,1},
+		Vector2Int{-1,0},
+		Vector2Int{0,-1} 
+	};
+	std::mt19937 r = Random::generate();
+	std::shuffle(directions.begin(), directions.end(), r);
+
+	while (directions.size() > 0) {
+		Vector2Int directionChoice{ directions.back() };
+
+		if (m_level->IsTileSolid(m_currentGridCell + directionChoice)) {
+			directions.pop_back();
+		}
+		else {
+			return directionChoice;
+		}
+	}
+
+	return Vector2Int::zero;
 }
 
 void Enemy::Update(float dt)

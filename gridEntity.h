@@ -12,8 +12,6 @@ class GridEntity
 
 private:
 
-	Vector2Int m_currentGridCell{}; // In world space.
-	Vector2Int m_targetGridCell{}; // In world space.
 
 protected:
 
@@ -23,6 +21,9 @@ protected:
 		South,
 		West
 	};
+
+	Vector2Int m_currentGridCell{}; // In world space.
+	Vector2Int m_targetGridCell{}; // In world space.
 
 	Vector2Int m_currentMovementDirection{};
 

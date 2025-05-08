@@ -100,10 +100,10 @@ static Uint64 NOW = SDL_GetPerformanceCounter();
 static Uint64 LAST = 0;
 static float deltaTime = 0;
 
-static float deltaTimeSmoothed{ 0 };
-static float deltaTimeAverageSum{ 0 };
-static int deltaTimeAverageFrameCounter{ 0 };
-static int deltaTimeAverageFrameSmoothing{ 600 };
+static float fpsCounterSmoothValue{ 0 };
+static float fpsCounterAverageSum{ 0 };
+static int fpsCounterAverageFrameCounter{ 0 };
+static float fpsCounterRefreshAfterSeconds{ 0.1f }; // Refresh FPS every tenth of a second
 
 
 /* This function runs once per frame, and is the heart of the program. */
@@ -116,33 +116,23 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	NOW = SDL_GetPerformanceCounter();
 
 	deltaTime = (float)((NOW - LAST) / (float)SDL_GetPerformanceFrequency());
-	deltaTimeAverageSum += deltaTime;
-	deltaTimeAverageFrameCounter++;
+	fpsCounterAverageSum += deltaTime;
+	fpsCounterAverageFrameCounter++;
 
-	if (deltaTimeAverageFrameCounter >= deltaTimeAverageFrameSmoothing) {
-		deltaTimeSmoothed = deltaTimeAverageSum / deltaTimeAverageFrameCounter;
-		deltaTimeAverageSum = 0;
-		deltaTimeAverageFrameCounter = 0;
+	if (fpsCounterAverageSum >= fpsCounterRefreshAfterSeconds) {
+		//std::cout << "Tick\n";
+		fpsCounterSmoothValue = fpsCounterAverageSum / fpsCounterAverageFrameCounter;
+		fpsCounterAverageSum = 0;
+		fpsCounterAverageFrameCounter = 0;
 	}
 
-	//std::cout << "FPS: " << 1/deltaTime << "\n";
-
-	const char* message = "Hello World!";
-	int w = 0, h = 0;
-	float x, y;
 	const float scale = SpaceConversion::g_screenPixelsPerPixelArtPixel;
-
-	/* Center the message and scale it up */
-	SDL_GetRenderOutputSize(state.renderer, &w, &h);
 	SDL_SetRenderScale(state.renderer, scale, scale);
-	x = ((w / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(message)) / 2;
-	y = ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) / 2;
 
-	/* Draw the message */
-	SDL_SetRenderDrawColor(state.renderer, 0, 0, 0, 255);
+	// Draw the background color.
+	SDL_SetRenderDrawColor(state.renderer, 52, 9, 12, 255); // Red background.
 	SDL_RenderClear(state.renderer);
 	SDL_SetRenderDrawColor(state.renderer, 255, 255, 255, 255);
-	//SDL_RenderDebugText(state.renderer, x, y, message);
 
 	GameState updatedGameState{ state.gameState };
 
@@ -174,9 +164,9 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	}
 
 	// Draw fps
-	const std::string fpsString = std::to_string(static_cast<int>(1 / deltaTimeSmoothed)) ;
+	const std::string fpsString = std::to_string(static_cast<int>(1 / fpsCounterSmoothValue));
 	float fpsWidth = static_cast<float>(SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(fpsString.c_str()));
-	TextRendering::DrawTextAt(state.renderer, fpsString, { w / scale - fpsWidth, 0 });
+	TextRendering::DrawTextAt(state.renderer, fpsString, { SpaceConversion::g_gamePixelWidth - fpsWidth, 0 });
 
 	SDL_RenderPresent(state.renderer);
 

@@ -109,7 +109,7 @@ void Player::Update(float dt) {
 		m_isAttackInputTrigger = false;
 
 		if (m_ammo > 0) {
-			std::cout << "Shot projectile!" << "\n";
+			//std::cout << "Shot projectile!" << "\n";
 
 			TrackProjectile(CreateProjectile());
 
@@ -169,6 +169,7 @@ void Player::TakeDamage() {
 		m_invincibilityTimer.Restart();
 		m_combo = 1;
 		Mix_PlayChannel(-1, m_takeDamageSFX, 0);
+		m_invincibilitySprite.SetWorldPosition(m_worldPosition);
 	}
 	// Otherwise we're invincible, and no damage is to be taken!
 }

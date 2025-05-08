@@ -27,7 +27,7 @@ public:
 	}
 
 	void CalculateDesiredDirection() override;
-
+	Vector2Int GetRandomUnobstructedDirection() const;
 	void Kill();
 	bool IsAlive() const { return m_isAlive; }
 	int GetPoints() const { return m_pointsPerKill; }

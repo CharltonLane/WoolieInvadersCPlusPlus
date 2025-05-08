@@ -23,7 +23,7 @@ namespace SpaceConversion {
 	constexpr float g_gamePixelHeight{ 180 };
 	constexpr float g_pixelsPerUnit{ 8 };
 
-	constexpr float g_screenPixelsPerPixelArtPixel{ 4.0f };
+	inline float g_screenPixelsPerPixelArtPixel{ 4.0f }; // Is changed when entering fullscreen to suit the monitor's resolution.
 
 	inline Vector2 WorldToPixel(const Vector2& worldSpace) {
 		return { worldSpace * g_pixelsPerUnit };

@@ -90,9 +90,14 @@ void Menu::Render(SDL_Renderer* renderer, const AppState& state) const {
 	{
 	case GameState::MainMenu:
 		m_mainMenuBackground.Render(renderer);
+		m_mainMenuHeader.Render(renderer);
 		m_playGameButton.Render(renderer);
 		m_helpButton.Render(renderer);
 		m_quitGameButton.Render(renderer);
+
+		TextRendering::DrawTextAt(renderer, "C++ Port by Charlton Lane", { 0, SpaceConversion::g_gamePixelHeight - 2*SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE });
+		TextRendering::DrawTextAt(renderer, "Game by Charlton Lane and Travis McPhee", {0, SpaceConversion::g_gamePixelHeight - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE});
+
 		break;
 	case GameState::HelpMenu:
 		m_helpScreenBackground.Render(renderer);

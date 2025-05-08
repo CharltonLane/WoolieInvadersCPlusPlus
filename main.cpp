@@ -24,6 +24,7 @@
 #include "spaceConversion.h"
 
 SDL_AudioSpec g_audioSpec{ MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, MIX_DEFAULT_FREQUENCY };
+bool g_fullscreen{ false };
 
 /* This function runs once at startup. */
 // https://wiki.libsdl.org/SDL3/README/main-functions
@@ -65,6 +66,20 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 	// Game exit inputs.
 	if (event->type == SDL_EVENT_QUIT) {
 		return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
+	}
+
+	else if (event->type == SDL_EVENT_KEY_DOWN && event->key.key == SDLK_F11) {
+		// Toggle fullscreen.
+		g_fullscreen = !g_fullscreen;
+
+		SDL_SetWindowFullscreen(state.window, g_fullscreen);
+		SDL_SyncWindow(state.window);
+
+		int w{ 0 };
+		int h{ 0 };
+		if (SDL_GetCurrentRenderOutputSize(state.renderer, &w, &h)) {
+			SpaceConversion::g_screenPixelsPerPixelArtPixel = h / SpaceConversion::g_gamePixelHeight;
+		}
 	}
 
 	if (state.gameState == GameState::MainMenu) {
@@ -156,6 +171,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
 		if (updatedGameState != GameState::Ingame) {
 			state.game->EndGame();
+			state.menu->Render(state.renderer, state);
 		}
 
 		break;

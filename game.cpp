@@ -169,10 +169,15 @@ void Game::Render(SDL_Renderer* renderer) const {
 	// Bottom row.
 	TextRendering::DrawTextAt(renderer, static_cast<int>(m_roundTimer.GetTimeRemaining()), { 121, bottomRowY });
 	TextRendering::DrawTextAt(renderer, m_player.GetScore(), { 172, bottomRowY });
-	TextRendering::SetTextColor(TextRendering::g_colorYellow);
-	TextRendering::DrawTextAt(renderer, m_player.GetCombo(), { 241, bottomRowY });
-	TextRendering::SetTextColor(TextRendering::g_colorWhite);
 	TextRendering::DrawTextAt(renderer, m_waveNumber, { 84, bottomRowY });
+
+	if (m_player.IsMaxCombo()) {
+		TextRendering::SetTextColor(TextRendering::g_colorYellow);
+	}	
+	TextRendering::DrawTextAt(renderer, "x", { 236.0f, bottomRowY });
+	TextRendering::DrawTextAt(renderer, m_player.GetCombo(), { 236.0f + SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE, bottomRowY });
+	TextRendering::SetTextColor(TextRendering::g_colorWhite);
+
 }
 
 int Game::GetEnemiesAliveCount() const {
@@ -198,8 +203,9 @@ void Game::SpawnNextWave()
 	// Wave 2,3  : 2
 	// Wave 4,5  : 3
 	// Wave 6,7  : 4
-	// Wave 8+   : 5
-	int enemiesToSpawn = std::min(5, 1 + (m_waveNumber / 2));
+	// Wave 8    : 5
+	// Wave 10+  : 6
+	int enemiesToSpawn = std::min(6, 1 + (m_waveNumber / 2));
 
 	std::vector<Vector2Int> spawnPoints{ m_level.GetRandomSpawnPoints(enemiesToSpawn) };
 

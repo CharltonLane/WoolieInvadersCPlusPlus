@@ -91,6 +91,7 @@ public:
 
 	int GetScore() const { return m_score; }
 	int GetCombo() const { return m_combo; }
+	bool IsMaxCombo() const { return m_combo == m_maxCombo; }
 	int GetAmmo() const { return m_ammo; }
 
 	void RecordKill(int points) {

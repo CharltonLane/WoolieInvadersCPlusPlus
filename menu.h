@@ -10,6 +10,7 @@ class Menu
 {
 
 private:
+	Sprite m_mainMenuHeader{};
 	Sprite m_mainMenuBackground{};
 	Sprite m_helpScreenBackground{};
 	Sprite m_deathScreenBackground{};
@@ -29,7 +30,8 @@ public:
 	Menu() = default;
 
 	Menu(SDL_Renderer* renderer)
-		: m_mainMenuBackground{ renderer, "images/menu/menuBGWide.png" }
+		: m_mainMenuHeader{ renderer, "images/menu/header.png" }
+		, m_mainMenuBackground{ renderer, "images/menu/menuBGWide.png" }
 		, m_helpScreenBackground{ renderer, "images/menu/menuHelpBG.png" }
 		, m_deathScreenBackground{ renderer, "images/menu/gameOverScreen.png" }
 	{
@@ -46,6 +48,10 @@ public:
 		Vector2Int deathBackgroundSize{ 128 ,128 };
 		m_deathScreenBackground.SetImageSize(deathBackgroundSize);
 		m_deathScreenBackground.SetScreenPosition({ (SpaceConversion::g_gamePixelWidth / 2) - deathBackgroundSize.x() / 2, SpaceConversion::g_gamePixelHeight / 2 - deathBackgroundSize.y() / 2 });
+
+		Vector2Int mainMenuHeaderSize{ 256 ,32 };
+		m_mainMenuHeader.SetImageSize(mainMenuHeaderSize);
+		m_mainMenuHeader.SetScreenPosition({ (SpaceConversion::g_gamePixelWidth / 2) - mainMenuHeaderSize.x() / 2 , 16});
 
 		// Full screen help image.
 		m_helpScreenBackground.SetImageSize({ SpaceConversion::g_gamePixelWidth, SpaceConversion::g_gamePixelHeight });

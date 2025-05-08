@@ -31,22 +31,26 @@ public:
 	Menu(SDL_Renderer* renderer)
 		: m_mainMenuBackground{ renderer, "images/menu/menuBGWide.png" }
 		, m_helpScreenBackground{ renderer, "images/menu/menuHelpBG.png" }
-		, m_deathScreenBackground{ renderer, "images/menu/gameOverBG.png" }
+		, m_deathScreenBackground{ renderer, "images/menu/gameOverScreen.png" }
 	{
 
 		m_playGameButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,80,60,20}, "images/menu/buttonPlay.png", "images/menu/buttonPlayHover.png" };
 		m_helpButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,100,60,20}, "images/menu/buttonHelp.png", "images/menu/buttonHelpHover.png" };
 		m_quitGameButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,120,60,20}, "images/menu/buttonQuit.png", "images/menu/buttonQuitHover.png" };
 
-		m_deathScreenDoneButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,130,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
-		m_helpScreenDoneButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,130,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
+		m_deathScreenDoneButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,150,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
+		m_helpScreenDoneButton = { renderer, SDL_FRect{SpaceConversion::g_gamePixelWidth / 2 - 30,150,60,20}, "images/menu/buttonDone.png", "images/menu/buttonDoneHover.png" };
 
 		// Centered on screen.
 		// TODO: Use non-magic numbers.
-		m_deathScreenBackground.SetImageSize({ 100, 100 });
-		m_deathScreenBackground.SetScreenPosition({ (SpaceConversion::g_gamePixelWidth / 2) - 50, SpaceConversion::g_gamePixelHeight / 2 - 50 });
-	
-		m_mainMenuBackground.SetImageSize({ SpaceConversion::g_gamePixelWidth , SpaceConversion::g_gamePixelHeight});
+		Vector2Int deathBackgroundSize{ 128 ,128 };
+		m_deathScreenBackground.SetImageSize(deathBackgroundSize);
+		m_deathScreenBackground.SetScreenPosition({ (SpaceConversion::g_gamePixelWidth / 2) - deathBackgroundSize.x() / 2, SpaceConversion::g_gamePixelHeight / 2 - deathBackgroundSize.y() / 2 });
+
+		// Full screen help image.
+		m_helpScreenBackground.SetImageSize({ SpaceConversion::g_gamePixelWidth, SpaceConversion::g_gamePixelHeight });
+
+		m_mainMenuBackground.SetImageSize({ SpaceConversion::g_gamePixelWidth , SpaceConversion::g_gamePixelHeight });
 	}
 
 	void HandleInput(const SDL_Event* event);

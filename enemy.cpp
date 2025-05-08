@@ -37,4 +37,23 @@ void Enemy::Update(float dt)
 
 	GridEntity::Update(dt);
 
+	// Update sprite texture.
+	switch (m_facingDirection)
+	{
+	case GridEntity::FacingDirection::North:
+		m_sprite.SetTexture(m_northTexture);
+		break;
+	case GridEntity::FacingDirection::East:
+		m_sprite.SetTexture(m_eastTexture);
+		break;
+	case GridEntity::FacingDirection::South:
+		m_sprite.SetTexture(m_southTexture);
+		break;
+	case GridEntity::FacingDirection::West:
+		m_sprite.SetTexture(m_westTexture);
+		break;
+	default:
+		break;
+	}
+
 }

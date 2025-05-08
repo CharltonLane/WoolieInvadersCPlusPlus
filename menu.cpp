@@ -103,9 +103,9 @@ void Menu::Render(SDL_Renderer* renderer, const AppState& state) const {
 
 		TextRendering::SetTextColor(TextRendering::g_colorBlack);
 		TextRendering::DrawTextAt(renderer, state.game->GetGameOverReason(), {SpaceConversion::g_gamePixelWidth / 2 - (SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(state.game->GetGameOverReason().c_str()) / 2), 66}, false);
-		TextRendering::DrawTextAt(renderer, state.game->GetGameOverScore(), { SpaceConversion::g_gamePixelWidth / 2 + 4, 84 }, false);
+		TextRendering::DrawTextAt(renderer, state.game->GetGameOverScore(), { SpaceConversion::g_gamePixelWidth / 2 -12, 84 }, false);
 		// TODO: High score text.
-		TextRendering::DrawTextAt(renderer, state.game->GetGameOverScore(), { SpaceConversion::g_gamePixelWidth / 2 + 4, 116 }, false);
+		TextRendering::DrawTextAt(renderer, state.game->GetGameOverScore(), { SpaceConversion::g_gamePixelWidth / 2 - 58, 116 }, false);
 		TextRendering::SetTextColor(TextRendering::g_colorWhite);
 
 		m_deathScreenDoneButton.Render(renderer);

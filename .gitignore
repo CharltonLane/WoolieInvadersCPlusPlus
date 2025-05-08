@@ -56,3 +56,4 @@ bld/
 /images/world/tiles
 *.vcxproj.filters
 *.vcxproj.user
+/SaveData

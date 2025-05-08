@@ -48,6 +48,9 @@ SDL_AppResult SDL_AppInit(void** appstate, [[maybe_unused]] int argc, [[maybe_un
 		return SDL_APP_FAILURE;
 	}
 
+	// Turn vsync on.
+	SDL_SetRenderVSync(state.renderer, 1);
+
 	state.menu = new Menu{ state.renderer };
 	state.game = new Game{ state.renderer };
 

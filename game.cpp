@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <iostream>
+#include <string>
 #include <SDL3/SDL.h>
 #include "game.h"
 #include "timer.h"
@@ -5,6 +8,7 @@
 #include "random.h"
 #include "appState.h"
 #include "textRendering.h"
+#include "saveData.h"
 
 void Game::StartGame() {
 
@@ -16,11 +20,20 @@ void Game::StartGame() {
 	else {
 		printf("Music is null %s\n", SDL_GetError());
 	}
+
+	SaveData::ReadHighscoreFromDisk();
 }
 
 void Game::EndGame() {
 	// Fade music over 3 seconds.
 	Mix_FadeOutMusic(3000);
+
+
+	// Write highscore to disk.
+	if (m_gameOverScore > SaveData::g_highscore) {
+		SaveData::WriteHighscoreToDisk(m_gameOverScore);
+	}
+
 }
 
 void Game::HandleInput(const SDL_Event* event)

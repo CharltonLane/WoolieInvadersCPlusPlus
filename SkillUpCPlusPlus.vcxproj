@@ -182,6 +182,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="projectile.h" />
     <ClInclude Include="random.h" />
+    <ClInclude Include="saveData.h" />
     <ClInclude Include="spaceConversion.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="textRendering.h" />

@@ -45,7 +45,7 @@ public:
 
 	// Getters/Setters.
 	const std::string& GetGameOverReason() { return m_gameOverReason; }
-	const int GetGameOverScore() { return m_gameOverScore; }
+	const int GetGameOverScore() const { return m_gameOverScore; }
 
 private:
 	SDL_Renderer* m_renderer{};

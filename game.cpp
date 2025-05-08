@@ -46,7 +46,6 @@ GameState Game::Update(const float dt) {
 	m_player.Update(dt);
 	m_player.UpdateProjectiles(dt, m_enemies);
 
-
 	// Update enemies.
 	for (auto& enemyPointer : m_enemies)
 	{
@@ -90,6 +89,11 @@ GameState Game::Update(const float dt) {
 
 	m_newWaveTextTimer.Tick(dt);
 
+
+	m_handIcons.SetIconsToShow(m_player.GetAmmo());
+	m_heartIcons.SetIconsToShow(m_player.GetHealth());
+	m_enemyIcons.SetIconsToShow(1); // Not showing list of enemies, just 1 icon now and using text for number.
+
 	if (m_escapeKeyPressed) {
 		m_escapeKeyPressed = false;
 		Reset();
@@ -119,21 +123,31 @@ void Game::Render(SDL_Renderer* renderer) const {
 	// Render HUD.
 	m_hudBackground.Render(renderer);
 
-	float bottomRowY = ((SpaceConversion::g_gamePixelHeight)-SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE) + 1;
-	float topRowY = ((SpaceConversion::g_gamePixelHeight)-(2*SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE)) + 1;
+	float bottomRowY = SpaceConversion::g_gamePixelHeight - 10;
+	float topRowY = SpaceConversion::g_gamePixelHeight - 22;
 
 	// Bottom row.
-	TextRendering::DrawTextAt(renderer, m_player.GetAmmo(), { 30, bottomRowY });
-	TextRendering::DrawTextAt(renderer, static_cast<int>(m_roundTimer.GetTimeRemaining()), { 118, bottomRowY});
-	TextRendering::DrawTextAt(renderer, m_player.GetScore(), { 170, bottomRowY });
+	//TextRendering::DrawTextAt(renderer, m_player.GetAmmo(), { 30, bottomRowY });
+
+	m_handIcons.Render(renderer);
+	m_heartIcons.Render(renderer);
+	m_enemyIcons.Render(renderer);
+
+	TextRendering::DrawTextAt(renderer, "x", { 236.0f, topRowY });
+	TextRendering::DrawTextAt(renderer, GetEnemiesAliveCount(), { 236.0f + SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE, topRowY });
+
+	TextRendering::DrawTextAt(renderer, static_cast<int>(m_roundTimer.GetTimeRemaining()), { 121, bottomRowY });
+	TextRendering::DrawTextAt(renderer, m_player.GetScore(), { 172, bottomRowY });
 	TextRendering::SetTextColor(TextRendering::g_colorYellow);
-	TextRendering::DrawTextAt(renderer, m_player.GetCombo(), { 192, bottomRowY });
+	TextRendering::DrawTextAt(renderer, m_player.GetCombo(), { 241, bottomRowY });
 	TextRendering::SetTextColor(TextRendering::g_colorWhite);
 
+	TextRendering::DrawTextAt(renderer, m_waveNumber, { 84, bottomRowY });
+
 	// Top row.
-	TextRendering::DrawTextAt(renderer, GetEnemiesAliveCount(), { 40, topRowY });
-	TextRendering::DrawTextAt(renderer, m_waveNumber, { 170, topRowY });
-	TextRendering::DrawTextAt(renderer, m_player.GetHealth(), { 118, topRowY });
+
+
+	//TextRendering::DrawTextAt(renderer, m_player.GetHealth(), { 118, topRowY });
 
 	if (!m_newWaveTextTimer.HasTimerLapsed()) {
 		TextRendering::DrawCenteredText(renderer, "Wave " + std::to_string(m_waveNumber));

@@ -14,7 +14,7 @@ namespace SpaceConversion {
 	// Screen space: Pixels on the monitor.
 	//				 This is 4 monitor pixels to one pixel art pixel. (Set via SDL_SetRenderScale in main.cpp)
 
-	inline Vector2 g_cameraPosition{ -60,0 };
+	inline Vector2 g_cameraPosition{ -60,-20 };
 
 	constexpr int g_windowWidth{ 1280 };
 	constexpr int g_windowHeight{ 720 };

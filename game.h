@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "levelGrid.h"
 #include "appState.h"
+#include "uiIconRow.h"
 
 class Game {
 
@@ -19,8 +20,11 @@ public:
 		: m_renderer{ renderer }
 		, m_player{ renderer, &m_level, Vector2Int{4, 4} }
 		, m_shopLevelBackground{ renderer, "images/world/shop.png" }
-		, m_hudBackground{ renderer, "images/hud/hudBG.png" }
+		, m_hudBackground{ renderer, "images/hud/hudBackgroundLarge.png" }
 		, m_enemies(6, nullptr)
+		, m_handIcons{ renderer, SDL_FRect{137.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/hud/hudIconHand.png" }
+		, m_heartIcons{ renderer, SDL_FRect{72.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/hud/hudIconHeart.png" }
+		, m_enemyIcons{ renderer, SDL_FRect{228.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/enemy/enemyDown.png" }
 	{
 		m_hudBackground.SetScreenPosition(Vector2{ 0, SpaceConversion::g_gamePixelHeight - m_hudBackground.GetImageSize().y() });
 	}
@@ -75,5 +79,10 @@ private:
 
 	// Audio.
 	Mix_Music* m_ingameMusic{ nullptr };
+
+	// UI.
+	UIIconRow m_handIcons{};
+	UIIconRow m_heartIcons{};
+	UIIconRow m_enemyIcons{};
 };
 

@@ -18,8 +18,13 @@ private:
 
 public:
 
-	Sprite(SDL_Renderer* renderer, const std::string& fileName)
-		: m_texture{ LoadImage(renderer, fileName) }
+	Sprite()
+		: m_texture{ nullptr }
+		, m_rect{}
+	{}
+
+	Sprite(SDL_Texture* texture)
+		: m_texture{ texture }
 		, m_rect{}
 	{
 		m_rect.x = 0; //the x coordinate
@@ -30,10 +35,13 @@ public:
 		m_rect.h = imageSize.y(); //the height of the texture
 	}
 
-	Sprite()
-		: m_texture{ nullptr }
-		, m_rect{}
-	{}
+	Sprite(SDL_Renderer* renderer, const std::string& fileName)
+		: Sprite{ LoadImage(renderer, fileName) }
+	{
+
+	}
+
+
 
 	static SDL_Texture* LoadImage(SDL_Renderer* renderer, const std::string& fileName);
 

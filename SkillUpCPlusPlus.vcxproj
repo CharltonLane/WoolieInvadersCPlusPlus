@@ -170,6 +170,7 @@
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="uiButton.cpp" />
+    <ClCompile Include="uiIconRow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="appState.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="textRendering.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="uiButton.h" />
+    <ClInclude Include="uiIconRow.h" />
     <ClInclude Include="vector2.h" />
     <ClInclude Include="vector2Int.h" />
   </ItemGroup>

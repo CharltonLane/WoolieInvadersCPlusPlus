@@ -71,16 +71,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-x64\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GitHub\SkillUpCPlusPlus\game;C:\GitHub\SkillUpCPlusPlus\engine;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-x64\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-x64\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GitHub\SkillUpCPlusPlus\game;C:\GitHub\SkillUpCPlusPlus\engine;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-x64\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-x64\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GitHub\SkillUpCPlusPlus\game;C:\GitHub\SkillUpCPlusPlus\engine;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-x64\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-x64\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\GitHub\SkillUpCPlusPlus\game;C:\GitHub\SkillUpCPlusPlus\engine;C:\GitHub\SkillUpCPlusPlus\SDL\SDL3-x64\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,38 +159,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="gridEntity.cpp" />
-    <ClCompile Include="levelGrid.cpp" />
+    <ClCompile Include="game\enemy.cpp" />
+    <ClCompile Include="game\game.cpp" />
+    <ClCompile Include="game\gridEntity.cpp" />
+    <ClCompile Include="game\levelGrid.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="projectile.cpp" />
-    <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="timer.cpp" />
-    <ClCompile Include="uiButton.cpp" />
-    <ClCompile Include="uiIconRow.cpp" />
+    <ClCompile Include="game\menu.cpp" />
+    <ClCompile Include="game\player.cpp" />
+    <ClCompile Include="game\projectile.cpp" />
+    <ClCompile Include="engine\sprite.cpp" />
+    <ClCompile Include="engine\timer.cpp" />
+    <ClCompile Include="engine\uiButton.cpp" />
+    <ClCompile Include="engine\uiIconRow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="appState.h" />
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="gridEntity.h" />
-    <ClInclude Include="levelGrid.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="projectile.h" />
-    <ClInclude Include="random.h" />
-    <ClInclude Include="saveData.h" />
-    <ClInclude Include="spaceConversion.h" />
-    <ClInclude Include="sprite.h" />
-    <ClInclude Include="textRendering.h" />
-    <ClInclude Include="timer.h" />
-    <ClInclude Include="uiButton.h" />
-    <ClInclude Include="uiIconRow.h" />
-    <ClInclude Include="vector2.h" />
-    <ClInclude Include="vector2Int.h" />
+    <ClInclude Include="game\appState.h" />
+    <ClInclude Include="game\enemy.h" />
+    <ClInclude Include="game\game.h" />
+    <ClInclude Include="game\gridEntity.h" />
+    <ClInclude Include="game\levelGrid.h" />
+    <ClInclude Include="game\menu.h" />
+    <ClInclude Include="game\player.h" />
+    <ClInclude Include="game\projectile.h" />
+    <ClInclude Include="engine\random.h" />
+    <ClInclude Include="game\saveData.h" />
+    <ClInclude Include="game\spaceConversion.h" />
+    <ClInclude Include="engine\sprite.h" />
+    <ClInclude Include="engine\textRendering.h" />
+    <ClInclude Include="engine\timer.h" />
+    <ClInclude Include="engine\uiButton.h" />
+    <ClInclude Include="engine\uiIconRow.h" />
+    <ClInclude Include="engine\vector2.h" />
+    <ClInclude Include="engine\vector2Int.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

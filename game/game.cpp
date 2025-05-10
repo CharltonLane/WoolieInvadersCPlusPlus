@@ -3,9 +3,7 @@
 #include <string>
 #include <SDL3/SDL.h>
 #include "game.h"
-#include "timer.h"
 #include "spaceConversion.h"
-#include "random.h"
 #include "appState.h"
 #include "textRendering.h"
 #include "saveData.h"
@@ -13,7 +11,7 @@
 void Game::StartGame() {
 
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
-	m_ingameMusic = Mix_LoadMUS("audio\\downdown.mp3");
+	m_ingameMusic = Mix_LoadMUS("audio/downdown.mp3");
 	if (m_ingameMusic) {
 		Mix_PlayMusic(m_ingameMusic, -1);
 	}
@@ -227,10 +225,20 @@ void Game::Reset() {
 	m_gameOverScore = m_player.GetScore();
 
 	m_escapeKeyPressed = false;
-	m_roundTimer.SetTimer(m_roundTimerStartDuration);
+	m_roundTimer.SetTimerOneShot(m_roundTimerStartDuration);
 	m_waveNumber = 0;
 
 	m_player.Reset();
+	DeleteAllEnemies();
+
+	if (m_lowOnTime) {
+		Mix_HaltChannel(m_tickChannel);
+		m_lowOnTime = false;
+	}
+}
+
+void Game::DeleteAllEnemies()
+{
 	for (auto& enemy : m_enemies)
 	{
 		if (enemy) {
@@ -238,9 +246,5 @@ void Game::Reset() {
 			enemy = nullptr;
 		}
 	}
-
-	if (m_lowOnTime) {
-		Mix_HaltChannel(m_tickChannel);
-		m_lowOnTime = false;
-	}
+	// We don't clear the m_enemies array here as it's got a fixed size as we know the max number of enemies.
 }

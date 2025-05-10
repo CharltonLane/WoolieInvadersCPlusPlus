@@ -1,10 +1,8 @@
 #pragma once
 class Timer
 {
-private:
-	float m_remainingSeconds{};
-	float m_durationSeconds{};
-	bool m_isPaused{ false };
+	// Flexible timer class.
+	// Timers have a duration and will always tick down towards 0.
 
 public:
 	Timer(float startingDuration, bool startPaused = false)
@@ -19,13 +17,22 @@ public:
 		, m_isPaused{ startPaused }
 	{}
 
-	void SetTimer(float newValue);
-	void AddTime(float secondsToAdd);
 	void Tick(float dt);
-	float GetTimeRemaining() const;
 	void Pause();
 	void Unpause();
+
+	float GetTimeRemaining() const;
 	bool HasTimerLapsed() const;
+
 	void Restart();
+	void AddTime(float secondsToAdd);
+	void SetTimerOneShot(float remainingSeconds);
+	void SetDuration(float durationSeconds);
+
+
+private:
+	float m_durationSeconds{}; // The standard duration of the timer.
+	float m_remainingSeconds{};
+	bool m_isPaused{ false };
 };
 

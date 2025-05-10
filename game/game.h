@@ -1,8 +1,6 @@
 #pragma once
-#include <SDL3_mixer/SDL_mixer.h>
 #include <vector>
-#include "gridEntity.h"
-#include "vector2.h"
+#include <SDL3_mixer/SDL_mixer.h>
 #include "timer.h"
 #include "spaceConversion.h"
 #include "player.h"
@@ -25,10 +23,10 @@ public:
 		, m_handIcons{ renderer, SDL_FRect{137.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/hud/hudIconHand.png" }
 		, m_heartIcons{ renderer, SDL_FRect{72.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/hud/hudIconHeart.png" }
 		, m_enemyIcons{ renderer, SDL_FRect{228.0f, SpaceConversion::g_gamePixelHeight - 22, 8,8}, "images/enemy/enemySouth.png" }
-		, m_gameOverSFX{ Mix_LoadWAV("audio\\gameOver.wav") }
-		, m_clockTickSFX{ Mix_LoadWAV("audio\\tick.wav") }
+		, m_gameOverSFX{ Mix_LoadWAV("audio/gameOver.wav") }
+		, m_clockTickSFX{ Mix_LoadWAV("audio/tick.wav") }
 	{
-		m_hudBackground.SetScreenPosition(Vector2{ 0, SpaceConversion::g_gamePixelHeight - m_hudBackground.GetImageSize().y() });
+		m_hudBackground.SetScreenPosition({ 0, SpaceConversion::g_gamePixelHeight - m_hudBackground.GetImageSize().y() });
 	}
 
 	// Core.
@@ -39,15 +37,15 @@ public:
 	// Other methods.
 	void StartGame();
 	void EndGame();
-
-	int GetEnemiesAliveCount() const;
-	bool AreEnemiesAlive() const;
 	void SpawnNextWave();
 	void Reset();
+	void DeleteAllEnemies();
 
 	// Getters/Setters.
 	const std::string& GetGameOverReason() { return m_gameOverReason; }
 	const int GetGameOverScore() const { return m_gameOverScore; }
+	int GetEnemiesAliveCount() const;
+	bool AreEnemiesAlive() const;
 
 private:
 	SDL_Renderer* m_renderer{};

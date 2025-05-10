@@ -1,11 +1,12 @@
 #include "enemy.h"
 #include "random.h"
 
-void Enemy::CalculateDesiredDirection()
+Vector2Int Enemy::CalculateDesiredDirection()
 {
 	if (!IsMovingBetweenSpaces()) {
-		m_desiredMovement = GetRandomUnobstructedDirection();
+		return GetRandomUnobstructedDirection();
 	}
+	return m_desiredMovement;
 }
 
 Vector2Int Enemy::GetRandomUnobstructedDirection() const {

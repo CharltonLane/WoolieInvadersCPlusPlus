@@ -6,6 +6,9 @@
 
 namespace TextRendering {
 
+	// Basic text rendering using the debug text renderer. 
+	// If more advanced functionality is needed, this can be updated to use SDL's other text rendering features.
+
 	constexpr SDL_Color g_colorBlack{ 0, 0, 0, 255 };
 	constexpr SDL_Color g_colorWhite{ 255, 255, 255, 255 };
 	constexpr SDL_Color g_colorYellow{ 255, 213, 65, 255 };

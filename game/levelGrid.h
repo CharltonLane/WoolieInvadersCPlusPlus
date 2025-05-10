@@ -9,9 +9,26 @@ class LevelGrid
 {
 	// Represents the game's world.
 	// Can provide info about solid/unwalkable tiles.
+	// Currently uses a fixed layout.
+
+public:
+	constexpr LevelGrid()
+	{
+		SetupTileVectors();
+	}
+
+	// Determine if a given world position is solid (true) or not (false).
+	bool IsTileSolid(const Vector2Int& worldPosition);
+
+	// Get a vector containing a random selection of the level's available spawnpoints.
+	// Returns 'count' random spawn points.
+	const std::vector<Vector2Int> GetRandomSpawnPoints(int count);
+
 
 private:
-	// TODO: Could load this in from a b/w image. Or even just a string with X and _ for solid or not.
+	// TODO: Could load this in from a b/w image. 
+	// Or even just a string with X and _ for solid or not, then use the index of the character to calc x/y, rather than using these indices.
+	// Indices only used as that's how they were in the original Python version of the game, and it was easier to copy them across.
 	const std::vector<int> m_solidTileIndices
 	{     0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,
 		 25,  26,  27,  28,  29,  30,  31,  32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,  48,  49,
@@ -31,6 +48,7 @@ private:
 		375,                                                                                                                    399,
 		400,                                                                                                                    424,
 		425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449
+		// There's one more row of the level from 445-474, but the player can't reach it due to the solid wall above.
 	};
 
 	const std::vector<int> m_spawnpointIndices{ 69, 103, 121, 192, 220, 255, 265, 337, 371, 378, 390 };
@@ -64,19 +82,5 @@ private:
 			m_spawnPointTiles[unsignedIndex] = Vector2Int{ x, y };
 		}
 	}
-
-public:
-	constexpr LevelGrid()
-	{
-		SetupTileVectors();
-	}
-
-	~LevelGrid()
-	{
-	}
-
-	bool IsTileSolid(const Vector2Int& worldPosition);
-
-	const std::vector<Vector2Int> GetRandomSpawnPoints(int count);
 };
 

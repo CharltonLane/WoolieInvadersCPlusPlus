@@ -48,6 +48,8 @@ inline Vector2 operator*(const float scalar, const Vector2 vector) {
 inline Vector2 operator/(const Vector2 vector, const float scalar) {
 	return Vector2{ vector.x() / scalar, vector.y() / scalar };
 }
+
+// TODO: Does this one even make sense? Feels a bit weird to divide a scalar by a vector.
 inline Vector2 operator/(const float scalar, const Vector2 vector) {
 	return vector / scalar;
 }

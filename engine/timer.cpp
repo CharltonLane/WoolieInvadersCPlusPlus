@@ -1,10 +1,16 @@
 #include "timer.h"
 
-void Timer::SetTimer(float newValue) {
-	m_remainingSeconds = newValue;
+void Timer::SetTimerOneShot(float remainingSeconds) {
+	// Can be used to set the remaining time above the timer's usual duration.
+	m_remainingSeconds = remainingSeconds;
+}
+
+void Timer::SetDuration(float durationSeconds) {
+	m_durationSeconds = durationSeconds;
 }
 
 void Timer::AddTime(float secondsToAdd) {
+	// Can be used to set the remaining time above the timer's usual duration.
 	m_remainingSeconds += secondsToAdd;
 }
 

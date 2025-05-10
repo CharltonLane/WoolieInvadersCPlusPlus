@@ -10,23 +10,21 @@ public:
 	Enemy(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
 		: GridEntity{ renderer, level, gridPosition }
 	{
-		m_sprite = Sprite{ renderer, "images/enemy/enemySouth.png" };
-
 		m_movementSpeed = 2;
 
-		m_northTexture = Sprite::LoadImage(renderer, "images/enemy/enemyNorth.png");
-		m_eastTexture = Sprite::LoadImage(renderer, "images/enemy/enemyEast.png");
-		m_southTexture = Sprite::LoadImage(renderer, "images/enemy/enemySouth.png");
-		m_westTexture = Sprite::LoadImage(renderer, "images/enemy/enemyWest.png");
+		m_northTexture = Sprite::LoadTexture(renderer, "images/enemy/enemyNorth.png");
+		m_eastTexture = Sprite::LoadTexture(renderer, "images/enemy/enemyEast.png");
+		m_southTexture = Sprite::LoadTexture(renderer, "images/enemy/enemySouth.png");
+		m_westTexture = Sprite::LoadTexture(renderer, "images/enemy/enemyWest.png");
 
 		m_sprite.SetTexture(m_northTexture);
 
 		if (!m_hitMarkerSFX) {
-			m_hitMarkerSFX = Mix_LoadWAV("audio\\hitMarker.wav");
+			m_hitMarkerSFX = Mix_LoadWAV("audio/hitMarker.wav");
 		}
 	}
 
-	void CalculateDesiredDirection() override;
+	Vector2Int CalculateDesiredDirection() override;
 	Vector2Int GetRandomUnobstructedDirection() const;
 	void Kill();
 	bool IsAlive() const { return m_isAlive; }

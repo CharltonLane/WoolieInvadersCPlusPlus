@@ -42,7 +42,7 @@ namespace SaveData {
 		g_highscore = score;
 
 
-		// Woolie invaders directory.
+		// SaveData directory.
 		std::filesystem::path dataDirectoryPath{ g_dataFolderName };
 		if (!std::filesystem::is_directory(dataDirectoryPath)) {
 			// Create directory.

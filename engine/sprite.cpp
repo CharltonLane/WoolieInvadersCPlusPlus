@@ -1,11 +1,11 @@
-#include <SDL3/SDL.h>
+#include <cassert>
 #include <iostream>
+#include <SDL3/SDL.h>
 #include "sprite.h"
 #include "vector2.h"
 #include "spaceConversion.h"
-#include <cassert>
 
-SDL_Texture* Sprite::LoadImage(SDL_Renderer* renderer, const std::string& fileName) {
+SDL_Texture* Sprite::LoadTexture(SDL_Renderer* renderer, const std::string& fileName) {
 	SDL_Texture* tex = IMG_LoadTexture(renderer, fileName.c_str());
 	SDL_SetTextureScaleMode(tex, SDL_SCALEMODE_NEAREST);
 
@@ -14,7 +14,7 @@ SDL_Texture* Sprite::LoadImage(SDL_Renderer* renderer, const std::string& fileNa
 	return tex;
 }
 
-void Sprite::Render(SDL_Renderer* renderer, Vector2 cameraPosition) const {
+void Sprite::Render(SDL_Renderer* renderer, const Vector2& cameraPosition) const {
 
 	SDL_FRect cameraOffsetPosition
 	{   m_rect.x - cameraPosition.x(),
@@ -35,22 +35,20 @@ void Sprite::Render(SDL_Renderer* renderer, Vector2 cameraPosition) const {
 
 }
 
-void Sprite::SetWorldPosition(Vector2 worldPosition)
+void Sprite::SetWorldPosition(const Vector2& worldPosition)
 {
 	Vector2 screenPosition = SpaceConversion::WorldToPixel(worldPosition);
-	//std::cout << screenPosition.x() << ", " << screenPosition.y() << "\n";
 	m_rect.x = screenPosition.x();
 	m_rect.y = screenPosition.y();
 }
 
-void Sprite::SetScreenPosition(Vector2 position)
+void Sprite::SetScreenPosition(const Vector2& position)
 {
 	m_rect.x = position.x();
 	m_rect.y = position.y();
 }
 
 void Sprite::SetTexture(SDL_Texture* texture, bool resizeToTexture) {
-	//std::cout << "Set sprite texture" << "\n";
 	if (m_texture == texture) {
 		return;
 	}
@@ -63,15 +61,18 @@ void Sprite::SetTexture(SDL_Texture* texture, bool resizeToTexture) {
 	}
 }
 
-void Sprite::SetImageSize(Vector2 newSize) {
+void Sprite::SetImageSize(const Vector2& newSize) {
 	//std::cout << "Set size of sprite to " << newSize << "\n";
 	m_rect.w = newSize.x(); //the width of the texture
 	m_rect.h = newSize.y(); //the height of the texture
 }
 
-void Sprite::SetRotation(float degrees) {
-	// TODO: This should be modulo'd to be within 0-360.
-	m_rotationDegrees = degrees;
+
+void Sprite::SetRotation(const float degrees) {
+	m_rotationDegrees = fmodf(degrees, 360.0f);
+	if (m_rotationDegrees < 0) {
+		m_rotationDegrees += 360;
+	}
 }
 
 float Sprite::GetRotation() const {
@@ -81,6 +82,8 @@ float Sprite::GetRotation() const {
 Vector2 Sprite::GetImageSize() const {
 	float width{ 0 };
 	float height{ 0 };
-	SDL_GetTextureSize(m_texture, &width, &height);
+	if (m_texture) {
+		SDL_GetTextureSize(m_texture, &width, &height);
+	}
 	return Vector2{ width, height };
 }

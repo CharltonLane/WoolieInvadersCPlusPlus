@@ -10,73 +10,34 @@ class GridEntity
 {
 	// This is an entity such as the player or an enemy that is locked to the grid for movement.
 
-private:
-
-
-protected:
-
-	enum class FacingDirection {
-		North,
-		East,
-		South,
-		West
-	};
-
-	Vector2Int m_currentGridCell{}; // In world space.
-	Vector2Int m_targetGridCell{}; // In world space.
-
-	Vector2Int m_currentMovementDirection{};
-
-	SDL_Renderer* m_renderer{ nullptr };
-
-	LevelGrid* m_level;
-
-	FacingDirection m_facingDirection{ FacingDirection::North };
-	Sprite m_sprite{};
-	Vector2Int m_desiredMovement{};
-	float m_movementSpeed{ 4 }; // Tiles per second.
-	Vector2 m_worldPosition; // Actual position in world space. Can be between grid cells.
-
-	void SetPosition(Vector2Int position) {
-		m_currentGridCell = position;
-		m_targetGridCell = position;
-		m_worldPosition = position;
-		m_currentMovementDirection = Vector2Int::zero;
-	}
-
 public:
 	GridEntity() = default;
 
-	GridEntity([[maybe_unused]] SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
-		:m_renderer{ renderer }
+	GridEntity(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
+		: m_renderer{ renderer }
 		, m_level{ level }
 		, m_currentGridCell{ gridPosition }
 		, m_targetGridCell{ gridPosition }
-		, m_sprite{ Sprite{  } }
-	{
-
-		m_worldPosition = gridPosition;
-	}
-
-	Vector2Int GetCurrentGridCell() const;
+		, m_worldPosition{ gridPosition }
+	{}
 
 	virtual void Update(const float dt);
+	virtual void Render(SDL_Renderer* renderer) const;
 
 	void CalculateFacingDirection(Vector2Int direction);
 	Vector2Int CalculateDesiredMovementFromFacingDirection();
 
-	virtual void Render(SDL_Renderer* renderer) const;
 
-	virtual void CalculateDesiredDirection();
+	virtual Vector2Int CalculateDesiredDirection();
 	bool AttemptMovement(Vector2Int direction);
-	bool IsDirectionWalkable(Vector2Int direction);
-	bool IsMovingBetweenSpaces() {
-		return (m_currentMovementDirection != Vector2Int::zero) && (m_targetGridCell != m_currentGridCell);
-	}
 
-	bool ContinueCurrentMovement(const float dt);
+
+	void ContinueCurrentMovement(const float dt);
 	void UpdateWorldPosition(const float dt);
 
+	bool IsDirectionWalkable(Vector2Int direction);
+	bool IsMovingBetweenSpaces();
+	Vector2Int GetCurrentGridCell() const;
 	Vector2Int FindActiveTile() const {
 		// Looks at where this entity is in world space and finds the closest tile.
 		// Useful for collisions. Makes it feel more fair by finding which tile an entity is "mostly" on, rather than the one they are going to or the one they were on.
@@ -89,6 +50,32 @@ public:
 		return FindActiveTile() == other.FindActiveTile();
 	}
 
+
+protected:
+
+	enum class FacingDirection {
+		North,
+		East,
+		South,
+		West
+	};
+
+	SDL_Renderer* m_renderer{ nullptr };
+
+	Vector2Int m_currentGridCell{}; // In world space.
+	Vector2Int m_targetGridCell{}; // In world space.
+
+	Vector2Int m_currentMovementDirection{};
+
+	LevelGrid* m_level;
+
+	FacingDirection m_facingDirection{ FacingDirection::North };
+	Sprite m_sprite{};
+	Vector2Int m_desiredMovement{}; // The direction this entity wants to move in.
+	float m_movementSpeed{ 4 }; // Grid tiles per second.
+	Vector2 m_worldPosition; // Actual position in world space. Can be between grid cells.
+
+	void SetPosition(const Vector2Int& position);
 };
 
 

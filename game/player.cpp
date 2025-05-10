@@ -194,7 +194,7 @@ void Player::Render(SDL_Renderer* renderer) const
 
 
 
-void Player::CalculateDesiredDirection() {
+Vector2Int Player::CalculateDesiredDirection() {
 
 	int x = 0;
 	int y = 0;
@@ -204,7 +204,6 @@ void Player::CalculateDesiredDirection() {
 	if (m_isSouthInput) {
 		y++;
 	}
-	m_desiredMovement.SetY(y);
 
 	if (m_isWestInput) {
 		x--;
@@ -212,5 +211,6 @@ void Player::CalculateDesiredDirection() {
 	if (m_isEastInput) {
 		x++;
 	}
-	m_desiredMovement.SetX(x);
+
+	return { x, y };
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <iostream>
 #include <SDL3/SDL.h>
 #include "vector2.h"
 #include "sprite.h"
@@ -16,7 +15,7 @@ public:
 		:m_renderer{ renderer }
 		, m_position{ positionAndSize.x, positionAndSize.y }
 		, m_spriteSize{positionAndSize.w, positionAndSize.h}
-		, m_iconTexture{ Sprite::LoadImage(renderer, iconFilePath) }
+		, m_iconTexture{ Sprite::LoadTexture(renderer, iconFilePath) }
 	{}
 
 	void Render(SDL_Renderer* renderer) const;

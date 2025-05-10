@@ -1,6 +1,9 @@
-#include "Menu.h"
+#include "menu.h"
 #include "game.h"
+#include "appState.h"
 #include "saveData.h"
+#include "textRendering.h"
+
 
 void Menu::HandleInput(const SDL_Event* event) {
 

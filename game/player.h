@@ -9,6 +9,92 @@
 
 class Player : public GridEntity
 {
+
+public:
+	Player() = default;
+
+	Player(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
+		: GridEntity{ renderer, level, gridPosition }
+		, m_projectiles(10)
+		, m_invincibilitySprite{ renderer, "images/shield.png" }
+		, m_startingPosition{ gridPosition }
+		, m_takeDamageSFX{ Mix_LoadWAV("audio/takeDamage.wav") }
+	{
+		// Load player textures.
+		m_northTexture = Sprite::LoadTexture(renderer, "images/player/playerNorth.png");
+		m_eastTexture = Sprite::LoadTexture(renderer, "images/player/playerEast.png");
+		m_southTexture = Sprite::LoadTexture(renderer, "images/player/playerSouth.png");
+		m_westTexture = Sprite::LoadTexture(renderer, "images/player/playerWest.png");
+
+		m_sprite.SetTexture(m_northTexture);
+	}
+
+	~Player() {
+		DestroyAllProjectiles();
+	}
+
+	Player(Player& copy) = delete;
+	Player& operator= (const Player& fraction) = delete;
+
+	void HandleInput(const SDL_Event* event);
+	void Render(SDL_Renderer* renderer) const override;
+	void Update(float dt) override;
+	Vector2Int CalculateDesiredDirection() override;
+	void UpdateProjectiles(float dt, std::vector<Enemy*>& enemies);
+
+	void AddHealth(int healthToAdd);
+	void TakeDamage();
+
+	bool IsAlive() const { return m_health > 0; }
+	bool IsInvincible() const { return !m_invincibilityTimer.HasTimerLapsed(); }
+	int GetHealth() const { return m_health; }
+
+	int GetScore() const { return m_score; }
+	int GetCombo() const { return m_combo; }
+	bool IsMaxCombo() const { return m_combo == m_maxCombo; }
+	int GetAmmo() const { return m_ammo; }
+
+	void RecordKill(int points) {
+		m_score += m_combo * points;
+		if (m_combo < m_maxCombo) {
+			m_combo++;
+		}
+	}
+
+	void Reset() {
+		// Move back to starting position.
+		SetPosition(m_startingPosition);
+
+		// Reset player attributes.
+		m_health = m_gameStartHealth;
+		m_ammo = m_maxAmmo;
+		m_invincibilityTimer.SetTimerOneShot(0);
+		m_score = 0;
+		m_combo = 1;
+
+		// Clear inputs.
+		m_isNorthInput = false;
+		m_isEastInput = false;
+		m_isSouthInput = false;
+		m_isWestInput = false;
+		m_isAttackInputTrigger = false;
+
+		DestroyAllProjectiles();
+	}
+
+	void DestroyAllProjectiles() {
+		// Destroy projectiles.
+		for (auto& projectile : m_projectiles)
+		{
+			if (projectile) {
+				delete projectile;
+				projectile = nullptr;
+			}
+		}
+		m_projectiles.clear();
+	}
+
+
 private:
 
 	Vector2Int m_startingPosition{};
@@ -56,77 +142,5 @@ private:
 	// Audio.
 	Mix_Chunk* m_takeDamageSFX{ nullptr };
 
-public:
-	Player() = default;
-
-	Player(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
-		: GridEntity{ renderer, level, gridPosition }
-		, m_projectiles(10)
-		, m_invincibilitySprite{ renderer, "images/shield.png" }
-		, m_startingPosition{ gridPosition }
-		, m_takeDamageSFX{ Mix_LoadWAV("audio\\takeDamage.wav") }
-	{
-		// Load player textures.
-		m_northTexture = Sprite::LoadImage(renderer, "images/player/playerNorth.png");
-		m_eastTexture = Sprite::LoadImage(renderer, "images/player/playerEast.png");
-		m_southTexture = Sprite::LoadImage(renderer, "images/player/playerSouth.png");
-		m_westTexture = Sprite::LoadImage(renderer, "images/player/playerWest.png");
-
-		m_sprite.SetTexture(m_northTexture);
-	}
-
-	void CalculateDesiredDirection() override;
-
-	void HandleInput(const SDL_Event* event);
-	void Render(SDL_Renderer* renderer) const override;
-	void Update(float dt) override;
-	void UpdateProjectiles(float dt, std::vector<Enemy*>& enemies);
-
-	void AddHealth(int healthToAdd);
-	void TakeDamage();
-
-	bool IsAlive() const { return m_health > 0; }
-	bool IsInvincible() const { return !m_invincibilityTimer.HasTimerLapsed(); }
-	int GetHealth() const { return m_health; }
-
-	int GetScore() const { return m_score; }
-	int GetCombo() const { return m_combo; }
-	bool IsMaxCombo() const { return m_combo == m_maxCombo; }
-	int GetAmmo() const { return m_ammo; }
-
-	void RecordKill(int points) {
-		m_score += m_combo * points;
-		if (m_combo < m_maxCombo) {
-			m_combo++;
-		}
-	}
-
-	void Reset() {
-		// Move back to starting position.
-		SetPosition(m_startingPosition);
-
-		// Reset player attributes.
-		m_health = m_gameStartHealth;
-		m_ammo = m_maxAmmo;
-		m_invincibilityTimer.SetTimer(0);
-		m_score = 0;
-		m_combo = 1;
-
-		// Clear inputs.
-		m_isNorthInput = false;
-		m_isEastInput = false;
-		m_isSouthInput = false;
-		m_isWestInput = false;
-		m_isAttackInputTrigger = false;
-
-		// Destroy projectiles.
-		for (auto& projectile : m_projectiles)
-		{
-			if (projectile) {
-				delete projectile;
-				projectile = nullptr;
-			}
-		}
-	}
 };
 

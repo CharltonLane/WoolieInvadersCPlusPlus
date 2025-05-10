@@ -1,8 +1,6 @@
 #include "projectile.h"
 
 void Projectile::Update(float dt) {
-	CalculateDesiredDirection();
-
 
 	if (IsMovingBetweenSpaces()) {
 		ContinueCurrentMovement(dt);

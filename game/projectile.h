@@ -9,8 +9,7 @@ public:
 	Projectile(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition, Vector2 worldPosition, FacingDirection facingDirection)
 		: GridEntity{ renderer, level, gridPosition }
 	{
-		m_projectileTexture = Sprite::LoadImage(renderer, "images/hand.png");
-		m_sprite.SetTexture(m_projectileTexture);
+		m_sprite.SetTexture(Sprite::LoadTexture(renderer, "images/hand.png"));
 		m_sprite.SetImageSize({ 8.0f, 8.0f });
 
 		m_worldPosition = worldPosition;
@@ -23,12 +22,10 @@ public:
 
 	void Update(float dt) override;
 
-	bool HasHitWall() const {
-		return m_hasHitWall;
-	}
+	bool HasHitWall() const { return m_hasHitWall; }
+
 
 private:
-	SDL_Texture* m_projectileTexture{ nullptr };
 	Timer m_spinTimer{ 0.08f };
 
 	bool m_hasHitWall{ false };

@@ -30,6 +30,12 @@ public:
 	}
 
 	~Player() {
+		// Clear the current sprite texture, as we destroy them all below instead of letting the sprite handle it.
+		m_sprite.SetTexture(nullptr, false);
+		SDL_DestroyTexture(m_northTexture);
+		SDL_DestroyTexture(m_eastTexture);
+		SDL_DestroyTexture(m_southTexture);
+		SDL_DestroyTexture(m_westTexture);
 		DestroyAllProjectiles();
 	}
 

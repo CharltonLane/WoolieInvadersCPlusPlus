@@ -18,6 +18,21 @@ public:
 		, m_iconTexture{ Sprite::LoadTexture(renderer, iconFilePath) }
 	{}
 
+	~UIIconRow() {
+
+		for (auto& sprite : m_sprites)
+		{
+			if (sprite) {
+				// Clear the texture (we delete it below, instead of letting the sprite delete it).
+				sprite->SetTexture(nullptr, false);
+				delete sprite;
+			}
+			m_sprites.clear();
+		}
+
+		SDL_DestroyTexture(m_iconTexture);
+	}
+
 	void Render(SDL_Renderer* renderer) const;
 
 	void SetIconsToShow(int count);

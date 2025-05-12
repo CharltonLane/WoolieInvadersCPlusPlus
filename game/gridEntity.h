@@ -21,6 +21,8 @@ public:
 		, m_worldPosition{ gridPosition }
 	{}
 
+	virtual ~GridEntity() = default;
+
 	virtual void Update(const float dt);
 	virtual void Render(SDL_Renderer* renderer) const;
 

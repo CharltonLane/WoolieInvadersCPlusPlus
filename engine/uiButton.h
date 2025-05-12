@@ -30,6 +30,7 @@ public:
 	}
 
 	~UIButton() {
+		m_buttonSprite.SetTexture(nullptr, false);
 		if (m_standardTexture) {
 			SDL_DestroyTexture(m_standardTexture);
 		}

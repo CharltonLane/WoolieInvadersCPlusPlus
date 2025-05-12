@@ -20,6 +20,11 @@ public:
 		m_movementSpeed = 6;
 	}
 
+	~Projectile()
+	{
+		// Leave the m_sprite to destroy the hand texture.
+	}
+
 	void Update(float dt) override;
 
 	bool HasHitWall() const { return m_hasHitWall; }

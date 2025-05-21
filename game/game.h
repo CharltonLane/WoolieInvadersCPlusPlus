@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include <SDL3_mixer/SDL_mixer.h>
 #include "timer.h"
 #include "spaceConversion.h"
@@ -14,12 +15,14 @@ class Game {
 public:
 	Game() = default;
 
+	Game(const Game& other) = delete;
+
 	Game(SDL_Renderer* renderer)
 		: m_renderer{ renderer }
 		, m_player{ renderer, &m_level, Vector2Int{4, 4} }
 		, m_shopLevelBackground{ renderer, "images/world/shop.png" }
 		, m_hudBackground{ renderer, "images/hud/hudBackgroundLarge.png" }
-		, m_enemies(6, nullptr)
+		, m_enemies(6)
 		, m_handIcons{ renderer, SDL_FRect{137.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/hud/hudIconHand.png" }
 		, m_heartIcons{ renderer, SDL_FRect{72.0f, SpaceConversion::g_gamePixelHeight - 23, 8,8}, "images/hud/hudIconHeart.png" }
 		, m_enemyIcons{ renderer, SDL_FRect{228.0f, SpaceConversion::g_gamePixelHeight - 22, 8,8}, "images/enemy/enemySouth.png" }
@@ -28,6 +31,8 @@ public:
 	{
 		m_hudBackground.SetScreenPosition({ 0, SpaceConversion::g_gamePixelHeight - m_hudBackground.GetImageSize().y() });
 	}
+
+	Game& operator=(const Game& other) = delete;
 
 	// Core.
 	void HandleInput(const SDL_Event* event);
@@ -55,7 +60,7 @@ private:
 
 	// Entities.
 	Player m_player{};
-	std::vector<Enemy*> m_enemies;
+	std::vector<std::unique_ptr<Enemy>> m_enemies;
 
 	// Sprites.
 	const Sprite m_shopLevelBackground{};

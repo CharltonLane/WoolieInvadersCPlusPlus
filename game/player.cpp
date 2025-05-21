@@ -135,14 +135,14 @@ void Player::Update(float dt) {
 	}
 }
 
-void Player::UpdateProjectiles(float dt, std::vector<Enemy*>& enemies) {
+void Player::UpdateProjectiles(float dt, std::vector<std::unique_ptr<Enemy>>& enemies) {
 	// Move projectiles and see if there are enemy collisions.
 	for (auto& projectile : m_projectiles)
 	{
 		if (projectile) {
 			projectile->Update(dt);
 
-			for (auto* enemy : enemies) {
+			for (auto& enemy : enemies) {
 				if (enemy) {
 					if (projectile->IsCollidingWith(*enemy)) {
 						RecordKill(enemy->GetPoints());

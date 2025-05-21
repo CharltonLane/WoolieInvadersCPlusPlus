@@ -46,7 +46,7 @@ public:
 	void Render(SDL_Renderer* renderer) const override;
 	void Update(float dt) override;
 	Vector2Int CalculateDesiredDirection() override;
-	void UpdateProjectiles(float dt, std::vector<Enemy*>& enemies);
+	void UpdateProjectiles(float dt, std::vector<std::unique_ptr<Enemy>>& enemies);
 
 	void AddHealth(int healthToAdd);
 	void TakeDamage();

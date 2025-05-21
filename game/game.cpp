@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include <memory>
 #include <SDL3/SDL.h>
 #include "game.h"
 #include "spaceConversion.h"
@@ -80,7 +81,6 @@ GameState Game::Update(const float dt) {
 
 			// Handle dead enemies.
 			if (!enemyPointer->IsAlive()) {
-				delete enemyPointer;
 				enemyPointer = nullptr;
 			}
 		}
@@ -137,7 +137,7 @@ void Game::Render(SDL_Renderer* renderer) const {
 
 	// Render entities.
 	m_player.Render(renderer);
-	for (auto enemyPointer : m_enemies)
+	for (const auto& enemyPointer : m_enemies)
 	{
 		if (enemyPointer) {
 			enemyPointer->Render(renderer);
@@ -180,7 +180,7 @@ void Game::Render(SDL_Renderer* renderer) const {
 
 int Game::GetEnemiesAliveCount() const {
 	int count{ 0 };
-	for (auto enemyPointer : m_enemies) {
+	for (const auto& enemyPointer : m_enemies) {
 		if (enemyPointer) {
 			count++;
 		}
@@ -214,7 +214,7 @@ void Game::SpawnNextWave()
 			std::cout << "Error, an enemy isstill alive when a new wave is being spawned. This must not happen!\n";
 			continue;
 		}
-		m_enemies[i] = new Enemy{ m_renderer, &m_level, spawnPoints[i] };
+		m_enemies[i] = std::move(std::make_unique<Enemy>(m_renderer, &m_level, spawnPoints[i]));
 	}
 
 	m_newWaveTextTimer.Restart();
@@ -242,7 +242,6 @@ void Game::DeleteAllEnemies()
 	for (auto& enemy : m_enemies)
 	{
 		if (enemy) {
-			delete enemy;
 			enemy = nullptr;
 		}
 	}

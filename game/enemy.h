@@ -7,6 +7,8 @@ class Enemy : public GridEntity
 public:
 	Enemy() = default;
 
+	Enemy(Enemy& other) = delete;
+
 	Enemy(SDL_Renderer* renderer, LevelGrid* level, Vector2Int gridPosition)
 		: GridEntity{ renderer, level, gridPosition }
 	{
@@ -33,6 +35,8 @@ public:
 		SDL_DestroyTexture(m_southTexture);
 		SDL_DestroyTexture(m_westTexture);
 	}
+
+	Enemy& operator=(const Enemy& other) = delete;
 
 	Vector2Int CalculateDesiredDirection() override;
 	Vector2Int GetRandomUnobstructedDirection() const;

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <SDL3/SDL.h>
 
 
@@ -18,7 +19,7 @@ struct AppState {
 	SDL_Window* window{ nullptr };
 	SDL_Renderer* renderer{ nullptr };
 
-	Menu* menu{ nullptr };
-	Game* game{ nullptr };
+	std::unique_ptr<Menu> menu{};
+	std::unique_ptr<Game> game{};
 	GameState gameState{ GameState::MainMenu };
 };

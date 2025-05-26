@@ -41,8 +41,8 @@ SDL_AppResult SDL_AppInit(void** appstate, [[maybe_unused]] int argc, [[maybe_un
 	// Turn vsync on since the game doesn't need to run at thousands of fps.
 	SDL_SetRenderVSync(state.renderer, 1);
 
-	state.menu = new Menu{ state.renderer };
-	state.game = new Game{ state.renderer };
+	state.menu = std::move(std::make_unique<Menu>(state.renderer));
+	state.game = std::move(std::make_unique<Game>(state.renderer));
 
 	return SDL_APP_CONTINUE;
 }
@@ -109,7 +109,7 @@ static float fpsCounterSmoothValue{ 0 };
 static float fpsCounterAverageSum{ 0 };
 static int fpsCounterAverageFrameCounter{ 0 };
 // Refresh FPS every tenth of a second.
-constexpr float fpsCounterRefreshAfterSeconds{ 0.1f }; 
+constexpr float fpsCounterRefreshAfterSeconds{ 0.1f };
 
 
 /* This function runs once per frame, and is the heart of the program. */
@@ -121,7 +121,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 	LAST = NOW;
 	NOW = SDL_GetPerformanceCounter();
 	deltaTime = (float)((NOW - LAST) / (float)SDL_GetPerformanceFrequency());
-	
+
 	// FPS counter.
 	fpsCounterAverageSum += deltaTime;
 	fpsCounterAverageFrameCounter++;

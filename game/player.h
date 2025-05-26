@@ -93,7 +93,6 @@ public:
 		for (auto& projectile : m_projectiles)
 		{
 			if (projectile) {
-				delete projectile;
 				projectile = nullptr;
 			}
 		}
@@ -116,7 +115,7 @@ private:
 
 	int m_ammo{ m_maxAmmo };
 	Timer m_ammoRegenTimer{ 1.5f }; // 1.5 seconds to regen 1 ammo.
-	std::vector<Projectile*> m_projectiles;
+	std::vector<std::unique_ptr<Projectile>> m_projectiles;
 
 	// Player invincibility after being hit.
 	Timer m_invincibilityTimer{ 3, 0, false }; // 3 seconds of invincibility after taking damage.
@@ -137,8 +136,8 @@ private:
 	// Invincibility sprite.
 	Sprite m_invincibilitySprite{};
 
-	Projectile* CreateProjectile();
-	void TrackProjectile(Projectile* newProjectile);
+	std::unique_ptr<Projectile> CreateProjectile();
+	void TrackProjectile(std::unique_ptr<Projectile> newProjectile);
 
 	// Score and combo.
 	int m_score{ 0 };

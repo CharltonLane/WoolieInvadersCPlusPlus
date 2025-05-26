@@ -56,31 +56,32 @@ void Player::HandleInput(const SDL_Event* event) {
 
 }
 
-void Player::TrackProjectile(Projectile* newProjectile) {
+void Player::TrackProjectile(std::unique_ptr<Projectile> newProjectile) {
 	// Dynamically create a new projectile object.
 
-	bool foundSpace = false;
+
 	for (auto& existingProjectile : m_projectiles)
 	{
 		if (existingProjectile) {
 			continue;
 		}
 		// Found an empty space in the vector. Add new projectile here.
-		foundSpace = true;
+		existingProjectile = std::move(newProjectile);
+		return ;
+	}
 
-		existingProjectile = newProjectile;
-		break;
-	}
-	if (!foundSpace) {
-		m_projectiles.resize(m_projectiles.size() + 1);
-		// Insert projectile at the new index.
-		m_projectiles[m_projectiles.size() - 1] = newProjectile;
-	}
+
+	// This only runs if there is no room in the projectile list.
+
+	m_projectiles.resize(m_projectiles.size() + 1);
+	// Insert projectile at the new index.
+	m_projectiles[m_projectiles.size() - 1] = std::move(newProjectile);
+	
 }
 
-Projectile* Player::CreateProjectile() {
+std::unique_ptr<Projectile> Player::CreateProjectile() {
 	// Dynamically create a new projectile object.
-	return new Projectile{ m_renderer, m_level, GetCurrentGridCell(), m_worldPosition, m_facingDirection };
+	return std::make_unique<Projectile>(m_renderer, m_level, GetCurrentGridCell(), m_worldPosition, m_facingDirection);
 }
 
 
@@ -152,7 +153,6 @@ void Player::UpdateProjectiles(float dt, std::vector<std::unique_ptr<Enemy>>& en
 			}
 
 			if (projectile->HasHitWall()) {
-				delete projectile;
 				projectile = nullptr;
 			}
 		}

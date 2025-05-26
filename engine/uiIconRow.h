@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include <SDL3/SDL.h>
 #include "vector2.h"
 #include "sprite.h"
@@ -25,7 +26,6 @@ public:
 			if (sprite) {
 				// Clear the texture (we delete it below, instead of letting the sprite delete it).
 				sprite->SetTexture(nullptr, false);
-				delete sprite;
 			}
 			m_sprites.clear();
 		}
@@ -44,16 +44,16 @@ private:
 	Vector2 m_spriteSize{};
 	SDL_Texture* m_iconTexture{ nullptr };
 
-	std::vector<Sprite*> m_sprites{};
+	std::vector<std::unique_ptr<Sprite>> m_sprites{};
 
 	int m_iconsToShow = 0;
 
 	void AddNewSprite() {
 		// Add another sprite to the vector of sprites.
-		Sprite* sprite = new Sprite{ m_iconTexture };
+		std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>(m_iconTexture);
 		sprite->SetImageSize(m_spriteSize);
 		sprite->SetScreenPosition({ m_position.x() + m_spriteSize.x() * (m_sprites.size()), m_position.y() });
-		m_sprites.push_back(sprite);
+		m_sprites.push_back(std::move(sprite));
 	}
 };
 
